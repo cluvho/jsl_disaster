@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<div layout:fragment="content">
+     <div class="page-communitydetail">
+            <div class="post-container">
+                <div class="post-header">
+                    <h1>[지진] 우리 동네 피해 상황 공유합니다</h1>
+                    <div class="post-meta">
+                        <span>재난 유형: 지진</span>
+                        <span>지역: 도쿄</span>
+                        <span>작성자: 김민준</span>
+                        <span>2024.08.15 14:30</span>
+                			<span>조회수: 555555</span>
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-status">
+                            <button class="post-status-btn active">안전함</button>
+                            <button class="post-status-btn">피해 없음</button>
+                            <button class="post-status-btn">도움 필요</button>
+                        </div>
+                        <button class="report-btn"><i class="fas fa-exclamation-triangle"></i> 긴급 신고</button>
+                    </div>
+                </div>
+                
+                <div class="post-content">
+                    <p>어제 오후 2시 10분경 발생한 지진으로 인해 저희 동네 담벼락에 금이 갔습니다. 큰 흔들림은 없었지만, 주변 건물에도 일부 피해가 있는 것 같습니다.</p>
+                    <p>다행히 인명 피해는 없지만, 추가적인 흔들림이 있을 수 있으니 모두 주의하시길 바랍니다. 저는 현재 안전한 상태입니다.</p>
+                    <div class="post-images">
+                        <img src="https://placehold.co/800x400/E9ECEF/6C757D?text=Image+1" alt="Post Image 1">
+                    </div>
+                    <div class="post-location">
+                        <h4 style="margin-bottom: 10px;">위치 정보</h4>
+                        <div class="post-location-map">
+                            🗺️ 지도 표시 영역
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comment-section">
+                    <div class="comment-header">
+                        <div class="comment-count">댓글 2개</div>
+                    </div>
+                    <form class="comment-input-form">
+                        <input type="text" placeholder="댓글을 남겨주세요...">
+                        <button type="submit">작성</button>
+                    </form>
+                    <div class="comment-list">
+                        <!-- Sample Comment -->
+                        <div class="comment">
+                            <div class="comment-meta">
+                                <span class="comment-author">이정민</span>
+                                <span class="comment-date">2024.08.15 14:40</span>
+                            </div>
+                            <div class="comment-text">
+                                혹시 대피소 쪽으로 이동하셨나요? 저희도 상황을 지켜보고 있습니다.
+                            </div>
+                            <div class="comment-actions">
+                                <a href="#">답글</a>
+                                <a href="#">신고</a>
+                            </div>
+                            <div class="reply-list">
+                                <!-- Sample Reply -->
+                                <div class="reply">
+                                    <div class="comment-meta">
+                                        <span class="comment-author">김민준</span>
+                                        <span class="comment-date">2024.08.15 14:45</span>
+                                    </div>
+                                    <div class="comment-text">
+                                        네, 일단 가족들과 함께 지정된 대피소로 이동했습니다. 감사합니다!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sample Comment 2 -->
+                        <div class="comment">
+                            <div class="comment-meta">
+                                <span class="comment-author">박지훈</span>
+                                <span class="comment-date">2024.08.15 15:05</span>
+                            </div>
+                            <div class="comment-text">
+                                다들 무사하시길 바랍니다. 추가 피해 정보는 119로 신고해주세요.
+                            </div>
+                            <div class="comment-actions">
+                                <a href="#">답글</a>
+                                <a href="#">신고</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+</div>

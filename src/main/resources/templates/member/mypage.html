@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+	<style>
+		@charset "UTF-8";
+
+:root {
+    --main-red: #E60012;
+    --bg-color: #F5F6F8;
+    --text-color: #222222;
+    --subtle-text-color: #666666;
+    --border-color: #EAEAEA;
+    --white-color: #FFFFFF;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* --- 헤더 --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    background-color: var(--white-color);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    height: 64px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 10;
+}
+.header .logo a {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--main-red);
+    text-decoration: none;
+}
+.header nav { display: flex; gap: 25px; }
+.header nav a {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--subtle-text-color);
+    text-decoration: none;
+    padding: 20px 5px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+}
+.header nav a.active, .header nav a:hover {
+    color: var(--text-color);
+    border-bottom: 2px solid var(--main-red);
+}
+.header .user-options { display: flex; align-items: center; gap: 15px; }
+.header .user-options a { font-size: 14px; color: var(--subtle-text-color); text-decoration: none; }
+.header .user-options a:hover { color: var(--main-red); }
+
+/* --- 메인 컨텐츠 영역 --- */
+.main-content {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+/* --- 사이드바 --- */
+.sidebar {
+    width: 300px;
+    background-color: var(--white-color);
+    border-right: 1px solid var(--border-color);
+    flex-shrink: 0;
+    padding: 25px;
+    overflow-y: auto;
+}
+.sidebar-title {
+    font-size: 20px;
+    font-weight: 700;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--main-red);
+    margin: 0 0 25px 0;
+}
+.filter-group label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 18px;
+}
+.filter-group input[type="checkbox"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--main-red);
+}
+
+/* --- 본문 (지도 + 카드) --- */
+.content-area {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+.map-section {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E9ECEF;
+    margin-bottom: 30px;
+}
+.map-section .placeholder { text-align: center; color: var(--subtle-text-color); }
+.map-section .placeholder h3 { font-size: 24px; margin: 0 0 10px; }
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--main-red);
+    margin-bottom: 20px;
+}
+
+/* --- 카드 리스트 스타일 --- */
+.card-list a {
+    display: flex;
+    align-items: center;
+    background-color: var(--white-color);
+    padding: 20px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card-list a:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+.card-icon { font-size: 32px; margin-right: 20px; width: 40px; text-align: center; }
+.card-content { flex-grow: 1; }
+.card-content h4 { margin: 0 0 5px; font-size: 18px; font-weight: 700; }
+.card-content p { margin: 0; font-size: 14px; color: var(--subtle-text-color); }
+.card-arrow { font-size: 24px; font-weight: bold; color: #D0D0D0; }
+
+/* --- 푸터 --- */
+.footer {
+    background-color: #343A40;
+    color: #ADB5BD;
+    padding: 20px 30px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    border-top: 1px solid #495057;
+}
+.footer a { color: #ADB5BD; text-decoration: none; margin-right: 20px; }
+.footer a:hover { color: var(--white-color); }
+.footer .emergency-contacts span { margin-left: 15px; font-weight: 500; color: #F8F9FA; }
+
+/* --- 마이 페이지 관련 --- */
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+.content-area {
+    padding: 20px;
+}
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 30px 0 15px;
+    color: #333;
+    border-left: 4px solid #007bff;
+    padding-left: 10px;
+}
+.card button {
+    display: block; /* 프로필 관리 컨테이너의 정보 수정 버튼 */
+    margin: 10px auto;
+}
+.card-list > button {
+    display: block;
+    margin: 15px auto; /* 설정 저장 버튼 가운데 정렬 */
+}
+.profile-settings {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.card-section {
+    flex: 1;
+    min-width: 200px;
+}
+.card-list {
+    margin-bottom: 25px;
+}
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    padding: 20px;
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #444;
+}
+input[type="text"] {
+    width: 280px;
+    padding: 8px;
+    margin-left: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+button {
+    margin-top: 12px;
+    padding: 10px 18px;
+    background: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+button:hover {
+    background: #0056b3;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+th, td {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    font-size: 14px;
+}
+th {
+    background: #f1f3f6;
+    text-align: center;
+}
+td {
+    background: #fff;
+}
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+ul li {
+    margin: 6px 0;
+}
+		
+	</style>
+</head>
+
+<div layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-content">
+
+            <main class="content-area">
+
+
+            <!-- 프로필 정보 -->
+                <h2 class="section-title">
+                	<i class="fa-regular fa-user"></i>・프로필 관리</h2>
+                <div class="card-list">
+                    <div class="card">
+                        <label>성　  함 : <input type="text" value="홍길동"></label>
+                        <label>이 메 일 : <input type="text" value="hong@test.com"></label>
+                        <label>변경할 비밀번호 : <input type="password" value="12345678"></label>
+                        <label>우편번호 : <input type="text" value="12345"></label>
+                        <label>주 소 1 : <input type="text" value="서울특별시 어딘가"></label>
+                        <label>주 소 2 : <input type="text" value="서울특별시 어딘가"></label>
+                        <label>연 락 처 : <input type="text" value="010-1234-5678"></label>
+                        <label>L I N E : </label>
+                        <button>정보 수정</button>
+                    </div>
+                </div>
+			
+           <!-- 재난별 알림 설정 -->
+                
+                
+
+                <!-- 알림 수신 방법 -->
+                <h2 class="section-title">
+                	<i class="fa-regular fa-envelope"></i>・알림 수신 방법</h2>
+                <div class="card-list">
+                    <div class="card">
+                        <label><input type="checkbox" checked> 이메일 알림</label>
+                        <label><input type="checkbox" checked> LINE 알림</label>
+                        <label><input type="checkbox"> SMS 알림 (전화번호 등록시)</label>
+                        <button>설정 저장</button>
+                    </div>
+                </div>
+           
+                
+
+                <!-- 내 활동 내역 -->
+                <h2 class="section-title">
+                	<i class="fa-regular fa-rectangle-list"></i>・내 활동 내역</h2>
+                <div class="card-list">
+
+                    <div class="card">
+                        <h3>・작성한 글</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>제목</th>
+                                    <th>작성일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="#">첫 번째 글</a></td>
+                                    <td>2025-09-01</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#">두 번째 글</a></td>
+                                    <td>2025-08-28</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <h3>・댓글 단 글</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>게시글 제목</th>
+                                    <th>내 댓글</th>
+                                    <th>작성일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="#">재난 대피소 위치 공유</a></td>
+                                    <td>좋은 정보 감사합니다!</td>
+                                    <td>2025-08-28</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <h3>・북마크한 글</h3>
+                        <ul>
+                            <li><a href="#">지진 발생 시 대처법</a></li>
+                            <li><a href="#">태풍 대비 체크리스트</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </main>
+        </div>
+    </div>
+</div>
+</html>
