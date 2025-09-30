@@ -257,7 +257,7 @@ async function searchRegion() {
             console.log(`'${regionName}' 검색 성공:`, { lat, lon, formattedAddress });
 
             // 3. 추출한 좌표와 주소로 관련 정보들을 모두 업데이트합니다.
-            // 날씨 정보 업데이트
+            // 날씨 정보 업데이트a
             updateWeatherAPI(lat, lon, formattedAddress);
             
             // 관련 뉴스 업데이트
