@@ -71,7 +71,7 @@
 		      window.location.href = `/detail?lat=${data.lat}&lon=${data.lon}`;
 		    })
 		    .catch(err => {
-		      console.error("위치 가져오기 실패:", err);
+		      console.error("위치 가져오기 실패!!:", err);
 		      window.location.href = "/detail?lat=35.681236&lon=139.767125"; // 도쿄
 		    });
 		}
