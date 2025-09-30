@@ -57,7 +57,8 @@ public class SecurityConfig {
                     "/js/**",
                     "/images/**",
                     "/api/**",
-                    "/mock/**").permitAll()
+                    "/mock/**",
+                    "/csv/**").permitAll()
                 // 비밀번호 재설정 관련 명시적 허용
                 .requestMatchers(HttpMethod.GET, "/member/reset-password").permitAll()
                 .requestMatchers(HttpMethod.POST, "/member/reset-password").permitAll()
