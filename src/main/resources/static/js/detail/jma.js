@@ -272,7 +272,7 @@ async function searchRegion() {
         } else {
             // 4. 주소를 좌표로 변환하는 데 실패하면 사용자에게 알립니다.
             console.error(`'${regionName}' 지역을 찾을 수 없습니다. Geocode 실패 상태:`, status);
-            alert(`'${regionName}'에 대한 위치 정보를 찾을 수 없습니다. 다른 검색어를 시도해보세요!!`);
+            alert(`'${regionName}'에 대한 위치 정보를 찾을 수 없습니다. 다른 검색어를 시도해보세요.`);
         }
     });
 }
