@@ -1,32 +1,14 @@
-let map;
-
-// 구글맵 초기화
-function initMap() {
-  const mapElement = document.getElementById("map");
-  const userLat = mapElement.dataset.lat ? parseFloat(mapElement.dataset.lat) : null;
-  const userLon = mapElement.dataset.lon ? parseFloat(mapElement.dataset.lon) : null;
-
-  const defaultCenter = { lat: 35.68, lng: 139.76 };
-  const center = (userLat && userLon) ? { lat: userLat, lng: userLon } : defaultCenter;
-
-  map = new google.maps.Map(mapElement, {
-    center: center,
-    zoom: 12
-  });
-  window._map = map; // 공용
-}
-
 /* ---------- 안내박스 겹침 방지 ---------- */
 function updateLegendLayout() {
   const shelter  = document.getElementById("shelter-info");
   const hospital = document.getElementById("hospital-info");
-  const BASE = 10; // 바닥 여백(px)
-  const GAP  = 8;  // 두 박스 사이 간격(px)
+  const BASE = 10; // 바닥 여백
+  const GAP  = 8;  // 두 박스 간격
 
   if (shelter && hospital) {
     const h = hospital.getBoundingClientRect().height || 0;
     hospital.style.bottom = BASE + "px";
-    shelter.style.bottom  = (BASE + h + GAP) + "px"; // 대피소 위로 올리기
+    shelter.style.bottom  = (BASE + h + GAP) + "px";
   } else {
     if (hospital) hospital.style.bottom = BASE + "px";
     if (shelter)  shelter.style.bottom  = BASE + "px";
@@ -49,56 +31,64 @@ function waitLegendsOnce(timeoutMs = 500) {
   });
 }
 
-/* ---------- 토글 바인딩 ---------- */
+/* ---------- 토글 이벤트 바인딩 ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   const weatherToggle  = document.getElementById('weatherToggle');
   const disasterToggle = document.getElementById('disasterToggle');
   const shelterToggle  = document.getElementById('shelterToggle');
   const hospitalToggle = document.getElementById('hospitalToggle');
 
-  // 날씨
+  // 날씨 토글
   if (weatherToggle) {
     weatherToggle.addEventListener('change', () => {
-      weatherToggle.checked ? WeatherFeature.enable(window._map)
-                            : WeatherFeature.disable();
+      if (weatherToggle.checked) {
+        WeatherFeature.enable(window._map);
+      } else {
+        WeatherFeature.disable();
+      }
     });
   }
 
-  // 재난
+  // 재난 토글
   if (disasterToggle) {
     disasterToggle.addEventListener('change', () => {
-      disasterToggle.checked ? DisasterFeature.enable(window._map)
-                             : DisasterFeature.disable();
+      if (disasterToggle.checked) {
+        DisasterFeature.enable(window._map);
+      } else {
+        DisasterFeature.disable();
+      }
     });
   }
 
-  // 대피소
+  // 대피소 토글
   if (shelterToggle) {
     shelterToggle.addEventListener('change', async () => {
       if (shelterToggle.checked) {
-        await ShelterFeature.enable(window._map);
+        ShelterFeature.enable(window._map);
+        await waitLegendsOnce();   // 안내박스 DOM 대기
+        updateLegendLayout();      // 겹침 방지
         window._map.setZoom(15);
       } else {
         ShelterFeature.disable();
+        updateLegendLayout();      // 레이아웃 정리
         window._map.setZoom(12);
       }
-      await waitLegendsOnce();
-      updateLegendLayout();
     });
   }
 
-  // 병원
+  // 병원 토글
   if (hospitalToggle) {
     hospitalToggle.addEventListener('change', async () => {
       if (hospitalToggle.checked) {
-        await HospitalOSMFeature.enable(window._map); // enable이 async라면 대기
+        HospitalOSMFeature.enable(window._map);
+        await waitLegendsOnce();   // 안내박스 DOM 대기
+        updateLegendLayout();      // 겹침 방지
         window._map.setZoom(15);
       } else {
         HospitalOSMFeature.disable();
+        updateLegendLayout();
         window._map.setZoom(12);
       }
-      await waitLegendsOnce();
-      updateLegendLayout();
     });
   }
 });

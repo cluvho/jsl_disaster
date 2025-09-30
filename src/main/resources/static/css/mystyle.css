@@ -150,7 +150,7 @@ html, body {
 }
 
 /* 카드 리스트 */
-.card-list a {
+/* .card-list a {
     display: flex;
     align-items: center;
     background-color: var(--white-color);
@@ -166,67 +166,11 @@ html, body {
 .card-list a:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
-}
+} */
 .card-icon { font-size: 32px; margin-right: 20px; width: 40px; text-align: center; }
 .card-content { flex-grow: 1; }
 .card-content h4 { margin: 0 0 5px; font-size: 18px; font-weight: 700; }
 .card-content p { margin: 0; font-size: 14px; color: var(--subtle-text-color); }
-.card-arrow { font-size: 24px; font-weight: bold; color: #D0D0D0; }
-
-/* =========================================================
-   지도 정보 박스
-========================================================= */
-/* Shelter Info Box */
-#shelter-info {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  font-size: 14px;
-  line-height: 20px;
-  z-index: 1000;
-}
-
-#shelter-info div {
-  display: flex;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
-#shelter-info div:last-child {
-  margin-bottom: 0;
-}
-
-#shelter-info .info-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 6px;
-  vertical-align: middle;
-}
-
-/* ===== 병원 범례 박스 ===== */
-#hospital-info {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  font-size: 14px;
-  line-height: 20px;
-  z-index: 1000;
-}
-
-#hospital-info .info-icon {
-  width: 18px;
-  height: 18px;
-  vertical-align: middle;
-  margin-right: 4px;
-}
 
 /* =========================================================
    푸터
@@ -1165,3 +1109,59 @@ html, body {
     .nav-menu { gap: 10px; }
     .nav-item { font-size: 12px; padding: 8px 12px; }
 }
+        
+        
+/* Shelter Info Box */
+#shelter-info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  font-size: 14px;
+  line-height: 20px;
+  z-index: 1000;
+}
+
+#shelter-info div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+#shelter-info div:last-child {
+  margin-bottom: 0;
+}
+
+#shelter-info .info-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* ===== 병원 범례 박스 ===== */
+#hospital-info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  font-size: 14px;
+  line-height: 20px;
+  z-index: 1000;
+}
+
+#hospital-info .info-icon {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+
+
