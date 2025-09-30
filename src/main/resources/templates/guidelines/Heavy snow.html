@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-content">
+            
+            
+            <main class="content-area">
+                <h2 style="text-align: center;">폭설대책</h2>
+                <!-- 폭설 규모에 맞는 대처방법 이미지를 하고 이걸 누르면 상세한 내용이 나오는 식으로 -->
+                <!-- 이미지가 어느정도의 크기로 들어갈지 범위 어느정도 정하기 -->
+                <div class="card-list">
+                
+                		
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="폭설대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>폭설전 대비</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				            <p>ㄴ미끄럼 방지 부츠를 신고, 주머니에서 손을 빼주세요.</p>
+				            <p>ㄴ스노체인을 장착하되, 되도록 버스, 지하철을 이용해주세요.</p>
+				            <p>ㄴ외부에 노출된 수도관에 보온재를 감거나, 약하게 물을 틀어놓는 등의 동파 방지 조치를 합니다.</p>
+				            <p>ㄴ미끄럼 방지 부츠를 신고, 주머니에서 손을 빼주세요.</p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent2">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="폭설대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>발목정도 쌓임(초기 경계)</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent2" class="collapse-content">
+				            <p>ㄴ횡단보도의 흰색 선, 계단 등은 눈이 다져져 얼음처럼 변한 압설 아이스반 상태이므로 극히 위험합니다.</p>
+				            <p>ㄴ초기 제설로 지붕과 인도의 눈을 치워줍니다.</p>
+				            <p>ㄴ지붕에서 갑자기 눈덩이, 고드륵에 주의해야 합니다.</p>
+				            <p>ㄴ도로주행, 횡단보도 등 눈으로 보이지 않을 수 있으니 주의해 주세요.</p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent3">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="폭설대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>다리까지 쌓임(특별 경계)</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent3" class="collapse-content">
+				            <p>ㄴ시동을 켤 경우, 배기관이 눈에 막히면 배기가스가 실내로 유입될 수 있습니다. 반드시 배기관 주변의 눈을 주기적으로 치워야 합니다.</p>
+				            <p>ㄴ환풍기나 난방기구의 급배기구가 눈에 막히면 불완전 연소로 인한 일산화탄소 중독의 위험이 있으므로, 주변의 눈을 치워 환기구를 확보해야 합니다.</p>
+				            
+				        </div>
+				    </div>
+                    
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardHeaders = document.querySelectorAll('.card-header');
+
+        cardHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+
+                // 콘텐츠가 이미 펼쳐져 있을 때
+                if (targetElement.style.maxHeight) {
+                    targetElement.style.maxHeight = null;
+                    header.classList.remove('expanded');
+                } else {
+                    // 콘텐츠를 펼칠 때
+                    targetElement.style.maxHeight = targetElement.scrollHeight + 'px';
+                    header.classList.add('expanded');
+                }
+            });
+        });
+    });
+</script>
+</th:block>
+</body>
+</html>

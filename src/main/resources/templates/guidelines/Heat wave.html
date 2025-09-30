@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-content">
+            
+            
+            <main class="content-area">
+                <h2 style="text-align: center;">폭염대책</h2>
+                <!-- 폭염 대처방법 이미지를 하고 이걸 누르면 상세한 내용이 나오는 식으로 -->
+                <!-- 이미지가 어느정도의 크기로 들어갈지 범위 어느정도 정하기 -->
+                <div class="card-list">
+                
+                		
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="폭염대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>30도 이상</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				            <p>ㄴ열사병에 주의가 필요합니다.</p>
+				            <p>ㄴ수분섭취를 자주 해줍니다.</p>
+				            <p>ㄴ장시간 야외 활동은 가급적 피하고, 자외선 차단 기능이 있는 양산을 사용합시다.</p>
+				            <p>ㄴ어린이는 성인보다 키가 작아 지면의 복사열에 더 큰 영향을 받습니다. </p>
+				            <p>ㄴ고령자는 온도 변화를 잘 느끼지 못할 수 있으므로, 실내에 있더라도 시간을 정해 수분을 섭취하도록 돕습니다. </p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent2">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="폭염대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>35도 이상</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent2" class="collapse-content">
+				        		<p>ㄴ열사병 환자가 급증하는 위험한 온도입니다.</p>
+				            <p>ㄴ낮 시간대 외출은 가급적 삼가고, 실내의 시원한 곳에서 지냅니다.</p>
+				            <p>ㄴ특히 어린이의 야외 체육 활동이나 부활동은 위험살 수 있습니다.</p>
+				            <p>ㄴ열사병 초기증상시 즉시 활동을 멈추고 시원한 장소로 이동합니다.</p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent3">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="폭염대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>40도 이상</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent3" class="collapse-content">
+				            <p>ㄴ열사병 경계 경보 발령 됩니다.</p>
+				            <p>ㄴ열사병 의심 증상이 있는 사람을 발견하면 즉시 구급차(119번)를 부릅니다.</p>
+				            <p>ㄴ 의식이 없는 환자에게 억지로 물을 마시게 해서는 안 됩니다.</p>
+				            <p>ㄴ구급차가 도착하기 전까지 시원한 곳으로 옮기고, 몸에 물을 뿌리고 바람을 불어주는 등 적극적으로 체온을 낮추는 응급처치를 시행합니다.</p>
+				       
+				        </div>
+				    </div>
+                    
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardHeaders = document.querySelectorAll('.card-header');
+
+        cardHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+
+                // 콘텐츠가 이미 펼쳐져 있을 때
+                if (targetElement.style.maxHeight) {
+                    targetElement.style.maxHeight = null;
+                    header.classList.remove('expanded');
+                } else {
+                    // 콘텐츠를 펼칠 때
+                    targetElement.style.maxHeight = targetElement.scrollHeight + 'px';
+                    header.classList.add('expanded');
+                }
+            });
+        });
+    });
+</script>
+</th:block>
+</body>
+</html>

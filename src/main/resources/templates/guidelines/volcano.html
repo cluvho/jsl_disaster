@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-content">
+            
+            
+            <main class="content-area">
+                <h2 style="text-align: center;">화산경보</h2>
+                
+                <!-- 이미지가 어느정도의 크기로 들어갈지 범위 어느정도 정하기 -->
+                <div class="card-list">
+                
+                		
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="분화시 대응방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>소규모 분화</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				            <p>ㄴ외출은 자제하고 실내에 있습니다.</p>
+				            <p>ㄴ모든 창문과 출입문을 닫고, 환풍기나 에어컨 등 외부 공기가 유입될 수 있는 장치는 모두 가동을 중지합니다. 테이프나 젖은 수건으로 틈새를 막아 화산재 유입을 최소화합니다.</p>
+				            <p>ㄴ실내에서도 화산재가 들어올 수 있으므로, 방진 마스크(KF94 이상)를 착용하는 것이 안전합니다. 부득이하게 외출 시에는 마스크와 방호 안경, 긴소매 옷, 모자를 착용하여 피부와 호흡기를 보호합니다.</p>
+				            <p>ㄴ화산재가 눈에 들어가면 각막에 심각한 손상을 줄 수 있으므로 반드시 안경을 착용합니다.</p>
+				            <p>ㄴ외출 후 귀가 시에는 옷에 묻은 화산재를 문밖에서 모두 털어내고, 샤워를 하여 몸에 남은 화산재를 깨끗이 씻어냅니다.</p>
+				       		<p>ㄴ화산재는 전자기기 고장의 원인이 되므로, 비닐 등으로 덮어 보호합니다.</p>
+				        		<p>ㄴ화산재는 시야를 가리고, 도로를 미끄럽게 하며, 차량 엔진을 마비시킬 수 있습니다. 가급적 운전을 삼가고, 부득이한 경우 서행하며 와이퍼와 라이트를 켠 채로 운행합니다.</p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent2">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="분화시 대응방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>대규모 분화</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent2" class="collapse-content">
+				            <p>ㄴ 화산재뿐만 아니라 화산탄, 화쇄류, 용암류, 화산 이류(라하르) 등 직접적이고 치명적인 위협이 발생하는 단계입니다.</p>
+				            <p>ㄴ정부나 지자체의 대피 명령이 발령되면 즉시 지정된 대피소로 대피합니다.</p>
+				            <p>ㄴ대피하기 전에는 가스와 전기를 차단하여 2차 피해를 예방합니다.</p>
+				            <p>ㄴ계곡과 강 주변 절대 피하기: 화산재와 물이 섞여 콘크리트처럼 흘러내리는 현상으로, 계곡이나 강을 따라 매우 빠른 속도로 이동합니다. 즉시 계곡에서 벗어나 능선이나 산등성이 등 최대한 높은 곳으로 대피해야 합니다.</p>
+				            <p>ㄴ건강 상태 확인: 호흡 곤란이나 눈의 통증 등 이상 증상이 느껴지면 즉시 의료 지원을 요청합니다.</p>
+				            
+				        </div>
+				    </div>
+                    
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardHeaders = document.querySelectorAll('.card-header');
+
+        cardHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+
+                // 콘텐츠가 이미 펼쳐져 있을 때
+                if (targetElement.style.maxHeight) {
+                    targetElement.style.maxHeight = null;
+                    header.classList.remove('expanded');
+                } else {
+                    // 콘텐츠를 펼칠 때
+                    targetElement.style.maxHeight = targetElement.scrollHeight + 'px';
+                    header.classList.add('expanded');
+                }
+            });
+        });
+    });
+</script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-content">
+            
+            
+            <main class="content-area">
+                <h2 style="text-align: center;">폭우대책</h2>
+                <!-- 폭우/홍수/토지붕괴에 맞는 대처방법 이미지를 하고 이걸 누르면 상세한 내용이 나오는 식으로 -->
+                <!-- 이미지가 어느정도의 크기로 들어갈지 범위 어느정도 정하기 -->
+                <div class="card-list">
+                
+                		
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="폭우대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>대비사항</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				            <p>ㄴ집 주변의 배수구, 빗물받이가 막히지 않았는지 확인하고 이물질을 제거합니다. 낡은 축대나 옹벽에 균열은 없는지 미리 점검합니다.</p>
+				        		<p>ㄴ사는 곳이 상습 침수 구역, 산사태 위험지역, 하천 범람 위험 구역에 해당하는지 확인해야 합니다.</p>
+				        		
+				        </div>
+				    </div>
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent2">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="홍수대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>20~30mm 주의 단계</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent2" class="collapse-content">
+				            <p>ㄴ저지대를 중심으로 침수 피해가 발생할 수 있습니다. 산간 지역에서는 토양이 물을 머금기 시작하여 산사태 위험이 서서히 증가합니다.</p>
+				            <p>ㄴ차량 운행 시 평소보다 20~30% 감속 운행하고, 차간 거리를 1.5배 이상 확보합니다. 물웅덩이를 지날 때는 반드시 서행합니다.</p>
+				        
+				        	<div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent3">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="홍수대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>도시침수/홍수</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent3" class="collapse-content">
+				            <p>ㄴ도로 맨홀 뚜껑에서 물이 역류하거나, 하수구에서 악취가 올라오기 시작합니다.</p>
+				            <p>ㄴ저지대나 지하 주차장에 있는 차량은 즉시 안전한 고지대로 이동시킵니다.</p>
+				        		<p>ㄴ지하상가, 지하철역 등에서는 침수에 대비하여 물막이판(차수판)을 설치하고, 비상시 탈출 경로를 확인합니다.</p>
+				        		<p>ㄴ하천 수위가 눈에 띄게 상승할 수 있으므로 주변에 가지 않습니다.</p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent3">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="홍수대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>산사태</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent3" class="collapse-content">
+				            <p>ㄴ산비탈에서 돌멩이가 굴러 내려오거나, 경사면에서 소량의 흙탕물이 흘러나오기 시작합니다.</p>
+				            <p>ㄴ산간 계곡이나 경사가 급한 비탈면 근처로의 접근을 금지합니다.</p>
+				        </div>
+				    </div>
+				        		
+				        		
+				        </div>
+				    </div>
+				    
+				    
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent3">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="홍수대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>50mm 이상 위험/대피 단계</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent3" class="collapse-content">
+				            <p>ㄴ안전을 위한 즉각적인 판단과 신속한 대피가 가장 중요합니다.</p>
+				            <p>ㄴ야외 활동을 즉시 중단하고, 튼튼한 건물 안으로 대피합니다.</p>
+				        		<p>ㄴ차량이 침몰할 수 있으며 물이 불어난 도로나 지하차도는 절대 진입해서는 안 됩니다. 차량이 침수되면 즉시 시동을 끄고 탈출합니다.</p>
+				        		
+				        	<div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="폭우대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>도시침수/홍수</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				            <p>ㄴ도로가 완전히 물에 잠기고, 차량 바퀴의 절반 이상이 잠깁니다.</p>
+				        		<p>ㄴ모든 지하 공간에서 즉시 지상으로 대피해야 합니다. 물이 조금이라도 차오르기 시작하면 수압 때문에 문이 열리지 않으므로, 그 전에 탈출해야 합니다.</p>
+				        		<p>ㄴ침수가 시작된 건물에서는 즉시 분전함을 내려 전기를 차단하여 감전 사고를 예방합니다.</p>
+				        		<p>ㄴ하천 주변 저지대 주민은 지체 없이 지정된 대피소나 마을회관 등 안전한 고지대로 즉시 대피합니다.</p>
+				        </div>
+				    </div>
+				        <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="폭우대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>산사태</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				            <p>ㄴ산사태 위험지역에 대피 명령이 내려지면 즉시 대피합니다.</p>
+				        		<p>ㄴ산사태가 이미 시작되었다면, 산사태 방향과 직각 방향으로 가장 가까운 높은 곳으로 즉시 달려가야 합니다. 계곡이나 산 아래 주택은 매우 위험합니다.</p>
+				        		
+				        </div>
+				    </div>		
+				        		
+				        		
+				        		
+				        		
+				        		
+				        </div>
+				    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardHeaders = document.querySelectorAll('.card-header');
+
+        cardHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+
+                // 콘텐츠가 이미 펼쳐져 있을 때
+                if (targetElement.style.maxHeight) {
+                    targetElement.style.maxHeight = null;
+                    header.classList.remove('expanded');
+                } else {
+                    // 콘텐츠를 펼칠 때
+                    targetElement.style.maxHeight = targetElement.scrollHeight + 'px';
+                    header.classList.add('expanded');
+                }
+            });
+        });
+    });
+</script>
+</th:block>
+</body>
+</html>

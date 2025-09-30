@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-content">
+            
+            
+            <main class="content-area">
+                <h2 style="text-align: center;">쓰나미대책</h2>
+                <!-- 해일 규모에 맞는 대처방법 이미지를 하고 이걸 누르면 상세한 내용이 나오는 식으로 -->
+                <!-- 이미지가 어느정도의 크기로 들어갈지 범위 어느정도 정하기 -->
+                <div class="card-list">
+                
+                		
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="해일대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>해안가</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				            <p>ㄴ즉각적인 대피가 무엇보다 중요합니다.</p>
+				            <p>ㄴ바닷물이 갑자기 빠질경우 전조증상일 수 있습니다.</p>
+				            <p>ㄴ최대한 빨리 내륙 혹은 고지대로 대피합니다.</p>
+				            <p>ㄴ차량이 정체될 수 있으므로 도보로 신속하게 대피합니다.</p>
+				            <p>ㄴ쓰나미는 여러 번 올 수 있습니다. 재난 방송을 통해 상황이 완전히 종료되었다는 안내가 있을 때까지 절대 해안가로 돌아가서는 안 됩니다.</p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent2">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="해일대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>하천주변</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent2" class="collapse-content">
+				            <p>ㄴ쓰나미가 하천을 따라 내륙 깊숙한 곳까지 빠르게 밀려 들어올 수 있습니다.</p>
+				            <p>ㄴ쓰나미 경보가 발령되면 즉시 하천 주변에서 벗어나야 합니다.</p>
+				            <p>ㄴ멀리 떨어진 고지대나 언덕으로 대피합니다.</p>
+				            <p>ㄴ다리를 건너야 한다면 쓰나미가 밀려오는 방향을 주시하며 신속하게 건너야 합니다. </p>
+				        		<p>ㄴ쓰나미가 역류하면 다리가 붕괴되거나 급류에 휩쓸릴 위험이 큽니다.</p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent3">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="해일대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>내륙(어느정도 거리가 있음)</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent3" class="collapse-content">
+				            <p>ㄴ파도의 영향은 적지만, 규모에 따라 침수 피해가 발생할 수 있습니다.</p>
+				            <p>ㄴ뉴스로 경보 상황과 대피 권고 지역을 계속 확인합니다.</p>
+				            <p>ㄴ침수 예상 지역에 있다면, 언제든 대피할 수 있도록 비상용품을 챙겨두고 대기합니다.</p>
+				            <p>ㄴ대피 권고 있을 경우, 즉시 지정된 대피소나 안전한 곳으로 이동합니다.</p>
+				        </div>
+				    </div>
+                    
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardHeaders = document.querySelectorAll('.card-header');
+
+        cardHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+
+                // 콘텐츠가 이미 펼쳐져 있을 때
+                if (targetElement.style.maxHeight) {
+                    targetElement.style.maxHeight = null;
+                    header.classList.remove('expanded');
+                } else {
+                    // 콘텐츠를 펼칠 때
+                    targetElement.style.maxHeight = targetElement.scrollHeight + 'px';
+                    header.classList.add('expanded');
+                }
+            });
+        });
+    });
+</script>
+</th:block>
+</body>
+</html>

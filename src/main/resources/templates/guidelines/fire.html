@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-content">
+            
+            
+            <main class="content-area">
+                <h2 style="text-align: center;">화재대책</h2>
+                <!-- 화재시 주의사항 별 대처방법 이미지를 하고 이걸 누르면 상세한 내용이 나오는 식으로 -->
+                <!-- 이미지가 어느정도의 크기로 들어갈지 범위 어느정도 정하기 -->
+                <div class="card-list">
+                
+                		
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="화재대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>작은규모 화재</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				            <p>ㄴ소화기로 초기 진압을 합니다.</p>
+				            <p>ㄴ물을 뿌리는건 위험할 수 있습니다.젖은 담요 등으로 덮어 불을 끕시다. </p>
+				            
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent2">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="화재대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>큰규모 화재발생 시</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent2" class="collapse-content">
+				            <p>ㄴ짙은 연기로 대피가 어려운 상황에서는 진화를 포기하고 신속하고 안전하게 대피하는 것이 최우선입니다.</p>
+				            <p>ㄴ젖은 수건이나 옷으로 코와 입을 막아 유독가스 흡입을 최소화합니다.</p>
+				            <p>ㄴ문 손잡이는 화상의 위험이 있습니다.</p>
+				        </div>
+				    </div>
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent3">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="화재대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>큰규모 화재 대피</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent3" class="collapse-content">
+				            <p>ㄴ엘리베이터는 절대 사용하면 안됩니다. 계단을 이용해 주세요.</p>
+				            <p>ㄴ아랫층에 있을 때는 계단을 통해 지상으로 대피하는 것이 가장 안전합니다.</p>
+				            <p>ㄴ고층에 살고 있을 때는 옥상으로 대피하여 구조를 기다립니다.</p>
+				            <p>ㄴ실내에 갇혔을 경우: 창문 밖으로 옷이나 수건을 흔들어 자신의 위치를 알리고, 문틈을 젖은 옷 등으로 막아 연기가 들어오지 않도록 합니다.</p>
+				        </div>
+				    </div>
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent4">
+				            <div class="card-image-container">
+				                <img src="/images/seismic-intensity-0-2.jpg" alt="화재대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>실내에 갇혔을 때</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent4" class="collapse-content">
+				            <p>ㄴ창문 밖으로 옷이나 수건을 흔들어 자신의 위치를 알리고, 문틈을 젖은 옷 등으로 막아 연기가 들어오지 않도록 합니다.</p>
+				        </div>
+				    </div>
+                    
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardHeaders = document.querySelectorAll('.card-header');
+
+        cardHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+
+                // 콘텐츠가 이미 펼쳐져 있을 때
+                if (targetElement.style.maxHeight) {
+                    targetElement.style.maxHeight = null;
+                    header.classList.remove('expanded');
+                } else {
+                    // 콘텐츠를 펼칠 때
+                    targetElement.style.maxHeight = targetElement.scrollHeight + 'px';
+                    header.classList.add('expanded');
+                }
+            });
+        });
+    });
+</script>
+</th:block>
+</body>
+</html>
