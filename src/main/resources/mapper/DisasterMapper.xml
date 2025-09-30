@@ -1,74 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.disaster.mapper.DisasterMapper">
-    
+
     <!-- 현재 재난 삽입/업데이트 -->
-    <insert id="insertCurrentDisaster" parameterType="DisasterEventLive">
+    <insert id="insertCurrentDisaster" parameterType="com.disaster.domain.DisasterEventLive">
         INSERT INTO disaster_event_live (
-            region_code, disaster_type, title, location, magnitude, depth_km, 
+            region_code, disaster_type, title, location, magnitude, depth_km,
             alert_level, status, started_at, source
         ) VALUES (
-            #{regionCode}, #{disasterType}, #{title}, #{location}, #{magnitude}, 
+            #{regionCode}, #{disasterType}, #{title}, #{location}, #{magnitude},
             #{depthKm}, #{alertLevel}, #{status}, #{startedAt}, #{source}
         )
     </insert>
-    
+
     <!-- 유사한 현재 재난 찾기 (중복 방지용) -->
-    <select id="findSimilarCurrentDisaster" parameterType="DisasterEventLive" resultType="DisasterEventLive">
-        SELECT * FROM disaster_event_live 
+    <select id="findSimilarCurrentDisaster" 
+            parameterType="com.disaster.domain.DisasterEventLive" 
+            resultType="com.disaster.domain.DisasterEventLive">
+        SELECT * FROM disaster_event_live
         WHERE disaster_type = #{disasterType}
         AND location = #{location}
         AND is_active = true
         <if test="magnitude != null and magnitude != 0">
-            AND magnitude IS NOT NULL 
+            AND magnitude IS NOT NULL
             AND ABS(magnitude - #{magnitude}) &lt; 0.3
         </if>
         AND ABS(TIMESTAMPDIFF(MINUTE, started_at, #{startedAt})) &lt; 30
     </select>
-    
+
     <!-- 현재 활성 재난 조회 -->
-    <select id="getCurrentDisasters" resultType="DisasterEventLive">
-        SELECT * FROM disaster_event_live 
-        WHERE is_active = true 
+    <select id="getCurrentDisasters" resultType="com.disaster.domain.DisasterEventLive">
+        SELECT * FROM disaster_event_live
+        WHERE is_active = true
         ORDER BY started_at DESC
     </select>
-    
+
     <!-- 오래된 재난 비활성화 -->
     <update id="deactivateOldDisasters">
-        UPDATE disaster_event_live 
-        SET is_active = false 
+        UPDATE disaster_event_live
+        SET is_active = false
         WHERE updated_at &lt; DATE_SUB(NOW(), INTERVAL 2 HOUR)
         AND is_active = true
     </update>
-    
+
     <!-- 과거 재난 이력 삽입 -->
-    <insert id="insertDisasterHistory" parameterType="DisasterHistory">
+    <insert id="insertDisasterHistory" parameterType="com.disaster.domain.DisasterHistory">
         INSERT INTO disaster_history (
-            disaster_type, title, location, magnitude, depth_km, 
+            disaster_type, title, location, magnitude, depth_km,
             alert_level, description, occurred_at, source
         ) VALUES (
-            #{disasterType}, #{title}, #{location}, #{magnitude}, 
+            #{disasterType}, #{title}, #{location}, #{magnitude},
             #{depthKm}, #{alertLevel}, #{description}, #{occurredAt}, #{source}
         )
     </insert>
-    
+
     <!-- 과거 재난 이력 조회 -->
-    <select id="getDisasterHistory" resultType="DisasterHistory">
-        SELECT * FROM disaster_history 
-        ORDER BY occurred_at DESC 
+    <select id="getDisasterHistory" parameterType="int" resultType="com.disaster.domain.DisasterHistory">
+        SELECT * FROM disaster_history
+        ORDER BY occurred_at DESC
         LIMIT #{limit}
     </select>
-    
+
     <!-- 중복 과거 재난 체크 -->
-    <select id="isDuplicateDisaster" parameterType="DisasterHistory" resultType="boolean">
-        SELECT COUNT(*) > 0 FROM disaster_history 
+    <select id="isDuplicateDisaster" 
+            parameterType="com.disaster.domain.DisasterHistory" 
+            resultType="boolean">
+        SELECT COUNT(*) > 0 FROM disaster_history
         WHERE disaster_type = #{disasterType}
         AND location = #{location}
         AND ABS(TIMESTAMPDIFF(MINUTE, occurred_at, #{occurredAt})) &lt; 30
         <if test="magnitude != null and magnitude != 0">
-            AND magnitude IS NOT NULL 
+            AND magnitude IS NOT NULL
             AND ABS(magnitude - #{magnitude}) &lt; 0.3
         </if>
     </select>
