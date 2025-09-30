@@ -257,7 +257,7 @@ async function searchRegion() {
             console.log(`'${regionName}' 검색 성공:`, { lat, lon, formattedAddress });
 
             // 3. 추출한 좌표와 주소로 관련 정보들을 모두 업데이트합니다.
-            // 날씨 정보 업데이트a
+            // 날씨 정보 업데이트
             updateWeatherAPI(lat, lon, formattedAddress);
             
             // 관련 뉴스 업데이트
@@ -272,7 +272,7 @@ async function searchRegion() {
         } else {
             // 4. 주소를 좌표로 변환하는 데 실패하면 사용자에게 알립니다.
             console.error(`'${regionName}' 지역을 찾을 수 없습니다. Geocode 실패 상태:`, status);
-            alert(`'${regionName}'에 대한 위치 정보를 찾을 수 없습니다. 다른 검색어를 시도해보세요.`);
+            alert(`'${regionName}'에 대한 위치 정보를 찾을 수 없습니다. 다른 검색어를 시도해보세요!!`);
         }
     });
 }
