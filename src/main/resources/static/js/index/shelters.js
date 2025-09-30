@@ -177,6 +177,7 @@
 	  if (!pininfo) {
 	        pininfo = createInfoBox();
 	        map.getDiv().appendChild(pininfo);
+			updateLegendLayout();
 	  }
     } catch (e) {
       console.error("[Shelter] enable error:", e);

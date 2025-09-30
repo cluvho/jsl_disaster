@@ -43,7 +43,7 @@
               items.push({
                 name: w.codeName || w.name || "特報",
                 area: area.name || "",
-                areaCode: area.code,  // 예: 27100 같은 5자리일 수 있음
+                areaCode: area.code,
                 issuedAt: reported
               });
             });
@@ -60,24 +60,14 @@
   // 1) 이모지 & 아이콘
   // =============================================
   const ALERT_EMOJI = {
-	"大雨警報": '<i class="bi bi-cloud-rain-heavy-fill"></i>',
-	"大雨注意報": '<i class="bi bi-cloud-rain-fill"></i>',
-	"洪水警報": '<i class="bi bi-droplet-fill"></i>',
-	"洪水注意報": '<i class="bi bi-droplet"></i>',
-	"強風注意報": '<i class="bi bi-wind"></i>',
-	"暴風注意報": '<i class="bi bi-wind"></i><i class="bi bi-cloud"></i>',
-	"暴風警報": '<i class="bi bi-wind"></i>',
-	"暴風雪警報": '<i class="bi bi-snow"></i>',
-	"大雪警報": '<i class="bi bi-snow"></i>',
-	"大雪注意報": '<i class="bi bi-snow"></i>',
-	"低温注意報": '<i class="bi bi-thermometer-snow"></i>',
-	"熱中症警戒アラート": '<i class="bi bi-thermometer-sun"></i>',
-	"猛暑日情報": '<i class="bi bi-brightness-high-fill"></i>',
-	"濃霧注意報": '<i class="bi bi-cloud-fog2-fill"></i>',
-	"黄砂情報": '<i class="bi bi-cloud-haze2-fill"></i>',
-	"雷注意報": '<i class="bi bi-lightning-fill"></i>',
-	"乾燥注意報": '<i class="bi bi-brightness-high"></i>',
-	"紫外線情報": '<i class="bi bi-sunglasses"></i>'
+    "大雨警報":"🌧️","大雨注意報":"🌧️🌧️",
+    "洪水警報":"🌊","洪水注意報":"🌊🌊",
+    "強風注意報":"💨💨","暴風注意報":"💨🌪️","暴風警報":"🌬️","暴風雪警報":"🌨️🌪️",
+    "大雪警報":"❄️","大雪注意報":"❄️❄️",
+    "低温注意報":"🥶",
+    "熱中症警戒アラート":"🔥🌡️","猛暑日情報":"🔥",
+    "濃霧注意報":"🌫️","黄砂情報":"🟨",
+    "雷注意報":"⚡⚡","乾燥注意報":"🔥🔥","紫外線情報":"☀️🕶️"
   };
 
   function getAlertEmoji(alert) {
@@ -90,8 +80,14 @@
   function toPrefCode(areaCode) {
     const s = String(areaCode || "");
     if (/^\d{5}$/.test(s)) return s.slice(0, 2) + "0000";
-    if (/^\d{6}$/.test(s)) return s;          // 이미 6자리(도도부현)면 그대로
+    if (/^\d{6}$/.test(s)) {
+      // 6자리인데 뒤가 0000이 아니면 → 앞 두 자리 + 0000
+      const out = s.endsWith("0000") ? s : (s.slice(0, 2) + "0000");
+      dbg('toPrefCode(6)', { in: s, out });
+      return out;
+    }
     if (/^\d{3,4}$/.test(s)) return s.slice(0, 2) + "0000";
+    dbg('toPrefCode(?)', { in: s, out: null });
     return null;
   }
 
@@ -283,14 +279,10 @@
   // =============================================
   // 3) 렌더: 지진 (검은 배경 + 이미지)
   // =============================================
-  
   function renderQuakes(data) {
-    if (!data) return;
-
     const list = Array.isArray(data)
       ? data
       : (data?.type === "FeatureCollection" ? (data.features || []) : []);
-
     if (!list.length) return;
 
     list.forEach(f => {
@@ -301,13 +293,14 @@
       if (!coords || typeof coords.lat !== "number" || typeof coords.lon !== "number") return;
 
       // 🔹 검은 배경 이미지 라벨(지진 아이콘)
+	  const up = hasNearbyPin(coords.lat, coords.lon, 80);
       const iconOverlay = makeIconLabel(
         window.map,
         { lat: coords.lat, lng: coords.lon },
         getDisasterIconUrl("earthquake"),
         32,
-        620,
-        "-50%"
+        620,      // zIndex
+		up ? "-150%" : "-50%"
       );
       $S.quakeMarkers.push(iconOverlay);
 
@@ -323,6 +316,7 @@
           ${p.url ? `<div><a href="${p.url}" target="_blank">詳細</a></div>` : ""}
         </div>`;
 
+      // Overlay 클릭으로 InfoWindow 띄우기
       iconOverlay.onAdd = (function (orig) {
         return function () {
           orig.call(iconOverlay);
@@ -353,7 +347,7 @@
 
       (ev.areas || []).forEach(a => {
         const name = a.name || "津波";
-        const grade = a.grade || "";
+        const grade = a.grade || ""; // MajorWarning / Warning / Watch 등
 
         if (ul) {
           const li = document.createElement("li");
@@ -370,13 +364,14 @@
           if (want.includes(nm) || nm.includes(want)) { city = c; break; }
         }
         if (city && window.map) {
+		  const up = hasNearbyPin(city.lat, city.lon, 80);
           const iconOverlay = makeIconLabel(
             window.map,
             { lat: city.lat, lng: city.lon },
             getDisasterIconUrl("tsunami"),
             28,
             610,
-            "-50%"
+            up ? "-150%" : "-50%"
           );
           $S.tsunamiMarkers.push(iconOverlay);
         }
@@ -388,10 +383,8 @@
   async function fetchWarningsTest() {
     const codes = ["130000","270000","260000"];
     const out = [];
-    const BASE = "/mock/warningsBase";
-
     for (const code of codes) {
-      const url = `${BASE}/${code}.json?_=${Date.now()}`; // 캐시버스터
+      const url = `${ENDPOINTS_TEST.warningsBase}/${code}.json`;
       try {
         const r = await fetch(url, { headers: { "Accept":"application/json" } });
         if (!r.ok) continue;
@@ -423,7 +416,7 @@
     (items || []).forEach(a => {
       const emo = getAlertEmoji(a);
       const prefCode = toPrefCode(a.areaCode);
-      const pref = (window.cities || []).find(c => String(c.code) === String(prefCode));
+      const pref = (window.cities || []).find(c => c.code === prefCode);
       if (!pref || !window.map) return;
 
       const lbl = makeLabel(
@@ -436,6 +429,31 @@
       );
       $S.warnMarkers.push(lbl);
     });
+  }
+  
+  // 핀겹침 방지
+  function hasNearbyPin(lat, lng, meters = 80) {
+    if (!window.google || !google.maps || !google.maps.geometry) return false;
+
+    const here = new google.maps.LatLng(lat, lng);
+    const groups = [
+      window._allPins,
+      window.shelterMarkers,
+      window.hospitalMarkers,
+      window.myLocationMarker ? [window.myLocationMarker] : null,
+    ];
+
+    for (const arr of groups) {
+      if (!Array.isArray(arr)) continue;
+      for (const m of arr) {
+        if (!m || typeof m.getPosition !== "function") continue;
+        const pos = m.getPosition();
+        if (!pos) continue;
+        const dist = google.maps.geometry.spherical.computeDistanceBetween(here, pos);
+        if (dist <= meters) return true;
+      }
+    }
+    return false;
   }
 
   // =============================================
@@ -477,7 +495,7 @@
   // 6) export (토글 제어)
   // =============================================
   async function enable(mapInstance) {
-    if (mapInstance) window.map = mapInstance;
+    if (mapInstance) window.map = mapInstance; // weather.js 의 initMap에서 넘겨준 map 재사용
     await loadForView();
   }
   function disable() {
