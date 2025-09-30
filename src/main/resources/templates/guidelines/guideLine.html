@@ -2,7 +2,319 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{/layout/layout}">
+	
+<style type="text/css">
+       	
+/*  새로 추가된 css    */  
+ /* 카드 헤더 내부 이미지 컨테이너 */
+.card-image-container {
+    width: 120px;
+    height: 80px;
+    flex-shrink: 0;
+    margin-right: 15px;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+/* 이미지 스타일 */
+.card-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ⚠️ 중복된 card-list 스타일을 하나로 통합하고, 반응형 디자인을 추가합니다. ⚠️ */
+/* 카드 리스트 컨테이너 (모바일 우선) */
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 카드 사이의 간격 */
+}
+
+/* 개별 카드 컨테이너 */
+.card {
+    background-color: var(--white-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 0; /* flexbox gap 속성을 사용하기 위해 margin-bottom은 0으로 설정 */
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    overflow: hidden;
+}
+
+/* 카드에 마우스 올렸을 때 효과 */
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* 클릭 가능한 카드 헤더 부분 */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 15px;
+    cursor: pointer;
+}
+
+/* 카드 헤더 내부 콘텐츠 (제목) */
+.card-content {
+    flex-grow: 1;
+}
+
+/* 카드 헤더 내부 제목 스타일 */
+.card-content h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* 화살표 스타일 */
+.card-arrow {
+    font-size: 24px;
+    font-weight: bold;
+    color: #D0D0D0;
+    transition: transform 0.3s ease;
+}
+
+/* 카드가 펼쳐졌을 때 화살표 회전 */
+.card-header.expanded .card-arrow {
+    transform: rotate(90deg);
+}
+
+/* 펼쳐질 콘텐츠 영역 */
+.collapse-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 펼쳐질 콘텐츠 내부 단락(p) 스타일 */
+.collapse-content p {
+    margin: 15px 0;
+    font-size: 14px;
+    color: var(--subtle-text-color);
+}
+
+/* ⚠️ 기존 불필요한 스타일 및 중복된 스타일 제거 */
+/* .card-list a { display: none; } 이 스타일은 더 이상 필요하지 않습니다. */
+
+/* --- 미디어 쿼리: 모바일, 태블릿, 데스크톱 대응 --- */
+/* 태블릿 및 데스크톱 (768px 이상) */
+@media (min-width: 768px) {
+    .content-area {
+        padding: 30px;
+    }
+    
+    .card-list {
+        /*display: grid;*/
+        
+        grid-template-columns: repeat(2, 1fr); /* 2열로 나열 */
+        gap: 20px;
+    }
+    
+    .sidebar {
+        display: none;
+    }
+    .main-content {
+        flex-direction: column;
+    }
+}
+
+/* 대형 데스크톱 (1200px 이상) */
+@media (min-width: 1200px) {
+    .sidebar {
+        display: block;
+    }
+    .main-content {
+        flex-direction: row;
+    }
+    .card-list {
+        grid-template-columns: repeat(3, 1fr); /* 3열로 나열 */
+    }
+}
+
+   	
+/*  새로 추가된 css    */  	
+   	
+   	
+   	
+   	
+   	
+   	
+   	
+:root {
+            --main-red: #E60012;
+            --bg-color: #F5F6F8;
+            --text-color: #222222;
+            --subtle-text-color: #666666;
+            --border-color: #EAEAEA;
+            --white-color: #FFFFFF;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* --- 헤더 --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            background-color: var(--white-color);
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+            height: 64px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 10;
+        }
+        .header .logo a {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--main-red);
+            text-decoration: none;
+        }
+        .header nav { display: flex; gap: 25px; }
+        .header nav a {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--subtle-text-color);
+            text-decoration: none;
+            padding: 20px 5px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .header nav a.active, .header nav a:hover {
+            color: var(--text-color);
+            border-bottom: 2px solid var(--main-red);
+        }
+        .header .user-options { display: flex; align-items: center; gap: 15px; }
+        .header .user-options a { font-size: 14px; color: var(--subtle-text-color); text-decoration: none; }
+        .header .user-options a:hover { color: var(--main-red); }
+
+        /* --- 메인 컨텐츠 영역 --- */
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        /* --- 사이드바 --- */
+        .sidebar {
+            width: 300px;
+            background-color: var(--white-color);
+            border-right: 1px solid var(--border-color);
+            flex-shrink: 0;
+            padding: 25px;
+            overflow-y: auto;
+        }
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--main-red);
+            margin: 0 0 25px 0;
+        }
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 18px;
+        }
+        .filter-group input[type="checkbox"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--main-red);
+        }
+
+        /* --- 본문 (지도 + 카드) --- */
+        .content-area {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .map-section {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #E9ECEF;
+            margin-bottom: 30px;
+        }
+        .map-section .placeholder { text-align: center; color: var(--subtle-text-color); }
+        .map-section .placeholder h3 { font-size: 24px; margin: 0 0 10px; }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--main-red);
+            margin-bottom: 20px;
+        }
+
+        /* 카드 리스트 스타일 (bosaiguidelines.jp) */
+        .card-list a {
+            display: flex;
+            align-items: center;
+            background-color: var(--white-color);
+            padding: 20px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        .card-list a:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        .card-icon { font-size: 32px; margin-right: 20px; width: 40px; text-align: center; }
+        .card-content { flex-grow: 1; }
+        .card-content h4 { margin: 0 0 5px; font-size: 18px; font-weight: 700; }
+        .card-content p { margin: 0; font-size: 14px; color: var(--subtle-text-color); }
+        .card-arrow { font-size: 24px; font-weight: bold; color: #D0D0D0; }
+
+        /* --- 푸터 --- */
+        .footer {
+            background-color: #343A40;
+            color: #ADB5BD;
+            padding: 20px 30px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid #495057;
+        }
+        .footer a { color: #ADB5BD; text-decoration: none; margin-right: 20px; }
+        .footer a:hover { color: var(--white-color); }
+        .footer .emergency-contacts span { margin-left: 15px; font-weight: 500; color: #F8F9FA; }
+    
+</style>
 
 <body>
 
@@ -15,7 +327,7 @@
 
             <main class="content-area">
                 <div class="card-list">
-                    <a href="#">
+                    <a th:href="@{/guidelines/earthquake}">
                         <div class="card-icon">🏚️</div>
                         <div class="card-content">
                             <h4>지진대책</h4>
@@ -24,7 +336,7 @@
                         <div class="card-arrow">&gt;</div>
                     </a>
                     
-                    <a href="#">
+                    <a th:href="@{/guidelines/fire}">
                         <div class="card-icon">🔥</div>
                         <div class="card-content">
                             <h4>화재</h4>
@@ -32,7 +344,7 @@
                         </div>
                         <div class="card-arrow">&gt;</div>
                     </a>
-                    <a href="#">
+                    <a th:href="@{/guidelines/typhoon}">
                         <div class="card-icon">🌪️</div>
                         <div class="card-content">
                             <h4>태풍</h4>
@@ -40,7 +352,7 @@
                         </div>
                         <div class="card-arrow">&gt;</div>
                     </a>
-                    <a href="#">
+                    <a th:href="@{/guidelines/tsunami}">
                         <div class="card-icon">🌊</div>
                         <div class="card-content">
                             <h4>해일</h4>
@@ -49,7 +361,7 @@
                         <div class="card-arrow">&gt;</div>
                     </a>
                     
-                    <a href="#">
+                    <a th:href="@{/guidelines/heavyRain}">
                         <div class="card-icon">⛈️</div>
                         <div class="card-content">
                             <h4>폭우</h4>
@@ -57,7 +369,7 @@
                         </div>
                         <div class="card-arrow">&gt;</div>
                     </a>
-                    <a href="#">
+                    <a th:href="@{/guidelines/heatWave}">
                         <div class="card-icon">🥵</div>
                         <div class="card-content">
                             <h4>폭염</h4>
@@ -65,7 +377,7 @@
                         </div>
                         <div class="card-arrow">&gt;</div>
                     </a>
-                    <a href="#">
+                    <a th:href="@{/guidelines/heavySnow}">
                         <div class="card-icon">🌨️</div>
                         <div class="card-content">
                             <h4>폭설</h4>
@@ -73,7 +385,7 @@
                         </div>
                         <div class="card-arrow">&gt;</div>
                     </a>
-                    <a href="#">
+                    <a th:href="@{/guidelines/volcano}">
                         <div class="card-icon">🌋</div>
                         <div class="card-content">
                             <h4>화산</h4>
