@@ -235,6 +235,7 @@
     if (!hospitalinfo) {
       hospitalinfo = createInfoBox();
       map.getDiv().appendChild(hospitalinfo);
+	  updateLegendLayout();
     }
   }
 
