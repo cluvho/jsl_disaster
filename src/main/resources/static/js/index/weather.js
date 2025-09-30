@@ -4,10 +4,28 @@
   // ============================
   const WEATHER_API_KEY = "c8b2e054755849cda2e51309251009";
   const WEATHER_EMOJI_BY_CODE = {
-    1000:"☀️",1003:"⛅",1006:"☁️",1009:"☁️",
-    1183:"🌦️",1186:"🌧️",1189:"🌧️",
-    1087:"⛈️",1273:"⛈️",1276:"⛈️",
-    1066:"🌨️",1114:"🌨️",1117:"❄️"
+    // 맑음
+    1000: '<img src="https://cdn.weatherapi.com/weather/64x64/day/113.png" alt="Sunny" />',
+
+    // 구름
+    1003: '<img src="https://cdn.weatherapi.com/weather/64x64/day/116.png" alt="Partly Cloudy" />',
+    1006: '<img src="https://cdn.weatherapi.com/weather/64x64/day/119.png" alt="Cloudy" />',
+    1009: '<img src="https://cdn.weatherapi.com/weather/64x64/day/122.png" alt="Overcast" />',
+
+    // 비
+    1183: '<img src="https://cdn.weatherapi.com/weather/64x64/day/296.png" alt="Light Rain" />',
+    1186: '<img src="https://cdn.weatherapi.com/weather/64x64/day/299.png" alt="Moderate Rain" />',
+    1189: '<img src="https://cdn.weatherapi.com/weather/64x64/day/302.png" alt="Heavy Rain" />',
+
+    // 천둥/번개
+    1087: '<img src="https://cdn.weatherapi.com/weather/64x64/day/386.png" alt="Thunderstorm" />',
+    1273: '<img src="https://cdn.weatherapi.com/weather/64x64/day/389.png" alt="Patchy Thunder" />',
+    1276: '<img src="https://cdn.weatherapi.com/weather/64x64/day/392.png" alt="Heavy Thunder" />',
+
+    // 눈
+    1066: '<img src="https://cdn.weatherapi.com/weather/64x64/day/323.png" alt="Light Snow" />',
+    1114: '<img src="https://cdn.weatherapi.com/weather/64x64/day/329.png" alt="Snow Shower" />',
+    1117: '<img src="https://cdn.weatherapi.com/weather/64x64/day/338.png" alt="Heavy Snow" />'
   };
   const emoji = c => WEATHER_EMOJI_BY_CODE[c] || "❓";
 
@@ -167,7 +185,7 @@
         mapRef,
         { lat: userPos.lat, lng: userPos.lon },
         `${meEmo} ${meTemp}°C`,
-        20,
+        30,
         "-170%",
         1000
       );
