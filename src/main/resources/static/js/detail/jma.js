@@ -234,12 +234,47 @@ function scrollToSection(sectionId, navItem) {
     }
 }
 
-function searchRegion() {
+async function searchRegion() {
     const input = document.getElementById('regionSearchInput');
-    if (input && input.value.trim()) {
-        const coords = {lat: 37.5665, lon: 126.9780};
-        updateWeatherAPI(coords.lat, coords.lon, input.value.trim());
+    const regionName = input.value.trim();
+
+    if (!regionName) {
+        alert('검색할 지역명을 입력해주세요.');
+        return;
     }
+
+    // 1. Google Maps Geocoder API를 사용하여 주소를 좌표로 변환합니다.
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': regionName }, async (results, status) => {
+        
+        if (status === 'OK' && results[0]) {
+            // 2. 변환에 성공하면 첫 번째 결과에서 위도와 경도를 추출합니다.
+            const location = results[0].geometry.location;
+            const lat = location.lat();
+            const lon = location.lng();
+            const formattedAddress = results[0].formatted_address; // 더 정확한 주소 이름
+
+            console.log(`'${regionName}' 검색 성공:`, { lat, lon, formattedAddress });
+
+            // 3. 추출한 좌표와 주소로 관련 정보들을 모두 업데이트합니다.
+            // 날씨 정보 업데이트
+            updateWeatherAPI(lat, lon, formattedAddress);
+            
+            // 관련 뉴스 업데이트
+            fetchRegionalNews(regionName); // '大阪' 같은 검색어로 뉴스 다시 가져오기
+            
+            // 주변 시설 정보 업데이트 (기존 컨테이너 비우기)
+            document.getElementById('shelter').querySelector('.facility-list').innerHTML = '';
+            document.getElementById('hospital').querySelector('.facility-list').innerHTML = '';
+            await searchFacility(lat, lon, "school", "shelter");
+            await searchFacility(lat, lon, "hospital", "hospital");
+
+        } else {
+            // 4. 주소를 좌표로 변환하는 데 실패하면 사용자에게 알립니다.
+            console.error(`'${regionName}' 지역을 찾을 수 없습니다. Geocode 실패 상태:`, status);
+            alert(`'${regionName}'에 대한 위치 정보를 찾을 수 없습니다. 다른 검색어를 시도해보세요.`);
+        }
+    });
 }
 
 // =========================
