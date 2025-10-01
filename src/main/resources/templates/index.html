@@ -24,39 +24,33 @@
 
 				<h2 class="section-title">현재 지역 상세 정보</h2>
 
-				<div class="row g-3">
-				  <div class="col-12 col-md-6">
-				    <a href="/detail" onclick="goDetail()" class="text-decoration-none">
-				      <div class="card h-100 shadow-sm">
-				        <div class="card-body d-flex align-items-center gap-3">
-				          <div class="fs-2">🗺️</div>
-				          <div class="flex-grow-1">
-				            <h5 class="card-title mb-1">지역상세정보</h5>
-				            <p class="card-text text-muted mb-0">
-				              현재 위치에서 가장 가까운 대피소를 확인하고 경로를 안내합니다.
-				            </p>
-				          </div>
-				        </div>
-				      </div>
-				    </a>
-				  </div>
-				
-				  <div class="col-12 col-md-6">
-				    <a th:href="@{/guidelines/guide}" class="text-decoration-none">
-				      <div class="card h-100 shadow-sm">
-				        <div class="card-body d-flex align-items-center gap-3">
-				          <div class="fs-2">🎒</div>
-				          <div class="flex-grow-1">
-				            <h5 class="card-title mb-1">상황별 행동 요령</h5>
-				            <p class="card-text text-muted mb-0">
-				              지진, 태풍, 화재 등 현재 상황에 맞는 행동 요령을 안내합니다.
-				            </p>
-				          </div>
-				        </div>
-				      </div>
-				    </a>
-				  </div>
+				<div class="link-card-list">
+					<a href="#">
+						<div class="card-icon">🗺️</div>
+						<div class="card-content">
+							<h4>주변 대피소 목록</h4>
+							<p>현재 위치에서 가장 가까운 대피소를 확인하고 경로를 안내합니다.</p>
+						</div>
+						<div class="card-arrow">&gt;</div>
+					</a> 
+					<a href="#">
+						<div class="card-icon">📰</div>
+						<div class="card-content">
+							<h4>최신 재난 뉴스</h4>
+							<p>현재 지역과 관련된 최신 재난 속보 및 안전 문자를 확인합니다.</p>
+						</div>
+						<div class="card-arrow">&gt;</div>
+					</a> 
+					<a th:href="@{/guidelines/guide}">
+						<div class="card-icon">🎒</div>
+						<div class="card-content">
+							<h4>상황별 행동 요령</h4>
+							<p>지진, 태풍, 화재 등 현재 상황에 맞는 행동 요령을 안내합니다.</p>
+						</div>
+						<div class="card-arrow">&gt;</div>
+					</a>
 				</div>
+				
 			</main>
 		</div>
 	</div>
