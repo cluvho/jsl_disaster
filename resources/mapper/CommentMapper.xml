@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.disaster.mapper.CommentMapper">
+
+    <resultMap id="commentMap" type="com.disaster.domain.CommentDTO">
+        <id property="commentId" column="comment_id"/>
+        <result property="postId" column="post_id"/>
+        <result property="memberId" column="member_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="body" column="body"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="nickname" column="nickname"/>
+    </resultMap>
+    
+    <select id="findByPostId" resultMap="commentMap">
+    	SELECT c.comment_id,
+           c.post_id,
+           c.member_id,
+           c.parent_id,
+           c.body,
+           c.status,
+           c.created_at,
+           m.nickname
+    	FROM comment c
+    	JOIN member m ON c.member_id = m.member_id
+    	WHERE c.post_id = #{postId}
+    	ORDER BY IF(c.parent_id IS NULL, c.comment_id, c.parent_id), c.created_at
+	</select>
+
+    <insert id="insertComment" parameterType="com.disaster.domain.CommentDTO">
+        INSERT INTO comment (post_id, member_id, nickname, body, parent_id, created_at)
+    	VALUES (#{postId}, #{memberId}, #{nickname}, #{body}, #{parentId}, NOW())
+	</insert>
+
+    <update id="updateStatus">
+        UPDATE comment
+        SET status = #{status}
+        WHERE comment_id = #{commentId}
+    </update>
+
+    <select id="findById" resultMap="commentMap">
+        SELECT c.comment_id,
+               c.post_id,
+               c.member_id,
+               c.parent_id,
+               c.body,
+               c.status,
+               c.created_at,
+               m.nickname
+        FROM comment c
+        JOIN member m ON c.member_id = m.member_id
+        WHERE c.comment_id = #{commentId}
+    </select>
+    
+	<!-- ✅ 댓글의 status를 'DELETED'로 변경하는 쿼리 -->
+    <update id="updateCommentStatusToDelete">
+        UPDATE comment
+        SET status = 'DELETED'
+        WHERE comment_id = #{commentId}
+    </update>
+
+	<!-- ✅ 댓글 ID로 작성자의 member_id를 찾는 쿼리 -->
+    <select id="findMemberIdByCommentId" resultType="long">
+        SELECT member_id FROM comment WHERE comment_id = #{commentId}
+    </select>
+    
+    <!-- ✅ 대댓글까지 달린 게시글을 삭제하는 쿼리 -->    
+	<delete id="deleteCommentsByPostId">
+    	DELETE FROM comment 
+    	WHERE post_id = #{postId} 
+    	ORDER BY parent_id DESC
+	</delete>
+	
+	
+	<select id="findPostsCommentedByMemberId" resultType="com.disaster.domain.CommunityDTO">
+    SELECT DISTINCT
+           p.post_id as postId,
+           p.title,
+           p.created_at as createdAt
+    FROM 
+           community p
+    JOIN 
+           comment c ON p.post_id = c.post_id
+    WHERE 
+           c.member_id = #{memberId}
+    ORDER BY 
+           c.created_at DESC
+</select>
+
+</mapper>

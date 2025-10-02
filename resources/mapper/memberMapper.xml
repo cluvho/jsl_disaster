@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.disaster.mapper.MemberMapper">
+
+   <resultMap id="memberResultMap" type="com.disaster.domain.MemberDTO">
+        <id property="memberId" column="member_id"/>
+        <result property="email" column="email"/>
+        <result property="passwordHash" column="password_hash"/>
+        <result property="name" column="name"/>
+        <result property="nickname" column="nickname"/>
+        <result property="phone" column="phone"/>
+        <result property="lineUserId" column="line_user_id"/>
+        <result property="role" column="role"/>
+        <result property="isActive" column="is_active"/>
+        <result property="marketingConsent" column="marketing_consent"/>
+        <result property="termsAgreedAt" column="terms_agreed_at"/>
+        <result property="privacyAgreedAt" column="privacy_agreed_at"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <!-- notifyLine은 join 시에만 사용되므로 여기서는 제외 -->
+    </resultMap>
+
+
+    <resultMap id="memberWithAddressMap" type="com.disaster.domain.MemberDTO">
+        <id property="memberId" column="member_id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <select id="countByEmail" resultType="int">
+        SELECT COUNT(*) FROM member WHERE email = #{email}
+    </select>
+    
+    <select id="countByNickname" resultType="int">
+        SELECT COUNT(*) FROM member WHERE nickname = #{nickname}
+    </select>
+    
+    <insert id="insertMember" parameterType="com.disaster.domain.MemberDTO" useGeneratedKeys="true" keyProperty="memberId">
+        INSERT INTO member (
+            email, 
+            password_hash, 
+            name,
+            nickname,
+            phone, 
+            role, 
+            is_active, 
+            marketing_consent,
+            terms_agreed_at,
+            privacy_agreed_at
+        ) VALUES (
+            #{email}, 
+            #{passwordHash}, 
+            #{name},
+            #{nickname},
+            #{phone}, 
+            #{role}, 
+            #{isActive}, 
+            #{marketingConsent},
+            #{termsAgreedAt},
+            #{privacyAgreedAt}
+        )
+    </insert>
+    
+    <insert id="insertMemberAddress" parameterType="com.disaster.domain.MemberAddressDTO">
+        INSERT INTO member_address (
+            member_id,
+            postal_code,
+            pref_code,
+            muni_code,
+            addr_line1,
+            addr_line2,
+            lat,
+            lon,
+            is_primary,
+            disaster_status
+        ) VALUES (
+            #{memberId},
+            #{postalCode},
+            #{prefCode},
+            #{muniCode},
+            #{addrLine1},
+            #{addrLine2},
+            #{lat},
+            #{lon},
+            #{isPrimary},
+            #{disasterStatus}
+        )
+    </insert>
+    
+    <select id="findAddressByMemberId" resultType="com.disaster.domain.MemberAddressDTO">
+    	SELECT 
+        	address_id as addressId, 
+        	member_id as memberId, 
+        	muni_code as muniCode,
+        	postal_code as postalCode,     
+        	pref_code as prefCode,
+        	addr_line1 as addrLine1,       
+        	addr_line2 as addrLine2,
+        	lat,
+        	lon
+    	FROM 
+        	member_address
+    	WHERE 
+        	member_id = #{memberId}
+    	LIMIT 1
+	</select>
+    
+    <select id="findByEmail" resultType="com.disaster.domain.MemberDTO">
+        SELECT 
+            member_id as memberId,
+            email,
+            password_hash as passwordHash,
+            name,
+            nickname,
+            phone,
+            line_user_id as lineUserId,
+            role,
+            is_active as isActive,
+            marketing_consent as marketingConsent,
+            terms_agreed_at as termsAgreedAt,
+            privacy_agreed_at as privacyAgreedAt,
+            created_at as createdAt,
+            updated_at as updatedAt
+        FROM member 
+        WHERE email = #{email} AND is_active = TRUE
+    </select>
+  
+     <select id="findById" resultType="com.disaster.domain.MemberDTO">
+        SELECT 
+            m.member_id as memberId,
+            m.email,
+            m.password_hash as passwordHash,
+            m.name,
+            m.nickname,
+            m.phone,
+            m.line_user_id as lineUserId,
+            m.role,
+            m.is_active as isActive,
+            m.marketing_consent as marketingConsent,
+            m.terms_agreed_at as termsAgreedAt,
+            m.privacy_agreed_at as privacyAgreedAt,
+            m.created_at as createdAt,
+            m.updated_at as updatedAt,
+            IFNULL(up.notify_line, 0) as notifyLine
+        FROM 
+            member m
+        LEFT JOIN 
+            user_pref up ON m.member_id = up.member_id
+        WHERE 
+            m.member_id = #{memberId}
+    </select>
+
+    <!-- ▼▼▼ [추가] LINE User ID로 회원을 조회하는 쿼리입니다. ▼▼▼ -->
+    <select id="findByLineUserId" resultType="com.disaster.domain.MemberDTO">
+        SELECT
+            member_id as memberId,
+            email,
+            line_user_id as lineUserId
+        FROM member
+        WHERE line_user_id = #{lineUserId}
+    </select>
+    
+    <update id="updateResetToken">
+        UPDATE member SET 
+            reset_token = #{resetToken},
+            reset_token_expires = #{expiresAt}
+        WHERE email = #{email}
+    </update>
+    
+    <select id="findByResetToken" resultType="com.disaster.domain.MemberDTO">
+        SELECT 
+            member_id as memberId,
+            email,
+            reset_token_expires as resetTokenExpires
+        FROM member 
+        WHERE reset_token = #{resetToken} AND is_active = TRUE
+    </select>
+
+    <update id="updatePassword">
+        UPDATE member SET 
+            password_hash = #{passwordHash}
+        WHERE email = #{email}
+    </update>
+
+    <update id="clearResetToken">
+        UPDATE member SET 
+            reset_token = NULL,
+            reset_token_expires = NULL
+        WHERE email = #{email}
+    </update>
+
+    <select id="findPrimaryAddressByEmail" resultType="com.disaster.domain.MemberAddressDTO">
+        SELECT
+            ma.address_id as addressId,
+            ma.member_id as memberId,
+            ma.postal_code as postalCode,
+            ma.pref_code as prefCode,
+            ma.muni_code as muniCode,
+            ma.addr_line1 as addrLine1,
+            ma.addr_line2 as addrLine2,
+            ma.lat as lat,
+            ma.lon as lon,
+            ma.is_primary as isPrimary,
+            ma.disaster_status as disasterStatus,
+            ma.created_at as createdAt
+        FROM member m
+        JOIN member_address ma ON m.member_id = ma.member_id
+        WHERE m.email = #{email} 
+        AND ma.is_primary = TRUE
+        LIMIT 1
+    </select>
+    
+    <select id="findByMember" resultMap="memberResultMap">
+        SELECT
+            m.member_id,
+            m.email,
+            m.password_hash,
+            m.name,
+            m.nickname,
+            m.phone,
+            m.line_user_id,
+            m.role,
+            m.is_active,
+            m.marketing_consent,
+            m.terms_agreed_at,
+            m.privacy_agreed_at,
+            m.created_at,
+            m.updated_at
+        FROM
+            member m
+        LEFT JOIN
+            member_address ma ON m.member_id = ma.member_id
+        WHERE
+            ma.is_primary = true OR ma.address_id IS NULL
+    </select>
+    
+    <select id="countNewMembers" resultType="int">
+        SELECT COUNT(*) FROM member WHERE created_at >= NOW() - INTERVAL 3 DAY
+    </select>
+    
+    <select id="totalMemberCount" resultType="int">
+        SELECT COUNT(*) FROM member
+    </select>
+    
+    <delete id="deleteAddressesByMemberId" parameterType="long">
+        DELETE FROM member_address
+        WHERE member_id = #{memberId}
+    </delete>
+
+    <delete id="deleteMemberById" parameterType="long">
+        DELETE FROM member
+        WHERE member_id = #{memberId}
+    </delete>
+
+<select id="findMembersPaginated" resultType="com.disaster.domain.MemberDTO">
+    SELECT 
+        member_id, name, email, created_at 
+    FROM 
+        member
+    ORDER BY
+        created_at DESC
+    LIMIT #{pageSize} OFFSET #{offset}
+</select>
+</mapper>
+

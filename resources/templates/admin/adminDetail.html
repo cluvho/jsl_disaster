@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <link rel="stylesheet" href="/css/mystyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="admin-page-wrapper">
+    <aside class="admin-sidebar">
+        <div class="logo">
+            <a href="#">Admin Panel</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a id="nav-dashboard" class="active">📊 대시보드</a></li>
+                <li><a id="nav-community">🛠️ 커뮤니티 관리</a></li>
+                <li><a id="nav-deleted-content">🗑️ 삭제된 콘텐츠 관리</a></li>
+                <li><a id="nav-log">📜 관리자 활동 로그</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="admin-main-content">
+
+        <!-- 1. 대시보드 뷰 -->
+        <div id="dashboard-view">
+            <header class="admin-header">
+                <h1>대시보드</h1>
+                <div class="user-info"><a th:href="@{/logout}">로그아웃</a></div>
+            </header>
+            <main class="content-container">
+                <section class="dashboard-cards">
+                    <div class="card">
+                        <h3>신규 가입자</h3>
+                        <div class="stat-number" th:text="${count}">12</div>
+                    </div>
+                    <div class="card">
+                        <h3>게시글 수</h3>
+                        <div class="stat-number" th:text="${post}">34</div>
+                    </div>
+                    <div class="card">
+                        <h3>댓글 수</h3>
+                        <div class="stat-number" th:text="${comment}">78</div>
+                    </div>
+                    <div class="card">
+                        <h3>전체 회원수</h3>
+                        <div class="stat-number" th:text="${total}">1,234</div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- 2. 커뮤니티 관리 뷰 -->
+        <div id="community-management-view" style="display: none;">
+            <header class="admin-header">
+                <h1>커뮤니티 관리</h1>
+                <div class="user-info"><a th:href="@{/logout}">로그아웃</a></div>
+            </header>
+            <main class="content-container">
+                <!-- 게시글 관리 -->
+                <div class="management-section" id="post-table-fragment" th:fragment="post-table-fragment">
+    					<div class="section-header"><h2>게시글 관리</h2></div>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>ID</th><th>제목</th><th>작성자</th><th>작성일</th><th>상태</th><th>관리</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="post : ${postList}">
+                                <td data-label="ID" th:text="${post.postId}"></td>
+                                <td data-label="제목" th:text="${post.title}"></td>
+                                <td data-label="작성자" th:text="${post.nickname}"></td>
+                                <td data-label="작성일" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></td>
+                                <td data-label="상태" th:text="${post.status}"></td>
+                                <td data-label="관리">
+								    <form th:action="@{/admin/soft-delete-post}" method="post" onsubmit="return confirm('이 게시글을 숨김 처리하시겠습니까?');">
+								        <input type="hidden" name="postId" th:value="${post.postId}" />
+								        <button type="submit" class="btn btn-danger">숨김</button>
+								    </form>
+								</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination" th:if="${totalPages > 0}">
+				        <a th:if="${currentPage > 1}" href="javascript:void(0);" th:onclick="|loadPostPage(${currentPage - 1})|">&laquo;</a>
+				    
+				        <a th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
+				           href="javascript:void(0);" 
+				           th:onclick="|loadPostPage(${pageNumber})|"
+				           th:text="${pageNumber}"
+				           th:class="${pageNumber == currentPage} ? 'active'">
+				        </a>
+				        
+				        <a th:if="${currentPage < totalPages}" href="javascript:void(0);" th:onclick="|loadPostPage(${currentPage + 1})|">&raquo;</a>
+				    </div>
+                    
+                
+                </div>
+
+                <!-- 신고된 댓글 관리 -->
+                
+                <div class="management-section" id="reported-comment-table-fragment" th:fragment="reported-comment-table-fragment">
+                     <div class="section-header"><h2>신고된 댓글 관리</h2></div>
+                    <table class="data-table">
+                         <thead>
+                            <tr><th>ID</th><th>내용</th><th>작성자</th><th>작성일</th><th>원문</th><th>관리</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="comment : ${commentList}">
+                                <td data-label="ID" th:text="${comment.commentId}"></td>
+                                <td data--label="내용" th:text="${comment.body}"></td>
+                                <td data-label="작성자" th:text="${comment.nickname}"></td>
+                                <td data-label="작성일" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}"></td>
+                                <td data-label="원문">
+								    <a th:href="@{/post/{id}(id=${comment.postId})}" th:text="${comment.title}" target="_blank"></a>
+								</td>
+                                <td data-label="관리">
+								    <form th:action="@{/admin/soft-delete-comment}" method="post" onsubmit="return confirm('이 댓글을 숨김 처리하시겠습니까?');">
+								        <input type="hidden" name="commentId" th:value="${comment.commentId}" />
+								        <button type="submit" class="btn btn-danger">숨김</button>
+								    </form>
+								</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination" th:if="${commentTotalPages > 0}">
+                        <a th:if="${commentCurrentPage > 1}" href="javascript:void(0);" th:onclick="|loadReportedCommentPage(${commentCurrentPage - 1})|">&laquo;</a>
+                        <a th:each="pageNumber : ${#numbers.sequence(1, commentTotalPages)}"
+                           href="javascript:void(0);"
+                           th:onclick="|loadReportedCommentPage(${pageNumber})|"
+                           th:text="${pageNumber}"
+                           th:class="${pageNumber == commentCurrentPage} ? 'active'">
+                        </a>
+                        <a th:if="${commentCurrentPage < commentTotalPages}" href="javascript:void(0);" th:onclick="|loadReportedCommentPage(${commentCurrentPage + 1})|">&raquo;</a>
+                    </div>
+                </div>
+                <!-- 회원 관리 -->
+                <div class="management-section" id="member-table-fragment" th:fragment="member-table-fragment">
+                     <div class="section-header"><h2>회원 관리</h2></div>
+                    <table class="data-table">
+                        <thead>
+	                         <tr><th>ID</th><th>이메일</th><th>이름</th><th>주소</th><th>가입일</th><th>관리</th></tr>
+	                     </thead>
+	                     <tbody>
+	                         <tr th:each="member : ${memberList}">
+	                             <td data-label="ID" th:text="${member.memberId}"></td>
+	                             <td data-label="이메일" th:text="${member.email}"></td>
+	                             <td data-label="이름" th:text="${member.name}"></td>
+	                             <td data-label="주소" th:text="${member.postalCode}"></td>
+	                             <td data-label="가입일" th:text="${#dates.format(member.createdAt, 'yyyy-MM-dd')}"></td>
+	                             <td data-label="관리">
+					                <form method="post" th:action="@{/admin/deleteMember}" onsubmit="return confirm('정말로 이 회원을 삭제하시겠습니까?');">
+					                    <input type="hidden" name="memberId" th:value="${member.memberId}" />
+					                    <button type="submit" class="btn btn-danger">삭제</button>
+					                </form>
+					            </td>
+	                         </tr>
+	                     </tbody>
+                    </table>
+                    <div class="pagination" th:if="${memberTotalPages > 0}">
+                        <a th:if="${memberCurrentPage > 1}" href="javascript:void(0);" th:onclick="|loadMemberPage(${memberCurrentPage - 1})|">&laquo;</a>
+                    
+                        <a th:each="pageNumber : ${#numbers.sequence(1, memberTotalPages)}"
+                           href="javascript:void(0);" 
+                           th:onclick="|loadMemberPage(${pageNumber})|"
+                           th:text="${pageNumber}"
+                           th:class="${pageNumber == memberCurrentPage} ? 'active'">
+                        </a>
+                        
+                        <a th:if="${memberCurrentPage < memberTotalPages}" href="javascript:void(0);" th:onclick="|loadMemberPage(${memberCurrentPage + 1})|">&raquo;</a>
+                    </div>
+                    </div>
+            </main>
+        </div>
+        
+        <!-- 3. 삭제된 콘텐츠 관리 뷰 -->
+        <div id="deleted-content-view" style="display: none;">
+            <header class="admin-header">
+                <h1>삭제된 콘텐츠 관리</h1>
+                <div class="user-info"><a th:href="@{/logout}">로그아웃</a></div>
+            </header>
+            <main class="content-container">
+                <div class="management-section" id="soft-deleted-post-table-fragment" th:fragment="soft-deleted-post-table-fragment">
+                    <div class="section-header"><h2>삭제된 게시글</h2></div>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>ID</th><th>제목</th><th>작성자</th><th>신고/삭제 사유</th><th>관리</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="post : ${deletedPostList}">
+                                <td data-label="ID" th:text="${post.postId}"></td>
+                                <td data-label="제목" th:text="${post.title}"></td>
+                                <td data-label="작성자" th:text="${post.nickname}"></td>
+                                <td data-label="신고/삭제 사유" th:text="${post.reportReason ?: '사유 없음'}"></td>
+                                <td data-label="관리">
+                                    <form th:action="@{/admin/hard-delete-post}" method="post" onsubmit="return confirm('이 게시글을 영구적으로 삭제합니다. 복구할 수 없습니다.');">
+                                        <input type="hidden" name="postId" th:value="${post.postId}" />
+                                        <button type="submit" class="btn btn-danger">영구 삭제</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination" th:if="${deletedPostTotalPages > 0}">
+                        <a th:if="${deletedPostCurrentPage > 1}" href="javascript:void(0);" th:onclick="|loadSoftDeletedPostPage(${deletedPostCurrentPage - 1})|">&laquo;</a>
+                        <a th:each="pageNumber : ${#numbers.sequence(1, deletedPostTotalPages)}"
+                           href="javascript:void(0);"
+                           th:onclick="|loadSoftDeletedPostPage(${pageNumber})|"
+                           th:text="${pageNumber}"
+                           th:class="${pageNumber == deletedPostCurrentPage} ? 'active'">
+                        </a>
+                        <a th:if="${deletedPostCurrentPage < deletedPostTotalPages}" href="javascript:void(0);" th:onclick="|loadSoftDeletedPostPage(${deletedPostCurrentPage + 1})|">&raquo;</a>
+                    </div>
+                </div>
+                
+                <div class="management-section" id="soft-deleted-comment-table-fragment" th:fragment="soft-deleted-comment-table-fragment">
+                    <div class="section-header"><h2>삭제된 댓글</h2></div>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>ID</th><th>내용</th><th>작성자</th><th>신고/삭제 사유</th><th>관리</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="comment : ${deletedCommentList}">
+                                <td data-label="ID" th:text="${comment.commentId}"></td>
+                                <td data-label="내용" th:text="${comment.body}"></td>
+                                <td data-label="작성자" th:text="${comment.nickname}"></td>
+                                <td data-label="신고/삭제 사유" th:text="${comment.reportReason ?: '사유 없음'}"></td>
+                                <td data-label="관리">
+                                    <form th:action="@{/admin/hard-delete-comment}" method="post" onsubmit="return confirm('이 댓글을 영구적으로 삭제합니다. 복구할 수 없습니다.');">
+                                        <input type="hidden" name="commentId" th:value="${comment.commentId}" />
+                                        <button type="submit" class="btn btn-danger">영구 삭제</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination" th:if="${deletedCommentTotalPages > 1}">
+                        <a th:if="${deletedCommentCurrentPage > 0}" href="javascript:void(0);" th:onclick="|loadSoftDeletedCommentPage(${deletedCommentCurrentPage - 1})|">&laquo;</a>
+                        <a th:each="pageNumber : ${#numbers.sequence(1, deletedCommentTotalPages)}"
+                           href="javascript:void(0);"
+                           th:onclick="|loadSoftDeletedCommentPage(${pageNumber})|"
+                           th:text="${pageNumber}"
+                           th:class="${pageNumber == deletedCommentCurrentPage} ? 'active'">
+                        </a>
+                        <a th:if="${deletedCommentCurrentPage < deletedCommentTotalPages}" href="javascript:void(0);" th:onclick="|loadSoftDeletedCommentPage(${deletedCommentCurrentPage + 1})|">&raquo;</a>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- 4. 관리자 활동 로그 뷰 -->
+        <div id="admin-log-view" style="display: none;">
+            <header class="admin-header">
+                <h1>관리자 활동 로그</h1>
+                <div class="user-info"><a th:href="@{/logout}">로그아웃</a></div>
+            </header>
+            <main class="content-container">
+                <div class="management-section">
+                    <div class="section-header"><h2>활동 로그</h2></div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>로그 ID</th>
+                                <th>관리자</th>
+                                <th>활동 내용</th>
+                                <th>대상 정보</th>
+                                <th>사유/비고</th>
+                                <th>활동 일시</th>
+                            </tr>
+                        </thead>
+                       <tbody>
+                            <tr th:if="${logList == null or logList.isEmpty()}">
+                                <td colspan="6" style="text-align: center;">활동 로그가 없습니다.</td>
+                            </tr>
+                            <tr th:each="log : ${logList}">
+                                <td data-label="로그 ID" th:text="${log.logId}"></td>
+                                <td data-label="관리자" th:text="${log.adminNickname}"></td>
+                                <td data-label="활동 내용" th:text="${log.action}"></td>
+                                <td data-label="대상 정보">
+                                    <th:block th:switch="true">
+                                        <span th:case="${log.targetPostId != null}" th:text="'게시글 #' + ${log.targetPostId}"></span>
+                                        <span th:case="${log.targetCommentId != null}" th:text="'댓글 #' + ${log.targetCommentId}"></span>
+                                        <span th:case="${log.targetUserId != null}" th:text="'사용자 #' + ${log.targetUserId}"></span>
+                                        <span th:case="${log.targetReportId != null}" th:text="'신고 #' + ${log.targetReportId}"></span>
+                                        <span th:case="*">-</span> 
+                                    </th:block>
+                                </td>
+                                <td data-label="사유/비고" th:text="${log.note}"></td>
+                                <td data-label="활동 일시" th:text="${#temporals.format(log.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination" th:if="${logTotalPages > 0}">
+                        <a th:if="${logCurrentPage > 1}" href="javascript:void(0);" th:onclick="|loadLogPage(${logCurrentPage - 1})|">&laquo;</a>
+                        <a th:each="pageNumber : ${#numbers.sequence(1, logTotalPages)}"
+                           href="javascript:void(0);" 
+                           th:onclick="|loadLogPage(${pageNumber})|"
+                           th:text="${pageNumber}"
+                           th:class="${pageNumber == logCurrentPage} ? 'active'">
+                        </a>
+                        <a th:if="${logCurrentPage < logTotalPages}" href="javascript:void(0);" th:onclick="|loadLogPage(${logCurrentPage + 1})|">&raquo;</a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<script>
+// 자바스크립트 코드는 변경 없이 그대로 사용
+document.addEventListener('DOMContentLoaded', function () {
+    const navDashboard = document.getElementById('nav-dashboard');
+    const navCommunity = document.getElementById('nav-community');
+    const navDeletedContent = document.getElementById('nav-deleted-content');
+    const navLog = document.getElementById('nav-log');
+
+    const dashboardView = document.getElementById('dashboard-view');
+    const communityView = document.getElementById('community-management-view');
+    const deletedContentView = document.getElementById('deleted-content-view');
+    const adminLogView = document.getElementById('admin-log-view');
+
+    function switchView(activeNav, activeView) {
+        document.querySelectorAll('.admin-sidebar nav a').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.admin-main-content > div').forEach(el => el.style.display = 'none');
+        
+        activeNav.classList.add('active');
+        activeView.style.display = 'block';
+    }
+
+    navDashboard.addEventListener('click', (event) => {
+        event.preventDefault();
+        switchView(navDashboard, dashboardView);
+    });
+
+    navCommunity.addEventListener('click', (event) => {
+        event.preventDefault();
+        switchView(navCommunity, communityView);
+    });
+
+    navDeletedContent.addEventListener('click', (event) => {
+        event.preventDefault();
+        switchView(navDeletedContent, deletedContentView);
+    });
+
+    navLog.addEventListener('click', (event) => {
+        event.preventDefault();
+        switchView(navLog, adminLogView);
+    });
+});
+
+
+//게시글 페이징
+function loadPostPage(page) {
+    // 1. fetch API를 사용해 1단계에서 만든 Controller 메소드 호출
+    fetch(`/admin/api/posts?page=${page}`)
+        .then(response => response.text()) // 응답을 텍스트(HTML)로 변환
+        .then(html => {
+            // 2. 받아온 HTML 조각으로 기존 #post-table-fragment 영역의 내용을 통째로 교체
+            document.getElementById('post-table-fragment').innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+//회원 페이징 
+function loadMemberPage(page) {
+    fetch(`/admin/api/members?page=${page}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('member-table-fragment').innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+//신고된 댓글 페이징
+function loadReportedCommentPage(page) {
+    fetch(`/admin/api/reported-comments?page=${page}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('reported-comment-table-fragment').innerHTML = html;
+        })
+        .catch(error => console.error('Error fetching reported comments page:', error));
+}
+
+//소프트 삭제된 게시글 페이징
+function loadSoftDeletedPostPage(page) {
+    fetch(`/admin/api/soft-deleted-posts?page=${page}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('soft-deleted-post-table-fragment').innerHTML = html;
+        })
+        .catch(error => console.error('Error fetching soft deleted post page:', error));
+}
+
+
+//소프트 삭제된 댓글 페이징
+function loadSoftDeletedCommentPage(page) {
+    fetch(`/admin/api/soft-deleted-comments?page=${page}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('soft-deleted-comment-table-fragment').innerHTML = html;
+        })
+        .catch(error => console.error('Error fetching soft deleted comment page:', error));
+}
+
+
+// 관리자 로그 페이징 
+function loadLogPage(page) {
+    fetch(`/admin/api/logs?page=${page}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('log-table-fragment').innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
+

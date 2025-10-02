@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.disaster.mapper.CommentReportMapper">
+
+	<!-- 댓글 신고 테이블 관련 -->
+    <insert id="insert" parameterType="com.disaster.domain.CommentReportDTO">
+        INSERT INTO comment_report (
+            comment_id,
+            reporter_member_id,
+            reason,
+            details
+        ) VALUES (
+            #{commentId},
+            #{reporterMemberId},
+            #{reason},
+            #{details}
+        )
+    </insert>
+    
+</mapper>

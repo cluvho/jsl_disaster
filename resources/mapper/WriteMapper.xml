@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.disaster.mapper.WriteMapper">
+
+	<resultMap id="writeMap" type="com.disaster.domain.WriteDTO">
+        <id property="postId" column="post_id"/>
+        <result property="memberId" column="member_id"/>
+        <result property="addressId" column="address_id"/>
+        <result property="muniCode" column="muni_code"/>
+        <result property="disasterType" column="disaster_type"/>
+        <result property="subImage" column="sub_image"/>
+        <result property="title" column="title"/>
+        <result property="body" column="body"/>
+        <result property="lat" column="lat"/>
+        <result property="lon" column="lon"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="nickname" column="nickname"/>
+        <result property="viewCount" column="view_count"/>
+    </resultMap>
+	
+	<select id="selectAll" resultMap="writeMap">
+        <!-- 'id' 컬럼이 없으므로 'post_id'로 수정 -->
+        SELECT * FROM post ORDER BY post_id DESC
+    </select>
+	
+	<insert id="insert" parameterType="com.disaster.domain.WriteDTO">
+        INSERT INTO post (
+            member_id,
+            address_id,
+            muni_code,
+            disaster_type,
+            sub_image,
+            title,
+            body,
+            lat,
+            lon,
+            nickname
+        )
+        VALUES (
+            #{memberId},
+            #{addressId},
+            #{muniCode},
+            #{disasterType},
+            #{subImage},
+            #{title},
+            #{body,jdbcType=LONGVARCHAR},
+            #{lat},
+            #{lon},
+            #{nickname}
+        )
+    </insert>
+    
+	<select id="findById" resultType="com.disaster.domain.WriteDTO">
+        SELECT
+            p.post_id,
+            p.member_id,
+            p.address_id,
+            p.muni_code,
+            p.disaster_type,
+            p.sub_image,
+            p.title,
+            p.body,
+            p.lat,
+            p.lon,
+            p.view_count,
+            p.created_at,
+            m.nickname
+        FROM post p
+        INNER JOIN member m ON p.member_id = m.member_id
+        WHERE p.post_id = #{postId}
+    </select>
+
+	<select id="findPostsPaginated" resultMap="writeMap">
+		SELECT *
+		FROM post
+		ORDER BY created_at DESC
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+
+	<update id="incrementViewCount" parameterType="long">
+    	UPDATE post
+    	SET view_count = view_count + 1
+    	WHERE post_id = #{postId}
+	</update>
+	
+	<delete id="deletePost" parameterType="long">
+    	DELETE FROM post
+    	WHERE post_id = #{postId}
+	</delete>
+	
+	<update id="updatePost" parameterType="com.disaster.domain.WriteDTO">
+    	UPDATE post
+    		SET title = #{title},
+        	body = #{body},
+        	disaster_type = #{disasterType}
+    	WHERE post_id = #{postId}
+	</update>
+    
+    <select id="findAllPosts" resultType="com.disaster.domain.WriteDTO">
+    	SELECT 
+        	post_id,
+        	member_id,
+        	address_id,
+        	muni_code,
+        	disaster_type,
+        	sub_image,
+        	title,
+        	body,
+        	lat,
+        	lon,
+        	created_at,
+        	nickname,
+        	view_count
+    	FROM post
+    	ORDER BY created_at DESC
+	</select>
+	
+	<select id="selectLatestPost" resultMap="writeMap">
+        SELECT * FROM post ORDER BY created_at DESC LIMIT 5
+    </select>
+	
+	<select id="countAllPosts" resultType="int">
+		SELECT COUNT(*) FROM post
+	</select>
+    
+    <!-- ✅✅✅ 동적 SQL을 사용하여 검색 쿼리를 수정했습니다. ✅✅✅ -->
+    <select id="countSearchedPosts" resultType="int" parameterType="map">
+        SELECT COUNT(*) 
+        FROM post
+        <where>
+            <if test="searchType == 'all'">
+                (title LIKE CONCAT('%', #{keyword}, '%') OR body LIKE CONCAT('%', #{keyword}, '%') OR nickname LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="searchType == 'title'">
+                title LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'nickname'">
+                nickname LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'disasterType'">
+                disaster_type = #{keyword}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSearchedPostsPaginated" resultMap="writeMap" parameterType="map">
+        SELECT *
+        FROM post
+        <where>
+            <if test="searchType == 'all'">
+                 (title LIKE CONCAT('%', #{keyword}, '%') OR body LIKE CONCAT('%', #{keyword}, '%') OR nickname LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="searchType == 'title'">
+                title LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'nickname'">
+                nickname LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'disasterType'">
+                disaster_type = #{keyword}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>    
+	
+</mapper>
+

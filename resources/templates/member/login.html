@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<div layout:fragment="content">
+    <div class="auth-wrap">
+        <form class="form-card" th:action="@{/perform_login}" method="post">
+        
+            <h2 class="form-title">로그인</h2>
+
+            <!-- 성공 메시지 -->
+            <div th:if="${success}" class="alert alert-success">
+                <span th:text="${success}"></span>
+            </div>
+
+            <!-- 에러 메시지 -->
+            <div th:if="${error}" class="alert alert-error">
+                <span th:text="${error}"></span>
+            </div>
+
+            <div class="form-field">
+                <label for="loginId">아이디</label>
+                <input id="loginId" name="username" type="text" autocomplete="username" required />
+            </div>
+
+            <div class="form-field">
+                <label for="loginPw">비밀번호</label>
+                <input id="loginPw" name="password" type="password" autocomplete="current-password" required />
+            </div>
+
+            <!-- ✅ CSRF 토큰 필수 -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <button type="submit" class="btn-primary w-100">로그인</button>
+
+            <div class="form-meta">
+                <label class="remember">
+                    <input type="checkbox" name="remember-me" />
+                    자동 로그인
+                </label>
+                <a class="btn-outline" href="/member/forgot-password">비밀번호 찾기</a>
+            </div>
+
+            <div class="divider"><span>또는</span></div>
+
+            <a class="btn-outline w-100" href="/member/signup">회원가입</a>
+        </form>
+    </div>
+</div>
+
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.disaster.mapper.PostReportMapper">
+
+	<!-- 모든 필드 매핑정의 -->
+	<resultMap id="PostReportMap" type="com.disaster.domain.PostReportDTO">
+    	<id property="reportId" column="report_id"/>
+    	<result property="postId" column="post_id"/>
+    	<result property="reporterMemberId" column="reporter_member_id"/>
+    	<result property="reason" column="reason"/>
+    	<result property="details" column="details"/>
+    	<result property="status" column="status"/>
+    	<result property="adminId" column="reviewed_by_member_id"/>
+    	<result property="updatedAt" column="reviewed_at"/>
+    	<result property="createdAt" column="created_at"/>
+	</resultMap>
+
+    <insert id="insertReport" parameterType="com.disaster.domain.PostReportDTO">
+    INSERT INTO post_report (post_id, reporter_member_id, reason, details)
+    VALUES (#{postId}, #{reporterMemberId}, #{reason}, #{details})
+</insert>
+
+    <select id="findReportsByPostId" parameterType="long" resultMap="PostReportMap">
+    SELECT *
+    FROM post_report
+    WHERE post_id = #{postId}
+    ORDER BY created_at DESC
+</select>
+
+    <update id="updateReportStatus">
+    UPDATE post_report
+    SET status = #{status},
+        reviewed_by_member_id = #{adminId},
+        reviewed_at = #{updatedAt}
+    WHERE report_id = #{reportId}
+</update>
+
+<!-- 신고글 삭제할 경우 신고한 기록도 같이 삭제 -->
+<delete id="deleteReportsByPostId" parameterType="long">
+    DELETE FROM post_report WHERE post_id = #{postId}
+</delete>
+
+</mapper>

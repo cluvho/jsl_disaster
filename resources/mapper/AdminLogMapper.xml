@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.disaster.mapper.AdminLogMapper">
+	
+	<insert id="insertLog" parameterType="com.disaster.domain.AdminLogDTO">
+        INSERT INTO admin_action_log (
+            admin_member_id, 
+            target_post_id, 
+            target_comment_id, 
+            target_report_id, 
+            target_user_id, 
+            action, 
+            note
+        ) VALUES (
+            #{adminMemberId}, 
+            #{targetPostId}, 
+            #{targetCommentId}, 
+            #{targetReportId}, 
+            #{targetUserId}, 
+            #{action}, 
+            #{note}
+        )
+    </insert>
+
+    <!-- 1. 기존 findAllLogs 쿼리를 findLogsPaginated로 변경하고 LIMIT OFFSET 추가 -->
+    <select id="findLogsPaginated" resultType="com.disaster.domain.AdminLogDTO">
+        SELECT
+            l.log_id,
+            l.admin_member_id,
+            l.target_post_id,
+            l.target_comment_id,
+            l.target_report_id,
+            l.target_user_id,
+            l.action,
+            l.note,
+            l.created_at,
+            m.nickname AS adminNickname
+        FROM
+            admin_action_log l
+        JOIN
+            member m ON l.admin_member_id = m.member_id
+        ORDER BY
+            l.created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+	
+	<!-- 2. 전체 로그 개수를 세는 쿼리 추가 -->
+	<select id="countAllLogs" resultType="int">
+        SELECT COUNT(*) 
+        FROM admin_action_log
+    </select>
+	
+	<delete id="deleteLogsByCommentId" parameterType="long">
+    DELETE FROM admin_action_log
+    WHERE target_comment_id = #{commentId}
+</delete>
+
+<delete id="deleteLogsByPostId" parameterType="long">
+    DELETE FROM admin_action_log
+    WHERE target_post_id = #{postId}
+</delete>
+	
+</mapper>

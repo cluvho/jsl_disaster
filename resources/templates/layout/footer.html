@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+	<th:block th:fragment="footer">
+		<footer class="footer">
+            <div>
+                <a href="#">サービス紹介</a>
+                <a href="#">利用方針</a>
+            </div>
+            <div class="emergency-contacts">
+                <strong>非常時の連絡先:</strong>
+                <span>災害用伝言ダイアル 171</span>
+                <span>警察 110</span>
+                <span>消防士 119</span>
+                <span>病院 119</span>
+            </div>
+        </footer>
+		
+	</th:block>
+</body>
+</html>
