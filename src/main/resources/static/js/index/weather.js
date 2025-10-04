@@ -21,17 +21,14 @@
   // 2) 로그인 사용자 위치 가져오기
   // ============================
   async function getMeLocation() {
-      try {
-          const j = await fetchJson("/api/me/location");
-          console.log("Weather - API 응답:", j);
-          const lat = (typeof j.lat === "number") ? j.lat : 35.681236;
-          const lon = (typeof j.lon === "number") ? j.lon : 139.767125;
-          console.log("Weather - 최종 좌표:", lat, lon);
-          return { lat, lon, loggedIn: !!j.loggedIn };
-      } catch (error) {
-          console.error("Weather - 위치 조회 오류:", error);
-          return { lat: 35.681236, lon: 139.767125, loggedIn: false };
-      }
+    try {
+      const j = await fetchJson("/api/me/location");
+      const lat = (typeof j.lat === "number") ? j.lat : 35.681236;
+      const lon = (typeof j.lon === "number") ? j.lon : 139.767125;
+      return { lat, lon, loggedIn: !!j.loggedIn };
+    } catch {
+      return { lat: 35.681236, lon: 139.767125, loggedIn: false }; // 도쿄 기본값
+    }
   }
 
   // ============================
@@ -345,5 +342,17 @@
       userPos = { lat: me.lat, lon: me.lon };
       await load();
     }
+  };
+
+  // ============================
+  // 7) Google Maps 콜백
+  // ============================
+  window.initMap = async function () {
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: 35.681236, lng: 139.767125 },
+      zoom: 12
+    });
+    window._map = map; // 체크박스 토글 등에서 접근 가능
+	window.map  = map;
   };
 })();

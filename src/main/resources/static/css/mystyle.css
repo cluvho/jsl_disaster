@@ -149,10 +149,15 @@ html, body {
     margin-bottom: 20px;
 }
 
+<<<<<<< HEAD
 /* =========================================================
    카드 리스트 (A: 단순 링크 목록용)
 ========================================================= */
 .link-card-list a {
+=======
+/* 카드 리스트 */
+/* .card-list a {
+>>>>>>> refs/heads/main
     display: flex;
     align-items: center;
     background-color: var(--white-color);
@@ -167,6 +172,7 @@ html, body {
 .link-card-list a:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
+<<<<<<< HEAD
 }
 .link-card-list .card-icon {
     font-size: 32px;
@@ -317,6 +323,13 @@ html, body {
   vertical-align: middle;
   margin-right: 4px;
 }
+=======
+} */
+.card-icon { font-size: 32px; margin-right: 20px; width: 40px; text-align: center; }
+.card-content { flex-grow: 1; }
+.card-content h4 { margin: 0 0 5px; font-size: 18px; font-weight: 700; }
+.card-content p { margin: 0; font-size: 14px; color: var(--subtle-text-color); }
+>>>>>>> refs/heads/main
 
 /* =========================================================
    푸터
@@ -709,4 +722,113 @@ html, body {
 }
 .pagination a:hover:not(.active) {
     background-color: var(--bg-color);
+<<<<<<< HEAD
 }
+=======
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+.history-item { border-left: 4px solid var(--main-red); }
+.history-header, .news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.history-title, .news-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+.history-date { font-size: 14px; color: var(--subtle-text-color); }
+.history-content, .news-summary {
+    font-size: 14px;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+.news-item a { text-decoration: none; color: inherit; }
+.news-item:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    transition: all 0.2s;
+}
+.news-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--subtle-text-color);
+    margin-top: 10px;
+}
+
+
+/* --- 반응형 디자인 --- */
+@media (max-width: 768px) {
+    .content-area { padding: 20px; }
+    .region-header-top {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    .region-search { width: 100%; }
+    .region-search input { flex: 1; width: auto; }
+    .nav-menu { gap: 10px; }
+    .nav-item { font-size: 12px; padding: 8px 12px; }
+}
+        
+        
+/* Shelter Info Box */
+#shelter-info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  font-size: 14px;
+  line-height: 20px;
+  z-index: 1000;
+}
+
+#shelter-info div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+#shelter-info div:last-child {
+  margin-bottom: 0;
+}
+
+#shelter-info .info-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* ===== 병원 범례 박스 ===== */
+#hospital-info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  font-size: 14px;
+  line-height: 20px;
+  z-index: 1000;
+}
+
+#hospital-info .info-icon {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+
+
+>>>>>>> refs/heads/main
