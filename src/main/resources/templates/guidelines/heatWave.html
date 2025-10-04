@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-content">
+            
+            
+            <main class="content-area">
+                <h2 style="text-align: center;">열사병대책</h2>
+                
+                <div class="accordion-card-list">
+                
+                    
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/necchusyou1.jpg" alt="폭염대처 방법">
+				            </div>
+				            <div class="card-image-container">
+				                <img src="/images/necchusyou2.png" alt="폭염대처 방법">
+				            </div>
+				            <div class="card-image-container">
+				                <img src="/images/necchusyou5.png" alt="폭염대처 방법" style="width: 55%;">
+				            </div>
+				            <div class="card-content">
+				                <h4>대비</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				        		<p>ㄴ몸에 달라붙지 않고 바람이 잘 통하는 헐렁한 옷, 햇빛을 반사하는 밝은 색의 옷을 입습니다. </p>
+				            <p>ㄴ외출 시에는 넓은 챙의 모자나 양산으로 햇볕을 직접 차단하고, 자외선으로부터 눈을 보호하기 위해 선글라스를 착용합니다.</p>
+				            <p>ㄴ갈증을 느끼기 전에 규칙적으로, 자주 물을 마십니다.</p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent2">
+				            <div class="card-image-container">
+				                <img src="/images/necchusyou6.jpg" alt="폭염대처 방법" style="width: 80%;">
+				            </div>
+				            <div class="card-image-container">
+				                <img src="/images/necchusyou3.png" alt="폭염대처 방법">
+				            </div>
+				            <div class="card-image-container">
+				                <img src="/images/necchusyou4.png" alt="폭염대처 방법">
+				            </div>
+				            <div class="card-content">
+				                <h4>열사병 전조</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent2" class="collapse-content">
+				            <p>ㄴ즉시 시원한 그늘이나 에어컨이 있는 실내로 이동합니다.</p>
+				            <p>ㄴ30분 이상 휴식을 취해도 증상이 나아지지 않으면 즉시 119에 신고해야 합니다.</p>
+				            <p>ㄴ의식이 없는 환자에게 억지로 물을 마시게 해서는 안 됩니다.</p>
+				       
+				        </div>
+				    </div>
+                    
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardHeaders = document.querySelectorAll('.card-header');
+
+        cardHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+
+                // 콘텐츠가 이미 펼쳐져 있을 때
+                if (targetElement.style.maxHeight) {
+                    targetElement.style.maxHeight = null;
+                    header.classList.remove('expanded');
+                } else {
+                    // 콘텐츠를 펼칠 때
+                    targetElement.style.maxHeight = targetElement.scrollHeight + 'px';
+                    header.classList.add('expanded');
+                }
+            });
+        });
+    });
+</script>
+</th:block>
+</body>
+</html>
