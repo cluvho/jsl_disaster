@@ -31,6 +31,7 @@ html, body {
     background-color: var(--bg-color);
     color: var(--text-color);
 }
+/* 2. 본문(content) 영역이 남는 공간을 모두 차지하도록 설정 (핵심!) */
 
 .page-wrapper {
     display: flex;
@@ -76,6 +77,18 @@ html, body {
     border-bottom: 2px solid transparent;
     transition: color 0.2s, border-color 0.2s;
 }
+
+#langToggle {
+	            margin-top: 12px;
+	            padding: 10px 18px;
+	            background: #007bff;
+	            color: #fff;
+	            font-weight: bold;
+	            border: none;
+	            border-radius: 6px;
+	            cursor: pointer;
+	            transition: background 0.2s ease;
+	        }
 
 .header nav a.active,
 .header nav a:hover {
@@ -359,42 +372,89 @@ html, body {
 
 
 /* ------------------------
-   푸터
+   푸터 (개선안)
 ------------------------ */
 .footer {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-    padding-left: clamp(16px, 4vw, 40px);
-    padding-right: clamp(16px, 4vw, 40px);
-    background-color: #343A40;
-    color: #ADB5BD;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    /* 배경색: 무겁지 않은 밝은 회색으로 변경하여 본문과 조화롭게 */
+    background-color: #f8f9fa; 
+    
+    /* 텍스트 색상: 배경이 밝아졌으니 어둡게 변경 */
+    color: #6c757d; 
+
+    padding: 40px clamp(16px, 4vw, 40px); /* 상하 여백을 좀 더 주어 안정감 부여 */
     font-size: 14px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #495057;
+    
+    /* 경계선: 콘텐츠와 푸터를 구분하는 옅은 상단 선 */
+    border-top: 1px solid #dee2e6; 
+    
     box-sizing: border-box;
-    flex-shrink: 0;
+    flex-wrap: wrap;
+    
+    /* 전체 너비를 차지하지 않도록 기존 width, margin 속성 제거 */
+    /* width: 100vw; */
+    /* margin-left: calc(50% - 50vw); */
+    /* margin-right: calc(50% - 50vw); */
+}
+
+/* 공통 섹션 스타일 */
+.footer-section {
+    flex: 1;
+    min-width: 220px;
+    padding: 0 20px; /* 상하 여백은 .footer에서 관리 */
+}
+
+/* 왼쪽, 가운데, 오른쪽 정렬 (모바일에서는 중앙 정렬) */
+.footer-section.left { text-align: left; }
+.footer-section.center { text-align: center; }
+.footer-section.right { text-align: right; }
+
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .footer-section,
+    .footer-section.left,
+    .footer-section.right {
+        text-align: center;
+    }
+}
+
+
+/* 링크 스타일 */
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section li {
+    margin: 8px 0; /* 링크 간 간격 조정 */
 }
 
 .footer a {
-    color: #ADB5BD;
+    color: #6c757d; /* 기본 링크 색상 */
     text-decoration: none;
-    margin-right: 20px;
+    transition: color 0.2s; /* 부드러운 색상 전환 효과 */
 }
 
 .footer a:hover {
-    color: var(--white-color);
+    /* 마우스를 올리면 사이트의 포인트 색상이나 더 진한 회색으로 변경 */
+    color: #343a40; 
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
 }
 
-.footer .emergency-contacts span {
-    margin-left: 15px;
-    font-weight: 500;
-    color: #F8F9FA;
+/* 제목 */
+.footer-section h3 {
+    color: #343a40; /* 제목은 더 진한 색으로 강조 */
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600; /* 살짝 더 두껍게 */
 }
+
 
 /* ------------------------
    로그인 & 인증

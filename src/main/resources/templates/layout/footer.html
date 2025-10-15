@@ -6,17 +6,25 @@
 <body>
 	<th:block th:fragment="footer">
 		<footer class="footer">
-            <div>
-                <a href="#">サービス紹介</a>
-                <a href="#">利用方針</a>
-            </div>
-            <div class="emergency-contacts">
-                <strong>非常時の連絡先:</strong>
-                <span>災害用伝言ダイアル 171</span>
-                <span>警察 110</span>
-                <span>消防士 119</span>
-                <span>病院 119</span>
-            </div>
+            <div class="footer-section left">
+        <h3>関連リンク</h3>
+        <ul>
+            <li><a href="https://www.jma.go.jp/jma/index.html" target="_blank">気象庁</a></li>
+            <li><a href="https://news.web.nhk/kishou-saigai/" target="_blank">NHK防災情報</a></li>
+            <li><a href="https://www.bousai.go.jp/" target="_blank">内閣府 防災情報</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-section center">
+        <h4>ボウサイリンク</h4>
+        <p>© 2025 Disaster Info Japan. All Rights Reserved.</p>
+    </div>
+
+    <div class="footer-section right">
+        <h3>緊急連絡先</h3>
+        <p>警察：110 / 消防・救急：119</p>
+        <p>災害伝言ダイヤル：171</p>
+    </div>
         </footer>
 		
 	</th:block>

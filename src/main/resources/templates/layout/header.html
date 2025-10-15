@@ -11,14 +11,17 @@
         <a th:href="@{/}">ボウサイリンク</a>
     </div>
 
-    <div th:replace="layout/nav :: nav"></div>
+    <div>
+    		<nav>
+          		<a th:href="@{/}">マップ</a>
+                <a th:href="@{/guidelines/guide}">災害対策</a>
+                <a th:href="@{/community/communityList}">コミュニティ</a>
+                <a th:href="@{/member/myPage}">マイページ</a>
+        </nav>
+    </div>
 
     <div class="user-options">
-        <select class="lang-select" style="font-size: 14px; padding: 5px;">
-            <option>한국어</option>
-            <option>ENGLISH</option>
-            <option>日本語</option>
-        </select>
+        <button id="langToggle" onclick="toggleLanguage()">日本語</button>
 
         <!-- 로그인하지 않은 경우: 로그인/회원가입 버튼 표시 -->
         <div sec:authorize="!isAuthenticated()">
