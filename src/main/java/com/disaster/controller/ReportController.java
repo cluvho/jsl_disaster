@@ -33,7 +33,9 @@ public class ReportController {
         WriteDTO post = writeService.getPostById(postId);
 
         // ✅ 2. 재사용할 reportForm.html에 필요한 정보를 모델에 담아 전달합니다.
-        model.addAttribute("reportTarget", "게시글");
+        model.addAttribute("reportTargetJa", "掲示文"); // 일본어
+        model.addAttribute("reportTargetKo", "게시글");  // 한국어
+        
         model.addAttribute("targetContent", post.getTitle());
         model.addAttribute("targetId", postId);
         model.addAttribute("formAction", "/report/post");
@@ -59,7 +61,7 @@ public class ReportController {
         reportService.createPostReport(reportDto);
 
         redirectAttributes.addFlashAttribute("message", "게시글이 정상적으로 신고되었습니다.");
-        return "redirect:/community/communityDetail/" + postId;
+        return "redirect:/community/" + postId;
     }
 
     /**
@@ -72,7 +74,9 @@ public class ReportController {
 
         CommentDTO comment = commentService.getCommentById(commentId);
 
-        model.addAttribute("reportTarget", "댓글");
+        model.addAttribute("reportTargetJa", "コメント"); // 일본어
+        model.addAttribute("reportTargetKo", "댓글");   // 한국어
+        
         model.addAttribute("targetContent", comment.getBody());
         model.addAttribute("targetId", commentId);
         model.addAttribute("formAction", "/report/comment");
@@ -100,7 +104,7 @@ public class ReportController {
         reportService.createCommentReport(reportDto);
 
         redirectAttributes.addFlashAttribute("message", "댓글이 정상적으로 신고되었습니다.");
-        return "redirect:/community/communityDetail/" + postId;
+        return "redirect:/community/" + postId;
     }
 }
 

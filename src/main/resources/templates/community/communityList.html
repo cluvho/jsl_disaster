@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
-<title>커뮤니티</title>
+<title>コミュニティー</title>
 
 <style>
 .pagination {
@@ -47,6 +47,7 @@
 .write-btn:hover {
 	background-color: #0056b3;
 }
+
 
 .post-card {
 	display: block;
@@ -103,7 +104,7 @@
 		<div class="page-community container mt-4">
 
 			<div class="community-header mb-3">
-				<h2 class="community-title">커뮤니티</h2>
+				<h2 class="community-title" data-ko="커뮤니티">コミュニティー</h2>
 
 				<div class="header-actions">
 					<!-- ✅✅✅ 검색창에 select 드롭다운을 추가 ✅✅✅ -->
@@ -111,19 +112,19 @@
 						class="search-bar">
 						<select name="searchType" class="form-control"
 							style="width: 120px;">
-							<option value="all" th:selected="${searchType == 'all'}">전체</option>
-							<option value="title" th:selected="${searchType == 'title'}">제목/내용</option>
+							<option value="all" th:selected="${searchType == 'all'}" data-ko="전체">全体</option>
+							<option value="title" th:selected="${searchType == 'title'}" data-ko="제목/내용">タイトル・内容</option>
 							<option value="nickname"
-								th:selected="${searchType == 'nickname'}">작성자</option>
+								th:selected="${searchType == 'nickname'}" data-ko="작성자">作成者</option>
 							<option value="disasterType"
-								th:selected="${searchType == 'disasterType'}">재난유형</option>
+								th:selected="${searchType == 'disasterType'}" data-ko="재해종류">災害タイプ</option>
 						</select> <input type="text" name="keyword" class="form-control"
-							placeholder="검색어 입력" th:value="${keyword}">
-						<button type="submit" class="btn btn-primary">검색</button>
+							placeholder="検索語入力" th:value="${keyword}" data-ko="검색어 입력">
+						<button type="submit" class="btn btn-primary" data-ko="검색">検索</button>
 					</form>
 
 					<div>
-						<a th:href="@{/community/communityWrite}" class="write-btn">글쓰기</a>
+						<a th:href="@{/community/communityWrite}" class="write-btn" data-ko="글작성">作成</a>
 					</div>
 				</div>
 			</div>
@@ -137,8 +138,8 @@
 							<div class="post-meta">
 								<span
 									th:text="${post.disasterType != null ? post.disasterType.displayName : '기타'}">재난
-									유형</span> <span>|</span> <span th:text="'작성자 : ' + ${post.nickname}">작성자</span>
-								<span>|</span> <span th:text="'조회수: ' + ${post.viewCount}">조회수</span>
+									유형</span> <span>|</span> <span th:text="'作成者 : ' + ${post.nickname}" data-ko="작성자">작성자</span>
+								<span>|</span> <span th:text="'照会数 : ' + ${post.viewCount}" data-ko="조회수">조회수</span>
 								<span>|</span> <span
 									th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
 							</div>

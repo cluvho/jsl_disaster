@@ -359,10 +359,6 @@
 	                            <label>닉 네 임 : <input type="text" name="nickname" th:value="*{nickname}"></label>
 	                            <label>이 메 일 : <input type="text" th:value="*{email}" readonly style="background-color: #eee;"></label>
 	                            <hr style="margin: 20px 0;">
-	                            <label>현재 비밀번호 : <input type="password" name="currentPassword" placeholder="변경 시 현재 비밀번호 입력"></label>
-	                            <label>새 비밀번호 : <input type="password" name="newPassword" placeholder="8자 이상 입력"></label>
-	                            <label>새 비밀번호 확인 : <input type="password" name="newPasswordConfirm" placeholder="새 비밀번호 다시 입력"></label>
-	                            <hr style="margin: 20px 0;">
 	                            <div th:object="${address}">
 	                                <label>우편번호 : <input type="text" name="postalCode" th:value="*{postalCode}"></label>
 	                                <label>주 소 : <input type="text" name="addrLine1" th:value="*{addrLine1}" ></label>
