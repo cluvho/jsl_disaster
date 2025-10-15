@@ -8,9 +8,9 @@
 // =========================
 const WEATHER_API_KEY = "c8b2e054755849cda2e51309251009";
 const warningCodeMap = {
-    "11": "호우주의보", "12": "호우경보", "21": "홍수주의보", "22": "홍수경보",
-    "31": "강풍주의보", "32": "강풍경보", "41": "풍랑주의보", "42": "풍랑경보",
-    "51": "뇌우주의보", "52": "뇌우경보", "61": "폭풍우주의보", "62": "폭풍우경보"
+    "11": "大雨注意報", "12": "大雨警報", "21": "洪水注意報", "22": "洪水警報",
+    "31": "強風注意報", "32": "暴風警報", "41": "波浪注意報", "42": "波浪警報",
+    "51": "雷注意報", "52": "雷警報", "61": "暴風雨注意報", "62": "暴風雨警報"
 };
 
 // =========================
@@ -28,61 +28,61 @@ class JMADisasterCrawler {
             const data = await response.json();
             return data.contents;
         } catch (error) {
-            console.error('프록시 요청 실패:', error);
+            console.error('プロキシリクエスト失敗:', error);
             throw error;
         }
     }
 
     async getEarthquakeData() {
-        console.log('실제 지진 정보 수집 중...');
-        
+        console.log('実際の地震情報を収集中...');
+
         try {
             const sources = [
                 'https://api.p2pquake.net/v2/history?codes=551&limit=5'
             ];
-            
+
             for (let sourceUrl of sources) {
                 try {
                     if (sourceUrl.includes('p2pquake')) {
                         const response = await fetch(sourceUrl);
                         const data = await response.json();
-                        
+
                         const earthquakes = data.slice(0, 5).map((item, index) => ({
                             magnitude: item.earthquake?.maxScale_int || item.earthquake?.hypocenter?.magnitude || 'N/A',
-                            location: item.earthquake?.hypocenter?.name || '위치 정보 없음',
-                            time: new Date(item.time).toLocaleString('ko-KR'),
+                            location: item.earthquake?.hypocenter?.name || '位置情報なし',
+                            time: new Date(item.time).toLocaleString('ja-JP'),
                             depth: item.earthquake?.hypocenter?.depth ? `${item.earthquake.hypocenter.depth}km` : 'N/A',
                             type: 'earthquake',
-                            source: 'P2P지진정보'
+                            source: 'P2P地震情報'
                         }));
-                        
-                        console.log(`실제 지진 데이터 ${earthquakes.length}개 수집 완료`);
+
+                        console.log(`実際の地震データ ${earthquakes.length}件の収集完了`);
                         return earthquakes;
                     }
                 } catch (error) {
-                    console.log(`${sourceUrl} 실패:`, error.message);
+                    console.log(`${sourceUrl} 失敗:`, error.message);
                     continue;
                 }
             }
-            
-            throw new Error('모든 소스에서 데이터 가져오기 실패');
-            
+
+            throw new Error('全てのソースからのデータ取得に失敗');
+
         } catch (error) {
-            console.error('실제 지진 데이터 수집 실패, 테스트 데이터 사용:', error);
-            
+            console.error('実際の地震データ収集失敗、テストデータを使用:', error);
+
             return [
                 {
                     magnitude: '4.8',
-                    location: '도쿄만 (테스트)',
-                    time: new Date().toLocaleString('ko-KR'),
+                    location: '東京湾 (テスト)',
+                    time: new Date().toLocaleString('ja-JP'),
                     depth: '25km',
                     type: 'earthquake',
                     source: 'TEST'
                 },
                 {
-                    magnitude: '3.2', 
-                    location: '오사카 북부 (테스트)',
-                    time: new Date(Date.now() - 3600000).toLocaleString('ko-KR'),
+                    magnitude: '3.2',
+                    location: '大阪北部 (テスト)',
+                    time: new Date(Date.now() - 3600000).toLocaleString('ja-JP'),
                     depth: '15km',
                     type: 'earthquake',
                     source: 'TEST'
@@ -92,25 +92,25 @@ class JMADisasterCrawler {
     }
 
     async getVolcanoData() {
-        console.log('화산 정보 수집 중...');
-        
+        console.log('火山情報を収集中...');
+
         const testData = [
             {
-                name: '후지산',
+                name: '富士山',
                 alertLevel: '1',
-                status: '정상',
+                status: '平常',
                 time: new Date().toLocaleString(),
                 type: 'volcano'
             }
         ];
-        
-        console.log(`화산 데이터 ${testData.length}개 수집 완료`);
+
+        console.log(`火山データ ${testData.length}件の収集完了`);
         return testData;
     }
 
     async collectAllData() {
-        console.log('=== JMA 재해 정보 크롤링 시작 ===');
-        
+        console.log('=== JMA災害情報クローリング開始 ===');
+
         try {
             const [earthquakes, volcanoes] = await Promise.all([
                 this.getEarthquakeData(),
@@ -126,13 +126,13 @@ class JMADisasterCrawler {
                 totalCount: earthquakes.length + volcanoes.length
             };
 
-            console.log('=== 데이터 수집 완료 ===');
-            console.log(`총 ${allData.totalCount}개 데이터 수집`);
+            console.log('=== データ収集完了 ===');
+            console.log(`合計 ${allData.totalCount}件のデータを収集`);
 
             return allData;
 
         } catch (error) {
-            console.error('데이터 수집 중 오류:', error);
+            console.error('データ収集中にエラー:', error);
             throw error;
         }
     }
@@ -146,41 +146,41 @@ class AutoCrawler {
         this.intervalId = null;
         this.isRunning = false;
     }
-    
+
     start(intervalMinutes = 10) {
         if (this.isRunning) {
-            console.log('이미 자동 크롤링이 실행 중입니다.');
+            console.log('すでに自動クローリングが実行中です。');
             return;
         }
-        
-        console.log(`자동 크롤링 시작 - ${intervalMinutes}분마다 실행`);
+
+        console.log(`自動クローリング開始 - ${intervalMinutes}分ごとに実行`);
         this.runOnce();
-        
+
         this.intervalId = setInterval(() => {
             this.runOnce();
         }, intervalMinutes * 60 * 1000);
-        
+
         this.isRunning = true;
     }
-    
+
     async runOnce() {
         try {
-            console.log(`[${new Date().toLocaleString()}] 자동 크롤링 실행`);
+            console.log(`[${new Date().toLocaleString()}] 自動クローリング実行`);
             await sendToSpringBoot();
         } catch (error) {
-            console.error('자동 크롤링 오류:', error);
+            console.error('自動クローリングエラー:', error);
         }
     }
-    
+
     stop() {
         if (this.intervalId) {
             clearInterval(this.intervalId);
             this.intervalId = null;
             this.isRunning = false;
-            console.log('자동 크롤링 중지됨');
+            console.log('自動クローリングが停止しました');
         }
     }
-    
+
     getStatus() {
         return {
             running: this.isRunning,
@@ -239,14 +239,14 @@ async function searchRegion() {
     const regionName = input.value.trim();
 
     if (!regionName) {
-        alert('검색할 지역명을 입력해주세요.');
+        alert('検索する地域名を入力してください。');
         return;
     }
 
     // 1. Google Maps Geocoder API를 사용하여 주소를 좌표로 변환합니다.
     const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ 'address': regionName }, async (results, status) => {
-        
+    geocoder.geocode({ 'address': regionName, 'language': 'ja' }, async (results, status) => {
+
         if (status === 'OK' && results[0]) {
             // 2. 변환에 성공하면 첫 번째 결과에서 위도와 경도를 추출합니다.
             const location = results[0].geometry.location;
@@ -254,15 +254,15 @@ async function searchRegion() {
             const lon = location.lng();
             const formattedAddress = results[0].formatted_address; // 더 정확한 주소 이름
 
-            console.log(`'${regionName}' 검색 성공:`, { lat, lon, formattedAddress });
+            console.log(`'${regionName}' の検索成功:`, { lat, lon, formattedAddress });
 
             // 3. 추출한 좌표와 주소로 관련 정보들을 모두 업데이트합니다.
             // 날씨 정보 업데이트
             updateWeatherAPI(lat, lon, formattedAddress);
-            
+
             // 관련 뉴스 업데이트
             fetchRegionalNews(regionName); // '大阪' 같은 검색어로 뉴스 다시 가져오기
-            
+
             // 주변 시설 정보 업데이트 (기존 컨테이너 비우기)
             document.getElementById('shelter').querySelector('.facility-list').innerHTML = '';
             document.getElementById('hospital').querySelector('.facility-list').innerHTML = '';
@@ -271,8 +271,8 @@ async function searchRegion() {
 
         } else {
             // 4. 주소를 좌표로 변환하는 데 실패하면 사용자에게 알립니다.
-            console.error(`'${regionName}' 지역을 찾을 수 없습니다. Geocode 실패 상태:`, status);
-            alert(`'${regionName}'에 대한 위치 정보를 찾을 수 없습니다. 다른 검색어를 시도해보세요.`);
+            console.error(`'${regionName}' 地域が見つかりません。Geocode失敗ステータス:`, status);
+            alert(`'${regionName}'の位置情報が見つかりませんでした。別の検索語をお試しください。`);
         }
     });
 }
@@ -281,14 +281,14 @@ async function searchRegion() {
 // 날씨 관련 함수들
 // =========================
 function showLoadingState() {
-    document.getElementById("currentTemp").textContent = "로딩중...";
-    document.getElementById("currentWeather").textContent = "데이터 가져오는 중";
+    document.getElementById("currentTemp").textContent = "読込中...";
+    document.getElementById("currentWeather").textContent = "データを取得中";
     document.querySelector(".weather-detail-item:nth-child(1) .value").textContent = "...";
     document.querySelector(".weather-detail-item:nth-child(2) .value").textContent = "...";
     document.querySelector(".weather-detail-item:nth-child(3) .value").textContent = "...";
     document.getElementById("hourly").querySelector(".hourly-forecast").innerHTML = "";
     document.getElementById("daily").querySelector(".daily-forecast").innerHTML = "";
-    
+
     const warningSection = document.getElementById("warning");
     if (warningSection) {
         const warningItem = warningSection.querySelector(".disaster-item.warning");
@@ -318,12 +318,12 @@ async function updateWeatherAPI(lat, lon, regionName, cityCode) {
         const warningContainer = document.getElementById("warning");
         if (warningContainer) {
             warningContainer.innerHTML = "";
-            
+
             if (jmadata && jmadata.headlineText) {
                 const reportTime = new Date(jmadata.reportDatetime);
                 const formattedTime = `${reportTime.getFullYear()}.${(reportTime.getMonth() + 1).toString().padStart(2, '0')}.${reportTime.getDate().toString().padStart(2, '0')} ${reportTime.getHours().toString().padStart(2, '0')}:${reportTime.getMinutes().toString().padStart(2, '0')}`;
-                
-                const disasterType = "기상 특보";
+
+                const disasterType = "気象特報";
 
                 const disasterItem = document.createElement("div");
                 disasterItem.className = "disaster-item warning";
@@ -336,7 +336,7 @@ async function updateWeatherAPI(lat, lon, regionName, cityCode) {
                 `;
                 warningContainer.appendChild(disasterItem);
             } else {
-                warningContainer.innerHTML = "<p>현재 발령된 기상특보가 없습니다.</p>";
+                warningContainer.innerHTML = "<p>現在発表されている気象特報はありません。</p>";
             }
         }
 
@@ -350,7 +350,7 @@ async function updateWeatherAPI(lat, lon, regionName, cityCode) {
 
         const forecastRes = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=7&lang=ja`);
         const forecastData = await forecastRes.json();
-        
+
         const hourlyDiv = document.getElementById("hourly").querySelector(".hourly-forecast");
         hourlyDiv.innerHTML = "";
         const nowHour = new Date().getHours();
@@ -380,9 +380,9 @@ async function updateWeatherAPI(lat, lon, regionName, cityCode) {
                 </div>`;
         });
 		return currentData.location.name;
-        
+
     } catch(err) {
-        console.error("날씨 API 오류:", err);
+        console.error("天気APIエラー:", err);
     }
 }
 
@@ -406,10 +406,10 @@ function updateJMADisasterInfo() {
                     .join(", ");
                 alertDiv.textContent = alerts;
             } else {
-                alertDiv.textContent = "현재 발령된 경보·주의보 없음";
+                alertDiv.textContent = "現在発表されている警報・注意報はありません";
             }
         })
-        .catch(err => console.error("경보 불러오기 오류:", err));
+        .catch(err => console.error("警報の読み込みエラー:", err));
 
     fetch("https://www.jma.go.jp/bosai/quake/data/list.json")
         .then(res => res.json())
@@ -418,34 +418,34 @@ function updateJMADisasterInfo() {
                 disasterList.innerHTML += `
                     <div class="disaster-item">
                         <div class="disaster-header">
-                            <div class="disaster-type">🌏 지진</div>
+                            <div class="disaster-type">🌏 地震</div>
                             <div class="disaster-time">-</div>
                         </div>
-                        <p>최근 지진 기록이 없습니다.</p>
+                        <p>最近の地震記録がありません。</p>
                     </div>`;
                 return;
             }
 
             const latest = list[0];
-            const time = latest.time ?? "정보 없음";
-            const magnitude = latest.magunitude ?? "정보 없음";
-            const hypocenter = latest.hypocenter?.name ?? "정보 없음";
-            const maxScale = latest.maxScale ?? "정보 없음";
+            const time = latest.time ?? "情報なし";
+            const magnitude = latest.magunitude ?? "情報なし";
+            const hypocenter = latest.hypocenter?.name ?? "情報なし";
+            const maxScale = latest.maxScale ?? "情報なし";
 
             const item = document.createElement("div");
             item.className = "disaster-item";
             item.innerHTML = `
                 <div class="disaster-header">
-                    <div class="disaster-type">🌏 지진</div>
+                    <div class="disaster-type">🌏 地震</div>
                     <div class="disaster-time">${new Date(time).toLocaleString()}</div>
                 </div>
-                <p><strong>진앙지:</strong> ${hypocenter}</p>
-                <p><strong>규모:</strong> M${magnitude}</p>
-                <p><strong>최대진도:</strong> ${maxScale}</p>
+                <p><strong>震源地:</strong> ${hypocenter}</p>
+                <p><strong>規模:</strong> M${magnitude}</p>
+                <p><strong>最大震度:</strong> ${maxScale}</p>
             `;
             disasterList.appendChild(item);
         })
-        .catch(err => console.error("지진 불러오기 오류:", err));
+        .catch(err => console.error("地震の読み込みエラー:", err));
 }
 
 // =========================
@@ -469,8 +469,8 @@ function createFacilityCard(containerId, name, address, distance, extraInfo = {}
 
     const div = document.createElement("div");
     div.className = "facility-item";
-    const emergency = extraInfo.emergency || "정보 없음";
-    const contact = extraInfo.contact || "정보 없음";
+    const emergency = extraInfo.emergency || "情報なし";
+    const contact = extraInfo.contact || "情報なし";
 
     div.innerHTML = `
         <div class="facility-header">
@@ -479,10 +479,10 @@ function createFacilityCard(containerId, name, address, distance, extraInfo = {}
             </div>
         </div>
         <div class="facility-info">
-            <div><strong>주소:</strong> ${address}</div>
-            ${extraInfo.emergency ? `<div><strong>응급실:</strong> ${emergency}</div>` : ""}
-            ${extraInfo.contact ? `<div><strong>연락처:</strong> ${contact}</div>` : "<div><strong>연락처:</strong> 정보없음</div>"}
-            <div><strong>거리:</strong> 현재 위치에서 ${distance} km</div>
+            <div><strong>住所:</strong> ${address}</div>
+            ${extraInfo.emergency ? `<div><strong>救急外来:</strong> ${emergency}</div>` : ""}
+            ${extraInfo.contact ? `<div><strong>連絡先:</strong> ${contact}</div>` : "<div><strong>連絡先:</strong> 情報なし</div>"}
+            <div><strong>距離:</strong> 現在地から ${distance} km</div>
         </div>
     `;
     container.appendChild(div);
@@ -491,8 +491,8 @@ function createFacilityCard(containerId, name, address, distance, extraInfo = {}
 function searchFacility(lat, lng, type, containerId) {
     return new Promise((resolve, reject) => {
         if (!window.google || !window.google.maps) {
-            console.error("Google Maps API가 로드되지 않았습니다.");
-            reject("Google Maps API 없음");
+            console.error("Google Maps APIが読み込まれていません。");
+            reject("Google Maps APIなし");
             return;
         }
 
@@ -520,8 +520,8 @@ function searchFacility(lat, lng, type, containerId) {
                             const extraInfo = {
                                 contact: details.formatted_phone_number || "",
                             };
-                            if(type === 'school') extraInfo.capacity = "정보없음";
-                            if(type === 'hospital') extraInfo.emergency = "운영중";
+                            if(type === 'school') extraInfo.capacity = "情報なし";
+                            if(type === 'hospital') extraInfo.emergency = "運営中";
                             createFacilityCard(containerId, details.name, details.formatted_address, distance, extraInfo);
                         } else {
                             createFacilityCard(containerId, place.name, place.vicinity, distance);
@@ -537,10 +537,10 @@ function searchFacility(lat, lng, type, containerId) {
 
 async function fetchRegionalNews(region) {
     // ⭐️ 다른 공개 프록시 서버 주소로 변경
-    const proxyUrl = 'https://corsproxy.io/?'; 
-    
+    const proxyUrl = 'https://corsproxy.io/?';
+
     const targetUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(region)}+災害&hl=ja&gl=JP&ceid=JP:ja`;
-    
+
     // 프록시를 통해 요청할 최종 URL
     const url = proxyUrl + encodeURIComponent(targetUrl);
 
@@ -557,7 +557,7 @@ async function fetchRegionalNews(region) {
         newsContainer.innerHTML = "";
 
         if (items.length === 0) {
-            newsContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: #888;">"${region}" 지역의 뉴스가 없습니다.</div>`;
+            newsContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: #888;">"${region}"地域のニュースがありません。</div>`;
             return;
         }
 
@@ -583,9 +583,9 @@ async function fetchRegionalNews(region) {
             }
         });
     } catch (error) {
-        console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
+        console.error("データの取得中にエラーが発生しました:", error);
         const newsContainer = document.querySelector(".news-list");
-        newsContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: #888;">뉴스를 가져오는 데 실패했습니다. 잠시 후 다시 시도해 주세요.</div>`;
+        newsContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: #888;">ニュースの取得に失敗しました。しばらくしてからもう一度お試しください。</div>`;
     }
 }
 
@@ -595,9 +595,9 @@ async function fetchRegionalNews(region) {
 async function loadDisasterHistory() {
     try {
         console.log('DB에서 과거 재난 이력 조회 중...');
-        
+
         const response = await fetch('/detail/disaster-history');
-        
+
         if (response.ok) {
             const historyData = await response.json();
             console.log('DB 과거 이력 조회 성공:', historyData);
@@ -606,14 +606,14 @@ async function loadDisasterHistory() {
         } else {
             console.error('DB 과거 이력 조회 실패:', response.status);
             const statusDiv = document.getElementById('db-history-status');
-            if (statusDiv) statusDiv.textContent = 'DB 조회 실패';
+            if (statusDiv) statusDiv.textContent = 'DB照会失敗';
             return [];
         }
-        
+
     } catch (error) {
         console.error('DB 과거 이력 조회 오류:', error);
         const statusDiv = document.getElementById('db-history-status');
-        if (statusDiv) statusDiv.textContent = '조회 중 오류 발생';
+        if (statusDiv) statusDiv.textContent = '照会中にエラー発生';
         return [];
     }
 }
@@ -621,26 +621,26 @@ async function loadDisasterHistory() {
 function displayDBHistory(historyData) {
     const historyList = document.getElementById('db-history-list');
     const statusDiv = document.getElementById('db-history-status');
-    
+
     if (!historyList || !statusDiv) {
-        console.warn('DB 히스토리 표시 요소를 찾을 수 없습니다.');
+        console.warn('DB履歴表示要素が見つかりません。');
         return;
     }
-    
+
     if (!historyData || historyData.length === 0) {
-        statusDiv.textContent = 'DB에 저장된 재난 이력이 없습니다.';
-        historyList.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">저장된 재난 이력이 없습니다.</p>';
+        statusDiv.textContent = 'DBに保存された災害履歴がありません。';
+        historyList.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">保存された災害履歴がありません。</p>';
         return;
     }
-    
-    statusDiv.textContent = `DB에서 ${historyData.length}개의 재난 이력을 조회했습니다.`;
-    
+
+    statusDiv.textContent = `DBから${historyData.length}件の災害履歴を照会しました。`;
+
     let html = '';
     historyData.forEach((history, index) => {
         const disasterIcon = getDisasterIcon(history.disasterType);
-        const occurredDate = new Date(history.occurredAt).toLocaleDateString('ko-KR');
-        const createdDate = new Date(history.createdAt).toLocaleString('ko-KR');
-        
+        const occurredDate = new Date(history.occurredAt).toLocaleDateString('ja-JP');
+        const createdDate = new Date(history.createdAt).toLocaleString('ja-JP');
+
         html += `
             <div class="history-item" style="border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin-bottom: 15px; background: #fff;">
                 <div class="history-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -652,19 +652,19 @@ function displayDBHistory(historyData) {
                     </div>
                 </div>
                 <div class="history-content" style="color: #555; line-height: 1.5;">
-                    ${history.description || '상세 정보가 없습니다.'}
+                    ${history.description || '詳細情報がありません。'}
                     <br><br>
-                    <strong>위치:</strong> ${history.location}<br>
-                    ${history.magnitude ? `<strong>규모:</strong> ${history.magnitude}<br>` : ''}
-                    ${history.depthKm ? `<strong>깊이:</strong> ${history.depthKm}<br>` : ''}
-                    ${history.alertLevel ? `<strong>경보레벨:</strong> ${history.alertLevel}<br>` : ''}
-                    <strong>출처:</strong> ${history.source}<br>
-                    <small style="color: #888;">DB 저장: ${createdDate}</small>
+                    <strong>位置:</strong> ${history.location}<br>
+                    ${history.magnitude ? `<strong>規模:</strong> ${history.magnitude}<br>` : ''}
+                    ${history.depthKm ? `<strong>深さ:</strong> ${history.depthKm}<br>` : ''}
+                    ${history.alertLevel ? `<strong>警報レベル:</strong> ${history.alertLevel}<br>` : ''}
+                    <strong>出典:</strong> ${history.source}<br>
+                    <small style="color: #888;">DB保存: ${createdDate}</small>
                 </div>
             </div>
         `;
     });
-    
+
     historyList.innerHTML = html;
 }
 
@@ -688,76 +688,76 @@ function getDisasterIcon(disasterType) {
 function displayRealtimeData(data) {
     const statusElement = document.getElementById('disaster-status');
     if (statusElement) {
-        statusElement.textContent = `총 ${data.totalCount}개 데이터 수집 완료`;
+        statusElement.textContent = `合計 ${data.totalCount}件のデータ収集完了`;
     }
-    
+
     const updateElement = document.getElementById('last-update');
     if (updateElement) {
-        updateElement.textContent = `마지막 업데이트: ${new Date(data.lastUpdated).toLocaleString()}`;
+        updateElement.textContent = `最終更新: ${new Date(data.lastUpdated).toLocaleString()}`;
     }
-    
+
     displayEarthquakes(data.earthquakes);
     displayVolcanoes(data.volcanoes);
 }
 
 function displayEarthquakes(earthquakes) {
     const earthquakeList = document.getElementById('earthquake-list');
-    
+
     if (!earthquakeList) {
-        console.warn('earthquake-list 요소를 찾을 수 없습니다.');
+        console.warn('earthquake-list要素が見つかりません。');
         return;
     }
-    
+
     if (!earthquakes || earthquakes.length === 0) {
-        earthquakeList.innerHTML = '<p>현재 지진 정보가 없습니다.</p>';
+        earthquakeList.innerHTML = '<p>現在、地震情報はありません。</p>';
         return;
     }
-    
+
     let html = '<ul style="list-style: none; padding: 0; margin: 0;">';
     earthquakes.slice(0, 5).forEach((eq, index) => {
         html += `<li style="padding: 10px; border-bottom: 1px solid #eee; ${index === earthquakes.length - 1 ? 'border-bottom: none;' : ''}">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                 <div>
-                    <strong style="color: #dc3545;">규모 ${eq.magnitude}</strong> - ${eq.location}<br>
-                    <small style="color: #666;">시간: ${eq.time}</small>
-                    ${eq.depth && eq.depth !== 'N/A' ? `<br><small style="color: #666;">깊이: ${eq.depth}</small>` : ''}
+                    <strong style="color: #dc3545;">規模 ${eq.magnitude}</strong> - ${eq.location}<br>
+                    <small style="color: #666;">時間: ${eq.time}</small>
+                    ${eq.depth && eq.depth !== 'N/A' ? `<br><small style="color: #666;">深さ: ${eq.depth}</small>` : ''}
                 </div>
                 <small style="background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.8em;">${eq.source}</small>
             </div>
         </li>`;
     });
     html += '</ul>';
-    
+
     earthquakeList.innerHTML = html;
 }
 
 function displayVolcanoes(volcanoes) {
     const volcanoList = document.getElementById('volcano-list');
-    
+
     if (!volcanoList) {
-        console.warn('volcano-list 요소를 찾을 수 없습니다.');
+        console.warn('volcano-list要素が見つかりません。');
         return;
     }
-    
+
     if (!volcanoes || volcanoes.length === 0) {
-        volcanoList.innerHTML = '<p>현재 화산 경보가 없습니다.</p>';
+        volcanoList.innerHTML = '<p>現在、火山警報はありません。</p>';
         return;
     }
-    
+
     let html = '<ul style="list-style: none; padding: 0; margin: 0;">';
     volcanoes.forEach((vol, index) => {
         html += `<li style="padding: 10px; border-bottom: 1px solid #eee; ${index === volcanoes.length - 1 ? 'border-bottom: none;' : ''}">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                 <div>
-                    <strong style="color: #fd7e14;">${vol.name}</strong> - 경보레벨 ${vol.alertLevel}<br>
-                    <small style="color: #666;">상태: ${vol.status}</small>
+                    <strong style="color: #fd7e14;">${vol.name}</strong> - 警報レベル ${vol.alertLevel}<br>
+                    <small style="color: #666;">状態: ${vol.status}</small>
                 </div>
                 <small style="background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.8em;">JMA</small>
             </div>
         </li>`;
     });
     html += '</ul>';
-    
+
     volcanoList.innerHTML = html;
 }
 
@@ -766,10 +766,10 @@ function displayVolcanoes(volcanoes) {
 // =========================
 async function sendToSpringBoot() {
     try {
-        console.log('스프링부트로 데이터 전송 시작...');
-        
+        console.log('SpringBootへデータ転送開始...');
+
         const data = await jmaCrawler.collectAllData();
-        
+
         const response = await fetch('/detail/jma-data', {
             method: 'POST',
             headers: {
@@ -777,25 +777,25 @@ async function sendToSpringBoot() {
             },
             body: JSON.stringify(data)
         });
-        
+
         if (response.ok) {
             const result = await response.text();
-            console.log('백엔드 전송 성공:', result);
-            
+            console.log('バックエンド転送成功:', result);
+
             displayRealtimeData(data);
-            
+
             setTimeout(() => {
                 loadDisasterHistory();
             }, 1000);
-            
+
             return true;
         } else {
-            console.error('백엔드 전송 실패:', response.status);
+            console.error('バックエンド転送失敗:', response.status);
             return false;
         }
-        
+
     } catch (error) {
-        console.error('전송 중 오류:', error);
+        console.error('転送中にエラー:', error);
         return false;
     }
 }
@@ -820,20 +820,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const lonFromUrl = urlParams.get('lon');
     const userLat = parseFloat(latFromUrl) || window.USER_LOCATION?.latitude || 35.6895;
     const userLng = parseFloat(lonFromUrl) || window.USER_LOCATION?.longitude || 139.6917;
-    const initialUserRegion = window.USER_LOCATION?.address || "지정된 위치";
+    const initialUserRegion = window.USER_LOCATION?.address || "指定された位置";
 
-    console.log(`URL 파라미터 감지: lat=${latFromUrl}, lon=${lonFromUrl}`);
-    console.log('최종 적용된 위치:', userLat, userLng);
-    
+    console.log(`URLパラメータを検出: lat=${latFromUrl}, lon=${lonFromUrl}`);
+    console.log('最終的に適用された位置:', userLat, userLng);
+
     // 2. 비동기 함수들을 순서에 맞게 실행하기 위한 즉시실행함수
     (async () => {
         // JMA 재난 정보는 지역 이름과 무관하므로 먼저 호출
         updateJMADisasterInfo();
 
         // 날씨 API를 먼저 호출하고, 완료될 때까지 기다려서 정확한 지역 이름을 얻어냄
-        console.log("날씨 API 호출하여 정확한 지역명 가져오는 중...");
+        console.log("天気APIを呼び出して正確な地域名を取得中...");
         const accurateRegionName = await updateWeatherAPI(userLat, userLng, initialUserRegion);
-        console.log(`API로부터 받은 정확한 지역명: ${accurateRegionName}`);
+        console.log(`APIから受け取った正確な地域名: ${accurateRegionName}`);
 
         // 얻어낸 정확한 지역 이름으로 뉴스를 검색
         fetchRegionalNews(accurateRegionName);
@@ -843,14 +843,14 @@ document.addEventListener('DOMContentLoaded', function() {
             await searchFacility(userLat, userLng, "school", "shelter");
             await searchFacility(userLat, userLng, "hospital", "hospital");
         } catch(err) {
-            console.error("시설 검색 실패:", err);
+            console.error("施設検索失敗:", err);
         }
 
         // DB 데이터 로드
         loadDisasterHistory();
-        
+
         // JMA 크롤러 자동 실행 (페이지 기능 로딩이 모두 끝난 후 실행되도록 순서를 조정)
-        console.log('페이지 로드 시 JMA 데이터 자동 수집...');
+        console.log('ページロード時にJMAデータを自動収集...');
         sendToSpringBoot();
     })();
 });
@@ -868,4 +868,4 @@ window.showFacility = showFacility;
 window.scrollToSection = scrollToSection;
 window.searchRegion = searchRegion;
 
-console.log('===== 완전 통합 재난 정보 시스템 로드 완료 =====');
+console.log('===== 完全統合災害情報システム ロード完了 =====');
