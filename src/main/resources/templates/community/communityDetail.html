@@ -4,7 +4,10 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-<title>재난대응시스템 - 게시글 상세</title> 
+    <!-- ✅✅✅ 이 부분의 제목을 동적으로 변경했습니다. ✅✅✅ -->
+    <title th:text="|コミュニティー - ${post.title}|" 
+           th:attr="data-ko=|커뮤니티 - ${post.title}|"></title>
+    
 <style>
 /* ============================================= */
 /* 기존 게시글 스타일                 */
@@ -192,9 +195,14 @@
                                     post.disasterType.name()=='VOLCANO'?'火山':
                                     post.disasterType.name()=='FIRE'?'火事':
                                     post.disasterType.name()=='LANDSLIDE'?'山崩れ':'その他'}">
-					</span> <span>|</span> <span th:text="'作成者 : ' + ${post.nickname}" data-ko="작성자">작성자</span>
-					<span>|</span> <span th:text="'照会数 : ' + ${post.viewCount}" data-ko="조회수">조회수</span>
-					<span>|</span> <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+					</span>
+					
+					<span>|</span>
+					<span th:text="'作成者 : ' + ${post.nickname}" data-ko="작성자">작성자</span>
+					<span>|</span>
+					<span th:text="'照会数 : ' + ${post.viewCount}" data-ko="조회수">조회수</span>
+					<span>|</span>
+					<span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
 					
 					<div class="flex items-center gap-4" style="float: right;">
 						<a
@@ -205,7 +213,7 @@
 						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId == post.memberId}"
 							th:href="@{/community/edit/{postId}(postId=${post.postId})}"
-							class="write-btn" data-ko="수정">修整</a>
+							class="write-btn" data-ko="수정">修正</a>
 							
 						<a th:href="@{/community/main}"
 							class="write-btn" data-ko="목록">リスト</a>
