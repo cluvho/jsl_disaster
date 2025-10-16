@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
@@ -7,7 +7,7 @@
     <div class="auth-wrap">
         <form class="form-card" th:action="@{/perform_login}" method="post">
         
-            <h2 class="form-title">로그인</h2>
+            <h2 class="form-title" data-ko="로그인">ログイン</h2>
 
             <!-- 성공 메시지 -->
             <div th:if="${success}" class="alert alert-success">
@@ -20,31 +20,31 @@
             </div>
 
             <div class="form-field">
-                <label for="loginId">아이디</label>
+                <label for="loginId" data-ko="아이디">アイディー</label>
                 <input id="loginId" name="username" type="text" autocomplete="username" required />
             </div>
 
             <div class="form-field">
-                <label for="loginPw">비밀번호</label>
+                <label for="loginPw" data-ko="비밀번호">パスワード</label>
                 <input id="loginPw" name="password" type="password" autocomplete="current-password" required />
             </div>
 
             <!-- ✅ CSRF 토큰 필수 -->
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-            <button type="submit" class="btn-primary w-100">로그인</button>
+            <button type="submit" class="btn-primary w-100" data-ko="로그인">ログイン</button>
 
             <div class="form-meta">
                 <label class="remember">
                     <input type="checkbox" name="remember-me" />
-                    자동 로그인
+                    <span data-ko="자동 로그인">自動ログイン</span>
                 </label>
-                <a class="btn-outline" href="/member/forgot-password">비밀번호 찾기</a>
+                <a class="btn-outline" href="/member/forgot-password" data-ko="비밀번호 찾기">パスワード探し</a>
             </div>
 
-            <div class="divider"><span>또는</span></div>
+            <div class="divider"><span data-ko="또는">または</span></div>
 
-            <a class="btn-outline w-100" href="/member/signup">회원가입</a>
+            <a class="btn-outline w-100" href="/member/signup" data-ko="회원가입">会員登録</a>
         </form>
     </div>
 </div>
