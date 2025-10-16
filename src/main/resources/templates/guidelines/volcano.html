@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-content">
+            
+            
+            <main class="content-area">
+                <h2 style="text-align: center;" data-ko="화산경보">火山警報</h2>
+                
+                
+                <div class="accordion-card-list">
+                
+                		
+                    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent1">
+				            <div class="card-image-container">
+				                <img src="/images/virus_message.png" alt="분화시 대응방법" >
+				            </div>
+				            <div class="card-image-container">
+				                <img src="/images/kazan2.png" alt="분화시 대응방법">
+				            </div>
+				            <div class="card-image-container">
+				                <img src="/images/kazan4.png" alt="분화시 대응방법">
+				            </div>
+				            <div class="card-content">
+				                <h4 data-ko="소규모 분화">小規模噴火</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent1" class="collapse-content">
+				            <p data-ko="ㄴ외출은 자제하고 실내에 있습니다.">
+				            ㄴ外出は控え、室内に留まります。</p>
+				            <p data-ko="ㄴ모든 창문과 출입문을 닫고, 환풍기나 에어컨 등 외부 공기가 유입될 수 있는 장치는 모두 가동을 중지합니다. ">
+				            ㄴすべての窓と出入口を閉め、換気扇やエアコンなど外部の空気が流れる可能性のある装置はすべて稼働を停止します。</p>
+				            <p data-ko="ㄴ테이프나 젖은 수건으로 틈새를 막아 화산재 유입을 최소화합니다.">
+				            ㄴテープや濡れたタオルで隙間を塞ぎ、火山灰が入らないようにします。</p>
+				            <p data-ko="ㄴ실내에서도 화산재가 들어올 수 있으므로, 방진 마스크(KF94 이상)를 착용하는 것이 안전합니다. ">
+				            ㄴ室内でも火山灰が入るかもしれません。防塵マスク（KF94以上）を着用してください。</p>
+				            <p data-ko="ㄴ부득이하게 외출 시에는 마스크와 방호 안경, 긴소매 옷, 모자를 착용하여 피부와 호흡기를 보호합니다.">
+				            ㄴやむを得ず外出するときには、マスクとゴーグル、長袖の服、帽子を着用し、皮膚と呼吸器を守ります。</p>
+				            <p data-ko="ㄴ화산재가 눈에 들어가면 각막에 심각한 손상을 줄 수 있으므로 반드시 안경을 착용합니다.">
+				            ㄴ火山灰が目に入ると角膜に深刻な損傷を与えます。必ずメガネを着用します。</p>
+				            <p data-ko="ㄴ귀가 시에는 옷에 묻은 화산재를 문밖에서 모두 털어내고, 샤워를 하여 몸에 남은 화산재를 깨끗이 씻어냅니다.">
+				            ㄴ帰宅時には服に付いた火山灰を玄関の外ですべて払い落とし、シャワーを浴びて体に残った火山灰をきれいに洗い流します。</p>
+				       		<p data-ko="ㄴ화산재는 전자기기 고장의 원인이 되므로, 비닐 등으로 덮어 보호합니다.">
+				       		ㄴ火山灰は電子機器の故障の原因となるため、ビニールなどで覆って保護します。</p>
+				        		<p data-ko="ㄴ화산재는 시야를 가리고, 도로를 미끄럽게 하며, 차량 엔진을 마비시킬 수 있습니다. 가급적 운전을 삼가해주세요.">
+				        		ㄴ火山灰は視界を遮って、道路を滑りやすくし、車のエンジンを麻痺させます。できるだけ運転は控えてください。</p>
+				        </div>
+				    </div>
+				    <div class="card">
+				        <div class="card-header" data-toggle="collapse" data-target="#collapseContent2">
+				            <div class="card-image-container">
+				                <img src="/images/jishin6.png" alt="분화시 대응방법">
+				            </div>
+				            <div class="card-image-container">
+				                <img src="/images/kazan1.png" alt="분화시 대응방법">
+				            </div>
+				            <div class="card-image-container">
+				                <img src="/images/kazan3.png" alt="분화시 대응방법">
+				            </div>
+				            <div class="card-content">
+				                <h4 data-ko="대규모 분화">大規模噴火</h4>
+				            </div>
+				            <div class="card-arrow">&gt;</div>
+				        </div>
+				        <div id="collapseContent2" class="collapse-content">
+				            <p data-ko="ㄴ정부나 지자체의 대피 명령이 발령되면 즉시 지정된 대피소로 대피합니다.">
+				            ㄴ政府や自治体の避難命令が発令された場合は、即座に指定された避難所に避難します。</p>
+				            <p data-ko="ㄴ대피하기 전에 가스와 전기를 차단하여 2차 피해를 예방합니다.">
+				            ㄴ避難する前に、ガスと電気を遮断し、二次災害を予防します。</p>
+				            <p data-ko="ㄴ화산이류가 강을 따라 매우 빠른 속도로 이동합니다. 최대한 높은 곳으로 대피해야 합니다.">
+				            ㄴ火山泥流が谷を流れ下ってきます。できるだけ高い場所に避難する必要があります。</p>
+				            <p data-ko="ㄴ호흡 곤란이나 눈의 통증 등 이상 증상이 느껴지면 즉시 의료 지원을 요청합니다.">
+				            ㄴ呼吸困難や目が痛むなどの異常症状を感じた場合は、即座に病院へ連絡をしてください。</p>
+				            
+				        </div>
+				    </div>
+                    
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardHeaders = document.querySelectorAll('.card-header');
+
+        cardHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+
+                // 콘텐츠가 이미 펼쳐져 있을 때
+                if (targetElement.style.maxHeight) {
+                    targetElement.style.maxHeight = null;
+                    header.classList.remove('expanded');
+                } else {
+                    // 콘텐츠를 펼칠 때
+                    targetElement.style.maxHeight = targetElement.scrollHeight + 'px';
+                    header.classList.add('expanded');
+                }
+            });
+        });
+    });
+</script>
+</th:block>
+</body>
+</html>

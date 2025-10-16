@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<script th:src="@{/js/layout/header.js}"></script>
 <body>
 	<th:block th:fragment="nav">
 			 <nav>
-                <a href="#" class="active">マップ</a>
+                <a th:href="@{/}">マップ</a>
                 <a th:href="@{/guidelines}">災害対策</a>
                 <a th:href="@{/community/communityList}">コミュニティ</a>
                 <a th:href="@{/member/myPage}">マイページ</a>

@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
-/* =========================================================
+/* -----------------------
    공통 색상 변수
-========================================================= */
+------------------------ */
 :root {
     --main-red: #E60012;
     --bg-color: #F5F6F8;
@@ -20,9 +20,9 @@
     --admin-sidebar-hover: #495057;
 }
 
-/* =========================================================
+/* ------------------------
    기본 설정
-========================================================= */
+------------------------ */
 html, body {
     height: 100%;
     margin: 0;
@@ -31,6 +31,7 @@ html, body {
     background-color: var(--bg-color);
     color: var(--text-color);
 }
+/* 2. 본문(content) 영역이 남는 공간을 모두 차지하도록 설정 (핵심!) */
 
 .page-wrapper {
     display: flex;
@@ -38,9 +39,9 @@ html, body {
     height: 100%;
 }
 
-/* =========================================================
+/* ------------------------
    헤더
-========================================================= */
+------------------------ */
 .header {
     display: flex;
     justify-content: space-between;
@@ -62,9 +63,9 @@ html, body {
     text-decoration: none;
 }
 
-.header nav { 
-    display: flex; 
-    gap: 25px; 
+.header nav {
+    display: flex;
+    gap: 25px;
 }
 
 .header nav a {
@@ -77,40 +78,52 @@ html, body {
     transition: color 0.2s, border-color 0.2s;
 }
 
-.header nav a.active, 
+#langToggle {
+	            margin-top: 12px;
+	            padding: 10px 18px;
+	            background: #007bff;
+	            color: #fff;
+	            font-weight: bold;
+	            border: none;
+	            border-radius: 6px;
+	            cursor: pointer;
+	            transition: background 0.2s ease;
+	        }
+
+.header nav a.active,
 .header nav a:hover {
     color: var(--text-color);
     border-bottom: 2px solid var(--main-red);
 }
 
-.header .user-options { 
-    display: flex; 
-    align-items: center; 
-    gap: 15px; 
+.header .user-options {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.header .user-options a { 
-    font-size: 14px; 
-    color: var(--subtle-text-color); 
-    text-decoration: none; 
+.header .user-options a {
+    font-size: 14px;
+    color: var(--subtle-text-color);
+    text-decoration: none;
 }
 
-.header .user-options a:hover { 
-    color: var(--main-red); 
+.header .user-options a:hover {
+    color: var(--main-red);
 }
 
-/* =========================================================
+/* ------------------------
    메인 레이아웃
-========================================================= */
+------------------------ */
 .main-content {
     display: flex;
     flex-grow: 1;
     overflow: hidden;
 }
 
-/* =========================================================
+/* ------------------------
    사이드바 (일반 사용자용)
-========================================================= */
+------------------------ */
 .sidebar {
     width: 300px;
     background-color: var(--white-color);
@@ -143,18 +156,18 @@ html, body {
     accent-color: var(--main-red);
 }
 
-/* =========================================================
+/* ------------------------
    본문 영역
-========================================================= */
+------------------------ */
 .content-area {
     flex-grow: 1;
     padding: 30px;
     overflow-y: auto;
 }
 
-#map { 
-    position: relative; 
-    z-index: 1; 
+#map {
+    position: relative;
+    z-index: 1;
 }
 
 .map-section {
@@ -172,9 +185,9 @@ html, body {
     box-shadow: 0 2px 10px rgba(0,0,0,.1);
 }
 
-.map-section .placeholder { 
-    text-align: center; 
-    color: var(--subtle-text-color); 
+.map-section .placeholder {
+    text-align: center;
+    color: var(--subtle-text-color);
     height: 400px;
     display: flex;
     flex-direction: column;
@@ -182,9 +195,9 @@ html, body {
     align-items: center;
 }
 
-.map-section .placeholder h3 { 
-    font-size: 24px; 
-    margin: 0 0 10px; 
+.map-section .placeholder h3 {
+    font-size: 24px;
+    margin: 0 0 10px;
 }
 
 .section-title {
@@ -195,8 +208,10 @@ html, body {
     margin-bottom: 20px;
 }
 
-/* 카드 리스트 */
-.card-list a {
+/* ------------------------
+   카드 리스트 (A: 단순 링크 목록용)
+------------------------ */
+.link-card-list a {
     display: flex;
     align-items: center;
     background-color: var(--white-color);
@@ -208,82 +223,113 @@ html, body {
     color: var(--text-color);
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-
-.card-list a:hover {
+.link-card-list a:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
 }
-
-.card-icon { 
-    font-size: 32px; 
-    margin-right: 20px; 
-    width: 40px; 
-    text-align: center; 
+.link-card-list .card-icon {
+    font-size: 32px;
+    margin-right: 20px;
+    width: 40px;
+    text-align: center;
 }
-
-.card-content { 
-    flex-grow: 1; 
+.link-card-list .card-content {
+    flex-grow: 1;
 }
-
-.card-content h4 { 
-    margin: 0 0 5px; 
-    font-size: 18px; 
-    font-weight: 700; 
+.link-card-list .card-content h4 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    font-weight: 700;
 }
-
-.card-content p { 
-    margin: 0; 
-    font-size: 14px; 
-    color: var(--subtle-text-color); 
-}
-
-.card-arrow { 
-    font-size: 24px; 
-    font-weight: bold; 
-    color: #D0D0D0; 
-}
-
-/* =========================================================
-   푸터
-========================================================= */
-.footer {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-    padding-left: clamp(16px, 4vw, 40px);
-    padding-right: clamp(16px, 4vw, 40px);
-    background-color: #343A40;
-    color: #ADB5BD;
-    padding-top: 20px;
-    padding-bottom: 20px;
+.link-card-list .card-content p {
+    margin: 0;
     font-size: 14px;
+    color: var(--subtle-text-color);
+}
+.link-card-list .card-arrow {
+    font-size: 24px;
+    font-weight: bold;
+    color: #D0D0D0;
+}
+
+
+/* ------------------------
+   카드 리스트 (B: 아코디언 펼침 목록용)
+------------------------ */
+.accordion-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.accordion-card-list .card {
+    background-color: var(--white-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    overflow: hidden;
+}
+.accordion-card-list .card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+.accordion-card-list .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #495057;
-    box-sizing: border-box;
+    padding: 20px 15px;
+    cursor: pointer;
+}
+.accordion-card-list .card-image-container {
+    width: 160px;
+    height: 110px;
     flex-shrink: 0;
+    margin-right: 15px;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.accordion-card-list .card-image-container img {
+    width: 90%;
+    height: 100%;
+    object-fit: cover;
+}
+.accordion-card-list .card-content {
+    flex-grow: 1;
+}
+.accordion-card-list .card-content h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+.accordion-card-list .card-arrow {
+    font-size: 24px;
+    font-weight: bold;
+    color: #D0D0D0;
+    transition: transform 0.3s ease;
+}
+.accordion-card-list .card-header.expanded .card-arrow {
+    transform: rotate(90deg);
+}
+.accordion-card-list .collapse-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0 15px;
+    border-top: 1px solid var(--border-color);
+}
+.accordion-card-list .collapse-content p {
+    margin: 15px 0;
+    font-size: 14px;
+    color: var(--subtle-text-color);
 }
 
-.footer a { 
-    color: #ADB5BD; 
-    text-decoration: none; 
-    margin-right: 20px; 
-}
-
-.footer a:hover { 
-    color: var(--white-color); 
-}
-
-.footer .emergency-contacts span { 
-    margin-left: 15px; 
-    font-weight: 500; 
-    color: #F8F9FA; 
-}
-
-/* =========================================================
+/* ------------------------
    지도 정보 박스 (대피소 & 병원 범례)
-========================================================= */
+------------------------ */
 #shelter-info,
 #hospital-info {
     position: absolute;
@@ -310,22 +356,109 @@ html, body {
     margin-bottom: 0;
 }
 
-#shelter-info .info-icon,
-#hospital-info .info-icon {
-    width: 18px;
-    height: 18px;
+#shelter-info .info-icon {
+    width: 20px;
+    height: 20px;
     margin-right: 6px;
     vertical-align: middle;
 }
 
-#shelter-info .info-icon {
-    width: 20px;
-    height: 20px;
+#hospital-info .info-icon {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    margin-right: 4px;
 }
 
-/* =========================================================
+
+/* ------------------------
+   푸터 (개선안)
+------------------------ */
+.footer {
+    /* 배경색: 무겁지 않은 밝은 회색으로 변경하여 본문과 조화롭게 */
+    background-color: #f8f9fa; 
+    
+    /* 텍스트 색상: 배경이 밝아졌으니 어둡게 변경 */
+    color: #6c757d; 
+
+    padding: 40px clamp(16px, 4vw, 40px); /* 상하 여백을 좀 더 주어 안정감 부여 */
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    
+    /* 경계선: 콘텐츠와 푸터를 구분하는 옅은 상단 선 */
+    border-top: 1px solid #dee2e6; 
+    
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    
+    /* 전체 너비를 차지하지 않도록 기존 width, margin 속성 제거 */
+    /* width: 100vw; */
+    /* margin-left: calc(50% - 50vw); */
+    /* margin-right: calc(50% - 50vw); */
+}
+
+/* 공통 섹션 스타일 */
+.footer-section {
+    flex: 1;
+    min-width: 220px;
+    padding: 0 20px; /* 상하 여백은 .footer에서 관리 */
+}
+
+/* 왼쪽, 가운데, 오른쪽 정렬 (모바일에서는 중앙 정렬) */
+.footer-section.left { text-align: left; }
+.footer-section.center { text-align: center; }
+.footer-section.right { text-align: right; }
+
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .footer-section,
+    .footer-section.left,
+    .footer-section.right {
+        text-align: center;
+    }
+}
+
+
+/* 링크 스타일 */
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section li {
+    margin: 8px 0; /* 링크 간 간격 조정 */
+}
+
+.footer a {
+    color: #6c757d; /* 기본 링크 색상 */
+    text-decoration: none;
+    transition: color 0.2s; /* 부드러운 색상 전환 효과 */
+}
+
+.footer a:hover {
+    /* 마우스를 올리면 사이트의 포인트 색상이나 더 진한 회색으로 변경 */
+    color: #343a40; 
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
+/* 제목 */
+.footer-section h3 {
+    color: #343a40; /* 제목은 더 진한 색으로 강조 */
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600; /* 살짝 더 두껍게 */
+}
+
+
+/* ------------------------
    로그인 & 인증
-========================================================= */
+------------------------ */
 .auth-wrap {
     display: flex;
     justify-content: center;
@@ -511,9 +644,9 @@ html, body {
     color: var(--subtle-text-color);
 }
 
-/* =========================================================
+/* ------------------------
    회원가입
-========================================================= */
+------------------------ */
 .req {
     color: var(--main-red);
 }
@@ -595,9 +728,9 @@ html, body {
     display: none;
 }
 
-/* =========================================================
+/* ------------------------
    커뮤니티 페이지
-========================================================= */
+------------------------ */
 .page-community {
     flex-grow: 1;
     padding: 30px;
@@ -692,9 +825,9 @@ html, body {
     margin-top: 10px;
 }
 
-/* =========================================================
+/* ------------------------
    커뮤니티 게시글 작성
-========================================================= */
+------------------------ */
 .page-communitywrite {
     flex-grow: 1;
     padding: 30px;
@@ -790,9 +923,9 @@ html, body {
     background-color: #d20010;
 }
 
-/* =========================================================
+/* ------------------------
    커뮤니티 게시글 상세
-========================================================= */
+------------------------ */
 .page-communitydetail {
     flex-grow: 1;
     padding: 30px;
@@ -1006,9 +1139,9 @@ html, body {
     margin-top: 10px;
 }
 
-/* =========================================================
+/* ------------------------
    상세 페이지 (지역별 재난 정보)
-========================================================= */
+------------------------ */
 .region-header {
     background-color: var(--white-color);
     border: 1px solid var(--border-color);
@@ -1130,9 +1263,9 @@ html, body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* =========================================================
+/* ------------------------
    날씨 섹션
-========================================================= */
+------------------------ */
 .weather-overview {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1251,9 +1384,9 @@ html, body {
     font-weight: 600;
 }
 
-/* =========================================================
+/* ------------------------
    재난 정보 섹션
-========================================================= */
+------------------------ */
 .disaster-alert {
     background-color: #FFF5F5;
     color: var(--text-color);
@@ -1308,9 +1441,9 @@ html, body {
     color: var(--subtle-text-color);
 }
 
-/* =========================================================
+/* ------------------------
    시설 정보 섹션
-========================================================= */
+------------------------ */
 .facility-tabs {
     display: flex;
     margin-bottom: 20px;
@@ -1386,9 +1519,9 @@ html, body {
     color: var(--subtle-text-color);
 }
 
-/* =========================================================
+/* ------------------------
    이력 및 뉴스 섹션
-========================================================= */
+------------------------ */
 .history-list,
 .news-list {
     display: grid;
@@ -1453,9 +1586,9 @@ html, body {
     margin-top: 10px;
 }
 
-/* =========================================================
+/* ------------------------
    관리자 페이지
-========================================================= */
+------------------------ */
 .admin-login-wrapper {
     display: flex;
     justify-content: center;
@@ -1776,14 +1909,14 @@ html, body {
     border-color: var(--main-red);
 }
 
-/* =========================================================
+/* ------------------------
    반응형 디자인
-========================================================= */
+------------------------ */
 @media (max-width: 768px) {
     .main-content {
         flex-direction: column;
     }
-    
+
     .sidebar {
         width: 100%;
         order: -1;
@@ -1791,11 +1924,11 @@ html, body {
         border-bottom: 1px solid var(--border-color);
         padding: 15px;
     }
-    
+
     .content-area {
         padding: 20px 15px;
     }
-    
+
     .admin-page-wrapper {
         flex-direction: column;
         height: auto;
@@ -1806,7 +1939,7 @@ html, body {
         height: auto;
         border-bottom: 1px solid var(--admin-sidebar-hover);
     }
-    
+
     .admin-sidebar nav ul {
         display: flex;
         justify-content: space-around;
@@ -1817,16 +1950,16 @@ html, body {
     .admin-sidebar nav a {
         padding: 10px 15px;
     }
-    
+
     .admin-sidebar .logo {
         padding: 15px;
         font-size: 20px;
     }
-    
+
     .content-container {
         padding: 20px 15px;
     }
-    
+
     .management-section {
         padding: 20px 15px;
     }
@@ -1847,7 +1980,7 @@ html, body {
         margin-bottom: 15px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
-    
+
     .data-table td {
         display: block;
         text-align: right;
@@ -1855,7 +1988,7 @@ html, body {
         border-bottom: 1px dashed var(--border-color);
         position: relative;
     }
-    
+
     .data-table td:last-child {
         border-bottom: none;
     }
@@ -1873,30 +2006,30 @@ html, body {
         text-align: left;
         padding-left: 15px;
     }
-    
+
     .data-table td:last-child::before {
         display: none;
     }
-    
+
     .region-header-top {
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
     }
-    
+
     .region-search {
         width: 100%;
     }
-    
+
     .region-search input {
         flex: 1;
         width: auto;
     }
-    
+
     .nav-menu {
         gap: 10px;
     }
-    
+
     .nav-item {
         font-size: 12px;
         padding: 8px 12px;
@@ -1907,7 +2040,7 @@ html, body {
     .content-area {
         padding: 20px;
     }
-    
+
     .form-card {
         padding: 20px;
     }
