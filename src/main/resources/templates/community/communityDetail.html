@@ -195,19 +195,27 @@
 					</span> <span>|</span> <span th:text="'作成者 : ' + ${post.nickname}" data-ko="작성자">작성자</span>
 					<span>|</span> <span th:text="'照会数 : ' + ${post.viewCount}" data-ko="조회수">조회수</span>
 					<span>|</span> <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+					
 					<div class="flex items-center gap-4" style="float: right;">
 						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId == post.memberId}"
 							th:href="@{/community/delete/{postId}(postId=${post.postId})}"
-							class="write-btn" data-ko="삭제">削除</a> <a
+							class="write-btn" onclick="return confirm('この文を削除しますか？　削除された文は復元できません。');" data-ko="삭제" data-ko-confirm="이 글을 삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.">削除</a>
+							
+						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId == post.memberId}"
 							th:href="@{/community/edit/{postId}(postId=${post.postId})}"
-							class="write-btn" data-ko="수정">修整</a> <a th:href="@{/community/main}"
-							class="write-btn" data-ko="목록">リスト</a> <a
+							class="write-btn" data-ko="수정">修整</a>
+							
+						<a th:href="@{/community/main}"
+							class="write-btn" data-ko="목록">リスト</a>
+							
+						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId != post.memberId}"
 							th:href="@{/report/post/{postId}(postId=${post.postId})}"
 							class="write-btn" data-ko="신고">報告</a>
 					</div>
+					
 				</div>
 			</div>
 			<p class="post-body" th:utext="${post.body}"></p>
