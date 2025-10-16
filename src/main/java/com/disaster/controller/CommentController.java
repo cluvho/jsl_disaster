@@ -59,7 +59,7 @@ public class CommentController {
             redirectAttributes.addFlashAttribute("error", "댓글 삭제 중 오류가 발생했습니다.");
         }
         
-        return "redirect:/community/communityDetail/" + postId;
+        return "redirect:/community/" + postId;
     }
 
     /** ✅ 댓글 신고 */

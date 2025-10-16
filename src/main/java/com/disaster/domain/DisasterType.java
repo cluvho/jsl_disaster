@@ -13,14 +13,14 @@ import java.util.Objects;
 @Getter
 @RequiredArgsConstructor
 public enum DisasterType {
-    EARTHQUAKE("지진"),
-    TSUNAMI("쓰나미"),
-    TYPHOON("태풍"),
-    FLOOD("호우/홍수"),
-    VOLCANO("화산"),
-    FIRE("화재"),
-    LANDSLIDE("산사태"),
-    OTHER("기타");
+    EARTHQUAKE("地震"),
+    TSUNAMI("津波"),
+    TYPHOON("台風"),
+    FLOOD("豪雨・洪水"),
+    VOLCANO("火山"),
+    FIRE("火事"),
+    LANDSLIDE("山崩れ"),
+    OTHER("その他");
 
     private final String displayName;
 

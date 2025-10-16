@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
@@ -8,9 +8,14 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="card shadow-sm border-0">
+                
                     <div class="card-header bg-light border-0 py-4">
-                        <h2 class="text-center mb-0" style="font-weight: 700;" th:text="|${reportTarget} 신고|">신고</h2>
+                        <h2 class="text-center mb-0" style="font-weight: 700;" 
+                            th:text="|${reportTargetJa} 報告|" 
+                            th:attr="data-ko=|${reportTargetKo} 신고|">신고
+                        </h2>
                     </div>
+                    
                     <div class="card-body p-4 p-md-5">
                         <form th:action="@{${formAction}}" th:object="${reportDto}" method="post">
                             
@@ -21,41 +26,44 @@
                             
                             <!-- 신고대상 내용 -->
                             <div class="mb-4">
-                                <label class="form-label"><strong th:text="|신고대상 ${reportTarget}|">신고대상</strong></label>
+                                <label class="form-label">
+                                    <strong th:text="|報告対象 ${reportTargetJa}|" 
+                                            th:attr="data-ko=|신고대상 ${reportTargetKo}|">신고대상</strong>
+                                </label>
                                 <textarea class="form-control form-control-lg" th:text="${targetContent}" readonly rows="3"></textarea>
                             </div>
                             
                             <!-- 신고 사유 -->
                             <div class="mb-4">
                                 <label for="reason" class="form-label">
-                                    <strong>사유</strong> <span style="color: red;">*</span>
+                                    <strong data-ko="사유">理由</strong> <span style="color: red;">*</span>
                                 </label>
                                 <select id="reason" class="form-control form-control-lg" th:field="*{reason}" required>
-                                    <option value="">선택하세요</option>
-                                    <option value="FAKE">허위정보</option>
-                                    <option value="ABUSE">욕설/비방</option>
-                                    <option value="SPAM">스팸/도배</option>
-                                    <option value="SEXUAL">음란물</option>
-                                    <option value="OTHER">기타</option>
+                                    <option value="" data-ko="선택하세요">選択してください</option>
+                                    <option value="FAKE" data-ko="허위정보">虚偽情報</option>
+                                    <option value="ABUSE" data-ko="욕설/비방">悪口・誹謗</option>
+                                    <option value="SPAM" data-ko="스팸/도배">スパム／荒らし</option>
+                                    <option value="SEXUAL" data-ko="음란물">猥褻物</option>
+                                    <option value="OTHER" data-ko="기타">その他</option>
                                 </select>
                             </div>
 
                             <!-- 상세 내용 -->
                             <div class="mb-4">
                                 <label for="post-content" class="form-label">
-                                    <strong>상세 내용</strong>
+                                    <strong data-ko="상세 내용">詳細内容</strong>
                                 </label>
                                 <textarea id="post-content" th:field="*{details}"></textarea>
                             </div>
                             
-                            <p>※ 장난성 및 보복성 등의 허위신고는 계정 삭제처리가 될 수 있습니다.</p>
-                            <p>※ 이로 인하여 사이트 내에 문제가 발생 시 법적대응이 가능합니다.</p>
+                            <p data-ko="※ 장난성 및 보복성 등의 허위신고는 계정 삭제처리가 될 수 있습니다.">※ いたずらや報復などの虚偽の報告は、アカウント削除処理されることがあります。</p>
+                            <p data-ko="※ 이로 인하여 사이트 내에 문제가 발생 시 법적대응이 가능합니다.">※ これによりサイト内で問題が発生した場合、法的対応が可能です。</p>
 
                             <!-- 버튼 -->
                             <div class="d-grid gap-2 mt-5">
                                 <button type="submit" class="btn btn-primary btn-lg" 
-                                        onclick="return confirm('정말로 신고하시겠습니까?');">신고하기</button>
-                                <button type="button" class="btn btn-secondary btn-lg" onclick="history.back();">취소하기</button>
+                                        onclick="return confirm('本当に報告しますか？');" data-ko="신고하기" data-ko-confirm="정말로 신고하시겠습니까?">報告する</button>
+                                <button type="button" class="btn btn-secondary btn-lg" onclick="history.back();" data-ko="취소하기">キャンセル</button>
                             </div>
 
                         </form>
@@ -109,7 +117,7 @@
             $('#post-content').summernote({
                 height: 350,
                 lang: 'ko-KR',
-                placeholder: '상세 내용을 입력해주세요.',
+                placeholder: '詳細内容を入力してください。', // data-ko-placeholder: '상세 내용을 입력해주세요.'
                 toolbar: [
                     ['fontname', ['fontname']],
                     ['fontsize', ['fontsize']],
@@ -145,8 +153,9 @@
                         $(editor).summernote('insertImage', imgUrl);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error("파일 업로드 실패: " + textStatus + ", " + errorThrown);
-                        alert("파일 업로드에 실패했습니다.");
+                    	console.error("ファイルアップロード失敗: " + textStatus + ", " + errorThrown);
+                     	// data-ko-alert: "파일 업로드에 실패했습니다."
+                        alert("イメージファイルのアップロードに失敗しました。");
                     }
                 });
             }
