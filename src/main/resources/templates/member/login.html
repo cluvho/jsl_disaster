@@ -3,6 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 
+<head>
+    <title data-ko="로그인">ログイン</title>
+</head>  
+
 <div layout:fragment="content">
     <div class="auth-wrap">
         <form class="form-card" th:action="@{/perform_login}" method="post">
