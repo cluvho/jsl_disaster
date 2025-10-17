@@ -198,9 +198,9 @@
 					</span>
 					
 					<span>|</span>
-					<span th:text="'作成者 : ' + ${post.nickname}" data-ko="작성자">작성자</span>
+					<span data-ko="작성자">作成者</span><span th:text="${post.nickname}"></span>
 					<span>|</span>
-					<span th:text="'照会数 : ' + ${post.viewCount}" data-ko="조회수">조회수</span>
+					<span data-ko="조회수">照会数</span><span th:text="${post.viewCount}"></span>
 					<span>|</span>
 					<span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
 					
@@ -253,10 +253,12 @@
 			<form th:action="@{/comment/add(postId=${post.postId})}"
 				method="post" class="comment-form">
 				<input type="hidden" name="parentId" value="">
+				
 				<textarea name="body"
-					placeholder="コメントは本人の他の人格です。問題になるコメントはアイディーの削除および法律的な対応が可能です。"
-					required data-ko="댓글은 자신의 또다른 인격입니다. 문제되는 댓글을 남길경우 계정삭제 및 법적대응이 가능합니다."></textarea>
+        placeholder="コメントは本人の他の人格です。問題になるコメントはアイディーの削除および法律的な対応が可能です。" required 
+        data-ko-placeholder="댓글은 자신의 또다른 인격입니다. 문제되는 댓글을 남길경우 계정삭제 및 법적대응이 가능합니다."></textarea>
 				<button type="submit" data-ko="등록">登録</button>
+			
 			</form>
 
 			<div class="comment-list">
