@@ -164,12 +164,12 @@
 						<div class="post-content ms-3">
 							<div class="post-meta">
 								<span th:text="${post.disasterType != null ? post.disasterType.displayName : '기타'}">재난 유형</span>
-								<span>|</span>
+								
 								<span data-ko="작성자">作成者</span><span th:text="${post.nickname}"></span>
-								<span>|</span>
+								
 								<span data-ko="조회수">照会数</span><span th:text="${post.viewCount}"></span>
-								<span>|</span>
-								<span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
+								
+								<span th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd HH:mm')}">작성일</span>
 							</div>
 
 							<h4 class="post-title" th:text="${post.title}">제목</h4>

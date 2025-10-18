@@ -197,12 +197,12 @@
                                     post.disasterType.name()=='LANDSLIDE'?'山崩れ':'その他'}">
 					</span>
 					
-					<span>|</span>
+					
 					<span data-ko="작성자">作成者</span><span th:text="${post.nickname}"></span>
-					<span>|</span>
+					
 					<span data-ko="조회수">照会数</span><span th:text="${post.viewCount}"></span>
-					<span>|</span>
-					<span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+					
+					<span th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd HH:mm')}"></span>
 					
 					<div class="flex items-center gap-4" style="float: right;">
 						<a
@@ -214,14 +214,15 @@
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId == post.memberId}"
 							th:href="@{/community/edit/{postId}(postId=${post.postId})}"
 							class="write-btn" data-ko="수정">修正</a>
-							
-						<a th:href="@{/community/main}"
-							class="write-btn" data-ko="목록">リスト</a>
-							
+	
 						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId != post.memberId}"
 							th:href="@{/report/post/{postId}(postId=${post.postId})}"
 							class="write-btn" data-ko="신고">報告</a>
+							
+						<a th:href="@{/community/main}"
+							class="write-btn" data-ko="목록">リスト</a>
+								
 					</div>
 					
 				</div>
@@ -255,8 +256,7 @@
 				<input type="hidden" name="parentId" value="">
 				
 				<textarea name="body"
-        placeholder="コメントは本人の他の人格です。問題になるコメントはアイディーの削除および法律的な対応が可能です。" required 
-        data-ko-placeholder="댓글은 자신의 또다른 인격입니다. 문제되는 댓글을 남길경우 계정삭제 및 법적대응이 가능합니다."></textarea>
+        placeholder="댓글은 자신의 또다른 인격입니다. 문제되는 댓글을 남길경우 계정삭제 및 법적대응이 가능합니다.&#10;コメントは本人の他の人格です。問題になるコメントはアイディーの削除および法律的な対応が可能です。" required></textarea>
 				<button type="submit" data-ko="등록">登録</button>
 			
 			</form>

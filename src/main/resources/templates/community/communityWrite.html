@@ -40,7 +40,7 @@
 								<label for="post-title" class="form-label"><strong data-ko="제목">タイトル</strong>
 									<span style="color: red;">*</span></label> <input type="text"
 									id="post-title" class="form-control form-control-lg"
-									th:field="*{title}" placeholder="タイトルを入力してください。" data-ko-placeholder="제목을 입력하세요" required>
+									th:field="*{title}" placeholder="제목을 입력해주세요 / タイトルを入力してください" required>
 							</div>
 
 							<div class="mb-4">
@@ -130,7 +130,7 @@
             $('#post-content').summernote({
                 height: 350,
                 lang: 'ko-KR',
-                placeholder: 'ここに内容を入力してください。', // data-ko-placeholder: '이곳에 내용을 입력해주세요.'
+                placeholder: '내용을 입력해주세요 / ここに内容を入力してください',
                 toolbar: [
                     ['fontname', ['fontname']],
                     ['fontsize', ['fontsize']],
