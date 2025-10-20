@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>관리자 페이지</title>
+    <title>管理者ページ</title>
     <link rel="stylesheet" href="/css/mystyle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,69 +18,69 @@
         </div>
         <nav>
             <ul>
-                <li><a id="nav-dashboard" class="active">📊 대시보드</a></li>
-                <li><a id="nav-community">🛠️ 커뮤니티 관리</a></li>
-                <li><a id="nav-deleted-content">🗑️ 삭제된 콘텐츠 관리</a></li>
-                <li><a id="nav-log">📜 관리자 활동 로그</a></li>
+                <li><a id="nav-dashboard" class="active">📊 ダッシュボード</a></li>
+                <li><a id="nav-community">🛠️ コミュニティ管理</a></li>
+                <li><a id="nav-deleted-content">🗑️ 削除されたコンテンツ管理</a></li>
+                <li><a id="nav-log">📜 管理者活動ログ</a></li>
             </ul>
         </nav>
     </aside>
 
     <div class="admin-main-content">
 
-        <!-- 1. 대시보드 뷰 -->
+        <!-- 1. ダッシュボードビュー -->
         <div id="dashboard-view">
             <header class="admin-header">
-                <h1>대시보드</h1>
-                <div class="user-info"><a th:href="@{/logout}">로그아웃</a></div>
+                <h1>ダッシュボード</h1>
+                <div class="user-info"><a th:href="@{/logout}">ログアウト</a></div>
             </header>
             <main class="content-container">
                 <section class="dashboard-cards">
                     <div class="card">
-                        <h3>신규 가입자</h3>
+                        <h3>新規登録者</h3>
                         <div class="stat-number" th:text="${count}">12</div>
                     </div>
                     <div class="card">
-                        <h3>게시글 수</h3>
+                        <h3>投稿数</h3>
                         <div class="stat-number" th:text="${post}">34</div>
                     </div>
                     <div class="card">
-                        <h3>댓글 수</h3>
+                        <h3>コメント数</h3>
                         <div class="stat-number" th:text="${comment}">78</div>
                     </div>
                     <div class="card">
-                        <h3>전체 회원수</h3>
+                        <h3>総会員数</h3>
                         <div class="stat-number" th:text="${total}">1,234</div>
                     </div>
                 </section>
             </main>
         </div>
 
-        <!-- 2. 커뮤니티 관리 뷰 -->
+        <!-- 2. コミュニティ管理ビュー -->
         <div id="community-management-view" style="display: none;">
             <header class="admin-header">
-                <h1>커뮤니티 관리</h1>
-                <div class="user-info"><a th:href="@{/logout}">로그아웃</a></div>
+                <h1>コミュニティ管理</h1>
+                <div class="user-info"><a th:href="@{/logout}">ログアウト</a></div>
             </header>
             <main class="content-container">
-                <!-- 게시글 관리 -->
+                <!-- 投稿管理 -->
                 <div class="management-section" id="post-table-fragment" th:fragment="post-table-fragment">
-    					<div class="section-header"><h2>게시글 관리</h2></div>
+    					<div class="section-header"><h2>投稿管理</h2></div>
                     <table class="data-table">
                         <thead>
-                            <tr><th>ID</th><th>제목</th><th>작성자</th><th>작성일</th><th>상태</th><th>관리</th></tr>
+                            <tr><th>ID</th><th>タイトル</th><th>投稿者</th><th>投稿日</th><th>状態</th><th>管理</th></tr>
                         </thead>
                         <tbody>
                             <tr th:each="post : ${postList}">
                                 <td data-label="ID" th:text="${post.postId}"></td>
-                                <td data-label="제목" th:text="${post.title}"></td>
-                                <td data-label="작성자" th:text="${post.nickname}"></td>
-                                <td data-label="작성일" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></td>
-                                <td data-label="상태" th:text="${post.status}"></td>
-                                <td data-label="관리">
-								    <form th:action="@{/admin/soft-delete-post}" method="post" onsubmit="return confirm('이 게시글을 숨김 처리하시겠습니까?');">
+                                <td data-label="タイトル" th:text="${post.title}"></td>
+                                <td data-label="投稿者" th:text="${post.nickname}"></td>
+                                <td data-label="投稿日" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></td>
+                                <td data-label="状態" th:text="${post.status}"></td>
+                                <td data-label="管理">
+								    <form th:action="@{/admin/soft-delete-post}" method="post" onsubmit="return confirm('この投稿を非表示にしますか？');">
 								        <input type="hidden" name="postId" th:value="${post.postId}" />
-								        <button type="submit" class="btn btn-danger">숨김</button>
+								        <button type="submit" class="btn btn-danger">非表示</button>
 								    </form>
 								</td>
                             </tr>
@@ -102,27 +102,27 @@
                 
                 </div>
 
-                <!-- 신고된 댓글 관리 -->
+                <!-- 通報されたコメント管理 -->
                 
                 <div class="management-section" id="reported-comment-table-fragment" th:fragment="reported-comment-table-fragment">
-                     <div class="section-header"><h2>신고된 댓글 관리</h2></div>
+                     <div class="section-header"><h2>通報されたコメント管理</h2></div>
                     <table class="data-table">
                          <thead>
-                            <tr><th>ID</th><th>내용</th><th>작성자</th><th>작성일</th><th>원문</th><th>관리</th></tr>
+                            <tr><th>ID</th><th>内容</th><th>投稿者</th><th>投稿日</th><th>原文</th><th>管理</th></tr>
                         </thead>
                         <tbody>
                             <tr th:each="comment : ${commentList}">
                                 <td data-label="ID" th:text="${comment.commentId}"></td>
-                                <td data--label="내용" th:text="${comment.body}"></td>
-                                <td data-label="작성자" th:text="${comment.nickname}"></td>
-                                <td data-label="작성일" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}"></td>
-                                <td data-label="원문">
+                                <td data--label="内容" th:text="${comment.body}"></td>
+                                <td data-label="投稿者" th:text="${comment.nickname}"></td>
+                                <td data-label="投稿日" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}"></td>
+                                <td data-label="原文">
 								    <a th:href="@{/post/{id}(id=${comment.postId})}" th:text="${comment.title}" target="_blank"></a>
 								</td>
-                                <td data-label="관리">
-								    <form th:action="@{/admin/soft-delete-comment}" method="post" onsubmit="return confirm('이 댓글을 숨김 처리하시겠습니까?');">
+                                <td data-label="管理">
+								    <form th:action="@{/admin/soft-delete-comment}" method="post" onsubmit="return confirm('このコメントを非表示にしますか？');">
 								        <input type="hidden" name="commentId" th:value="${comment.commentId}" />
-								        <button type="submit" class="btn btn-danger">숨김</button>
+								        <button type="submit" class="btn btn-danger">非表示</button>
 								    </form>
 								</td>
                             </tr>
@@ -140,24 +140,24 @@
                         <a th:if="${commentCurrentPage < commentTotalPages}" href="javascript:void(0);" th:onclick="|loadReportedCommentPage(${commentCurrentPage + 1})|">&raquo;</a>
                     </div>
                 </div>
-                <!-- 회원 관리 -->
+                <!-- 会員管理 -->
                 <div class="management-section" id="member-table-fragment" th:fragment="member-table-fragment">
-                     <div class="section-header"><h2>회원 관리</h2></div>
+                     <div class="section-header"><h2>会員管理</h2></div>
                     <table class="data-table">
                         <thead>
-	                         <tr><th>ID</th><th>이메일</th><th>이름</th><th>주소</th><th>가입일</th><th>관리</th></tr>
+	                         <tr><th>ID</th><th>メール</th><th>氏名</th><th>住所</th><th>登録日</th><th>管理</th></tr>
 	                     </thead>
 	                     <tbody>
 	                         <tr th:each="member : ${memberList}">
 	                             <td data-label="ID" th:text="${member.memberId}"></td>
-	                             <td data-label="이메일" th:text="${member.email}"></td>
-	                             <td data-label="이름" th:text="${member.name}"></td>
-	                             <td data-label="주소" th:text="${member.postalCode}"></td>
-	                             <td data-label="가입일" th:text="${#dates.format(member.createdAt, 'yyyy-MM-dd')}"></td>
-	                             <td data-label="관리">
-					                <form method="post" th:action="@{/admin/deleteMember}" onsubmit="return confirm('정말로 이 회원을 삭제하시겠습니까?');">
+	                             <td data-label="メール" th:text="${member.email}"></td>
+	                             <td data-label="氏名" th:text="${member.name}"></td>
+	                             <td data-label="住所" th:text="${member.postalCode}"></td>
+	                             <td data-label="登録日" th:text="${#dates.format(member.createdAt, 'yyyy-MM-dd')}"></td>
+	                             <td data-label="管理">
+					                <form method="post" th:action="@{/admin/deleteMember}" onsubmit="return confirm('本当にこの会員を削除しますか？');">
 					                    <input type="hidden" name="memberId" th:value="${member.memberId}" />
-					                    <button type="submit" class="btn btn-danger">삭제</button>
+					                    <button type="submit" class="btn btn-danger">削除</button>
 					                </form>
 					            </td>
 	                         </tr>
@@ -179,29 +179,29 @@
             </main>
         </div>
         
-        <!-- 3. 삭제된 콘텐츠 관리 뷰 -->
+        <!-- 3. 削除されたコンテンツ管理ビュー -->
         <div id="deleted-content-view" style="display: none;">
             <header class="admin-header">
-                <h1>삭제된 콘텐츠 관리</h1>
-                <div class="user-info"><a th:href="@{/logout}">로그아웃</a></div>
+                <h1>削除されたコンテンツ管理</h1>
+                <div class="user-info"><a th:href="@{/logout}">ログアウト</a></div>
             </header>
             <main class="content-container">
                 <div class="management-section" id="soft-deleted-post-table-fragment" th:fragment="soft-deleted-post-table-fragment">
-                    <div class="section-header"><h2>삭제된 게시글</h2></div>
+                    <div class="section-header"><h2>削除された投稿</h2></div>
                     <table class="data-table">
                         <thead>
-                            <tr><th>ID</th><th>제목</th><th>작성자</th><th>신고/삭제 사유</th><th>관리</th></tr>
+                            <tr><th>ID</th><th>タイトル</th><th>投稿者</th><th>通報/削除理由</th><th>管理</th></tr>
                         </thead>
                         <tbody>
                             <tr th:each="post : ${deletedPostList}">
                                 <td data-label="ID" th:text="${post.postId}"></td>
-                                <td data-label="제목" th:text="${post.title}"></td>
-                                <td data-label="작성자" th:text="${post.nickname}"></td>
-                                <td data-label="신고/삭제 사유" th:text="${post.reportReason ?: '사유 없음'}"></td>
-                                <td data-label="관리">
-                                    <form th:action="@{/admin/hard-delete-post}" method="post" onsubmit="return confirm('이 게시글을 영구적으로 삭제합니다. 복구할 수 없습니다.');">
+                                <td data-label="タイトル" th:text="${post.title}"></td>
+                                <td data-label="投稿者" th:text="${post.nickname}"></td>
+                                <td data-label="通報/削除理由" th:text="${post.reportReason ?: '理由なし'}"></td>
+                                <td data-label="管理">
+                                    <form th:action="@{/admin/hard-delete-post}" method="post" onsubmit="return confirm('この投稿を完全に削除します。復元できません。');">
                                         <input type="hidden" name="postId" th:value="${post.postId}" />
-                                        <button type="submit" class="btn btn-danger">영구 삭제</button>
+                                        <button type="submit" class="btn btn-danger">完全削除</button>
                                     </form>
                                 </td>
                             </tr>
@@ -220,21 +220,21 @@
                 </div>
                 
                 <div class="management-section" id="soft-deleted-comment-table-fragment" th:fragment="soft-deleted-comment-table-fragment">
-                    <div class="section-header"><h2>삭제된 댓글</h2></div>
+                    <div class="section-header"><h2>削除されたコメント</h2></div>
                     <table class="data-table">
                         <thead>
-                            <tr><th>ID</th><th>내용</th><th>작성자</th><th>신고/삭제 사유</th><th>관리</th></tr>
+                            <tr><th>ID</th><th>内容</th><th>投稿者</th><th>通報/削除理由</th><th>管理</th></tr>
                         </thead>
                         <tbody>
                             <tr th:each="comment : ${deletedCommentList}">
                                 <td data-label="ID" th:text="${comment.commentId}"></td>
-                                <td data-label="내용" th:text="${comment.body}"></td>
-                                <td data-label="작성자" th:text="${comment.nickname}"></td>
-                                <td data-label="신고/삭제 사유" th:text="${comment.reportReason ?: '사유 없음'}"></td>
-                                <td data-label="관리">
-                                    <form th:action="@{/admin/hard-delete-comment}" method="post" onsubmit="return confirm('이 댓글을 영구적으로 삭제합니다. 복구할 수 없습니다.');">
+                                <td data-label="内容" th:text="${comment.body}"></td>
+                                <td data-label="投稿者" th:text="${comment.nickname}"></td>
+                                <td data-label="通報/削除理由" th:text="${comment.reportReason ?: '理由なし'}"></td>
+                                <td data-label="管理">
+                                    <form th:action="@{/admin/hard-delete-comment}" method="post" onsubmit="return confirm('このコメントを完全に削除します。復元できません。');">
                                         <input type="hidden" name="commentId" th:value="${comment.commentId}" />
-                                        <button type="submit" class="btn btn-danger">영구 삭제</button>
+                                        <button type="submit" class="btn btn-danger">完全削除</button>
                                     </form>
                                 </td>
                             </tr>
@@ -254,45 +254,45 @@
             </main>
         </div>
 
-        <!-- 4. 관리자 활동 로그 뷰 -->
+        <!-- 4. 管理者活動ログビュー -->
         <div id="admin-log-view" style="display: none;">
             <header class="admin-header">
-                <h1>관리자 활동 로그</h1>
-                <div class="user-info"><a th:href="@{/logout}">로그아웃</a></div>
+                <h1>管理者活動ログ</h1>
+                <div class="user-info"><a th:href="@{/logout}">ログアウト</a></div>
             </header>
             <main class="content-container">
                 <div class="management-section">
-                    <div class="section-header"><h2>활동 로그</h2></div>
+                    <div class="section-header"><h2>活動ログ</h2></div>
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>로그 ID</th>
-                                <th>관리자</th>
-                                <th>활동 내용</th>
-                                <th>대상 정보</th>
-                                <th>사유/비고</th>
-                                <th>활동 일시</th>
+                                <th>ログID</th>
+                                <th>管理者</th>
+                                <th>活動内容</th>
+                                <th>対象情報</th>
+                                <th>理由/備考</th>
+                                <th>活動日時</th>
                             </tr>
                         </thead>
                        <tbody>
                             <tr th:if="${logList == null or logList.isEmpty()}">
-                                <td colspan="6" style="text-align: center;">활동 로그가 없습니다.</td>
+                                <td colspan="6" style="text-align: center;">活動ログがありません。</td>
                             </tr>
                             <tr th:each="log : ${logList}">
-                                <td data-label="로그 ID" th:text="${log.logId}"></td>
-                                <td data-label="관리자" th:text="${log.adminNickname}"></td>
-                                <td data-label="활동 내용" th:text="${log.action}"></td>
-                                <td data-label="대상 정보">
+                                <td data-label="ログID" th:text="${log.logId}"></td>
+                                <td data-label="管理者" th:text="${log.adminNickname}"></td>
+                                <td data-label="活動内容" th:text="${log.action}"></td>
+                                <td data-label="対象情報">
                                     <th:block th:switch="true">
-                                        <span th:case="${log.targetPostId != null}" th:text="'게시글 #' + ${log.targetPostId}"></span>
-                                        <span th:case="${log.targetCommentId != null}" th:text="'댓글 #' + ${log.targetCommentId}"></span>
-                                        <span th:case="${log.targetUserId != null}" th:text="'사용자 #' + ${log.targetUserId}"></span>
-                                        <span th:case="${log.targetReportId != null}" th:text="'신고 #' + ${log.targetReportId}"></span>
+                                        <span th:case="${log.targetPostId != null}" th:text="'投稿 #' + ${log.targetPostId}"></span>
+                                        <span th:case="${log.targetCommentId != null}" th:text="'コメント #' + ${log.targetCommentId}"></span>
+                                        <span th:case="${log.targetUserId != null}" th:text="'ユーザー #' + ${log.targetUserId}"></span>
+                                        <span th:case="${log.targetReportId != null}" th:text="'通報 #' + ${log.targetReportId}"></span>
                                         <span th:case="*">-</span> 
                                     </th:block>
                                 </td>
-                                <td data-label="사유/비고" th:text="${log.note}"></td>
-                                <td data-label="활동 일시" th:text="${#temporals.format(log.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td data-label="理由/備考" th:text="${log.note}"></td>
+                                <td data-label="活動日時" th:text="${#temporals.format(log.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -431,4 +431,3 @@ function loadLogPage(page) {
 
 </body>
 </html>
-
