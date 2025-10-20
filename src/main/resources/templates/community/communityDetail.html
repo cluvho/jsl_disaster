@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}">
 
 <head>
-<title>재난대응시스템 - 게시글 상세</title> 
+    <!-- ✅✅✅ 이 부분의 제목을 동적으로 변경했습니다. ✅✅✅ -->
+    <title th:text="|コミュニティー - ${post.title}|" 
+           th:attr="data-ko=|커뮤니티 - ${post.title}|"></title>
+    
 <style>
 /* ============================================= */
 /* 기존 게시글 스타일                 */
@@ -192,22 +195,36 @@
                                     post.disasterType.name()=='VOLCANO'?'火山':
                                     post.disasterType.name()=='FIRE'?'火事':
                                     post.disasterType.name()=='LANDSLIDE'?'山崩れ':'その他'}">
-					</span> <span>|</span> <span th:text="'作成者 : ' + ${post.nickname}" data-ko="작성자">작성자</span>
-					<span>|</span> <span th:text="'照会数 : ' + ${post.viewCount}" data-ko="조회수">조회수</span>
-					<span>|</span> <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+					</span>
+					
+					
+					<span data-ko="작성자">作成者</span><span th:text="${post.nickname}"></span>
+					
+					<span data-ko="조회수">照会数</span><span th:text="${post.viewCount}"></span>
+					
+					<span th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd HH:mm')}"></span>
+					
 					<div class="flex items-center gap-4" style="float: right;">
 						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId == post.memberId}"
 							th:href="@{/community/delete/{postId}(postId=${post.postId})}"
-							class="write-btn" data-ko="삭제">削除</a> <a
+							class="write-btn" onclick="return confirm('この文を削除しますか？　削除された文は復元できません。');" data-ko="삭제" data-ko-confirm="이 글을 삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.">削除</a>
+							
+						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId == post.memberId}"
 							th:href="@{/community/edit/{postId}(postId=${post.postId})}"
-							class="write-btn" data-ko="수정">修整</a> <a th:href="@{/community/main}"
-							class="write-btn" data-ko="목록">リスト</a> <a
+							class="write-btn" data-ko="수정">修正</a>
+	
+						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId != post.memberId}"
 							th:href="@{/report/post/{postId}(postId=${post.postId})}"
 							class="write-btn" data-ko="신고">報告</a>
+							
+						<a th:href="@{/community/main}"
+							class="write-btn" data-ko="목록">リスト</a>
+								
 					</div>
+					
 				</div>
 			</div>
 			<p class="post-body" th:utext="${post.body}"></p>
@@ -237,10 +254,11 @@
 			<form th:action="@{/comment/add(postId=${post.postId})}"
 				method="post" class="comment-form">
 				<input type="hidden" name="parentId" value="">
+				
 				<textarea name="body"
-					placeholder="コメントは本人の他の人格です。問題になるコメントはアイディーの削除および法律的な対応が可能です。"
-					required data-ko="댓글은 자신의 또다른 인격입니다. 문제되는 댓글을 남길경우 계정삭제 및 법적대응이 가능합니다."></textarea>
+        placeholder="댓글은 자신의 또다른 인격입니다. 문제되는 댓글을 남길경우 계정삭제 및 법적대응이 가능합니다.&#10;コメントは本人の他の人格です。問題になるコメントはアイディーの削除および法律的な対応が可能です。" required></textarea>
 				<button type="submit" data-ko="등록">登録</button>
+			
 			</form>
 
 			<div class="comment-list">
