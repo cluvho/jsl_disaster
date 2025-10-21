@@ -88,61 +88,61 @@ public class MemberController {
         try {
             // 1. 기본 필수 값 검증
             if (memberDTO.getEmail() == null || memberDTO.getEmail().trim().isEmpty()) {
-                model.addAttribute("error", "이메일을 입력해주세요.");
+                model.addAttribute("error", "メールアドレスを入力してください。");
                 return "member/signup";
             }
             
             if (memberDTO.getPassword() == null || memberDTO.getPassword().length() < 8) {
-                model.addAttribute("error", "비밀번호는 8자 이상이어야 합니다.");
+                model.addAttribute("error", "パスワードは8文字以上である必要があります。");
                 return "member/signup";
             }
             
             if (memberDTO.getNickname() == null || memberDTO.getNickname().trim().isEmpty()) {
-                model.addAttribute("error", "닉네임을 입력해주세요.");
+                model.addAttribute("error", "ニックネームを入力してください。");
                 return "member/signup";
             }
             
             if (memberDTO.getName() == null || memberDTO.getName().trim().isEmpty()) {
-                model.addAttribute("error", "이름을 입력해주세요.");
+                model.addAttribute("error", "お名前を入力してください。");
                 return "member/signup";
             }
             
             // 2. 이메일 형식 검증
             if (!isValidEmail(memberDTO.getEmail())) {
-                model.addAttribute("error", "올바른 이메일 형식이 아닙니다.");
+                model.addAttribute("error", "正しいメールアドレス形式ではありません。");
                 return "member/signup";
             }
             
             // === 3. 일본 주소 데이터 검증 (추가된 부분) ===
             if (memberDTO.getPostalCode() == null || memberDTO.getPostalCode().trim().isEmpty()) {
-                model.addAttribute("error", "우편번호를 입력해주세요.");
+                model.addAttribute("error", "郵便番号を入力してください。");
                 return "member/signup";
             }
             
             // 일본 우편번호 형식 검증 (7자리 숫자)
             if (!memberDTO.getPostalCode().matches("\\d{7}")) {
-                model.addAttribute("error", "우편번호는 7자리 숫자로 입력해주세요.");
+                model.addAttribute("error", "郵便番号は7桁の数字で入力してください。");
                 return "member/signup";
             }
             
             if (memberDTO.getPrefCode() == null || memberDTO.getPrefCode().trim().isEmpty()) {
-                model.addAttribute("error", "도도부현 정보가 누락되었습니다. 주소를 다시 검색해주세요.");
+                model.addAttribute("error", "都道府県情報が入力されていません。住所を再検索してください。");
                 return "member/signup";
             }
             
             if (memberDTO.getMuniCode() == null || memberDTO.getMuniCode().trim().isEmpty()) {
-                model.addAttribute("error", "시구정촌 정보가 누락되었습니다. 주소를 다시 검색해주세요.");
+                model.addAttribute("error", "市区町村情報が入力されていません。住所を再検索してください。");
                 return "member/signup";
             }
             
             if (memberDTO.getAddrLine2() == null || memberDTO.getAddrLine2().trim().isEmpty()) {
-                model.addAttribute("error", "상세 주소를 입력해주세요.");
+                model.addAttribute("error", "詳細住所を入力してください。");
                 return "member/signup";
             }
             
             // 도도부현 코드 형식 검증 (01-47)
             if (!memberDTO.getPrefCode().matches("^(0[1-9]|[1-4][0-7])$")) {
-                model.addAttribute("error", "올바르지 않은 도도부현 코드입니다.");
+                model.addAttribute("error", "正しくない都道府県コードです。");
                 return "member/signup";
             }
             
@@ -151,18 +151,18 @@ public class MemberController {
                 memberDTO.getMuniCode().length() < 5 || 
                 memberDTO.getMuniCode().length() > 6 ||
                 !memberDTO.getMuniCode().matches("\\d+")) {
-                model.addAttribute("error", "올바르지 않은 시구정촌 코드입니다.");
+                model.addAttribute("error", "正しくない市区町村コードです。");
                 return "member/signup";
             }
             
             // 4. 약관 동의 확인
             if (memberDTO.getAgreeTerms() == null || !memberDTO.getAgreeTerms()) {
-                model.addAttribute("error", "이용약관에 동의해주세요.");
+                model.addAttribute("error", "利用規約に同意してください。");
                 return "member/signup";
             }
             
             if (memberDTO.getAgreePrivacy() == null || !memberDTO.getAgreePrivacy()) {
-                model.addAttribute("error", "개인정보처리방침에 동의해주세요.");
+                model.addAttribute("error", "個人情報保護方針に同意してください。");
                 return "member/signup";
             }
             
@@ -176,7 +176,7 @@ public class MemberController {
             return "member/signup";
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("error", "회원가입 중 오류가 발생했습니다.");
+            model.addAttribute("error", "会員登録中にエラーが発生しました。");
             return "member/signup";
         }
     }
@@ -190,11 +190,11 @@ public class MemberController {
                        Model model) {
         
         if (error != null) {
-            model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
+            model.addAttribute("error", "IDまたはパスワードが正しくありません。");
         }
         
         if (success != null) {
-            model.addAttribute("success", "회원가입이 완료되었습니다. 로그인해주세요.");
+            model.addAttribute("success", "会員登録が完了しました。ログインしてください。");
         }
         
         return "member/login";
@@ -213,7 +213,7 @@ public class MemberController {
     public String forgotPasswordProcess(@RequestParam("email") String email, Model model) {
         try {
             memberService.sendPasswordResetEmail(email);
-            model.addAttribute("success", "비밀번호 재설정 링크가 이메일로 발송되었습니다.");
+            model.addAttribute("success", "パスワード再設定リンクがメールで送信されました。");
             return "member/forgot-password";
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
@@ -227,7 +227,7 @@ public class MemberController {
         try {
             boolean isValidToken = memberService.validateResetToken(token);
             if (!isValidToken) {
-                model.addAttribute("error", "유효하지 않거나 만료된 링크입니다.");
+                model.addAttribute("error", "無効または期限切れのリンクです。");
                 model.addAttribute("success", false);
                 return "member/forgot-password";
             }
@@ -236,7 +236,7 @@ public class MemberController {
             model.addAttribute("error", false);
             return "member/reset-password";
         } catch (Exception e) {
-            model.addAttribute("error", "오류가 발생했습니다.");
+            model.addAttribute("error", "エラーが発生しました。");
             model.addAttribute("success", false);
             return "member/forgot-password";
         }
@@ -251,7 +251,7 @@ public class MemberController {
         try {
             // 비밀번호 확인 검증
             if (!password.equals(passwordConfirm)) {
-                model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
+                model.addAttribute("error", "パスワードが一致しません。");
                 model.addAttribute("success", false);
                 model.addAttribute("token", token);
                 return "member/reset-password";
@@ -259,7 +259,7 @@ public class MemberController {
             
             // 비밀번호 길이 검증
             if (password.length() < 8) {
-                model.addAttribute("error", "비밀번호는 8자 이상이어야 합니다.");
+                model.addAttribute("error", "パスワードは8文字以上である必要があります。");
                 model.addAttribute("success", false);
                 model.addAttribute("token", token);
                 return "member/reset-password";
@@ -267,7 +267,7 @@ public class MemberController {
             
             // 비밀번호 재설정
             memberService.resetPassword(token, password);
-            model.addAttribute("success", "비밀번호가 성공적으로 변경되었습니다. 새 비밀번호로 로그인해주세요.");
+            model.addAttribute("success", "パスワードが正常に変更されました。新しいパスワードでログインしてください。");
             model.addAttribute("error", false);
             return "member/reset-password";
             
@@ -320,9 +320,9 @@ public class MemberController {
         boolean isNotifyEnabled = (notifyLine != null && notifyLine);
         
         memberService.updateNotifyLine(memberId, isNotifyEnabled);
-        System.out.println(">>>>> 알림 설정 저장 시도: memberId=" + memberId + ", notifyLine=" + isNotifyEnabled);
+        System.out.println(">>>>> 通知設定保存試行: memberId=" + memberId + ", notifyLine=" + isNotifyEnabled);
         // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-        System.out.println("====== [3] Service 메소드 실행 완료, 리디렉션 시작 ======");
+        System.out.println("====== [3] Serviceメソッド実行完了、リダイレクト開始 ======");
         return "redirect:/member/myPage";
     }
     
