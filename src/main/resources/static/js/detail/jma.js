@@ -440,7 +440,7 @@ function updateJMADisasterInfo() {
                     <div class="disaster-time">${new Date(time).toLocaleString()}</div>
                 </div>
                 <p><strong>震源地:</strong> ${hypocenter}</p>
-                <p><strong>規模:</strong> M${magnitude}</p>
+                <p><strong>規模:</strong> ${magnitude}</p>
                 <p><strong>最大震度:</strong> ${maxScale}</p>
             `;
             disasterList.appendChild(item);
