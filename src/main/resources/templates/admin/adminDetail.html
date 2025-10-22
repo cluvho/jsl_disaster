@@ -78,9 +78,9 @@
                                 <td data-label="投稿日" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></td>
                                 <td data-label="状態" th:text="${post.status}"></td>
                                 <td data-label="管理">
-								    <form th:action="@{/admin/soft-delete-post}" method="post" onsubmit="return confirm('この投稿を非表示にしますか？');">
+								    <form th:action="@{/admin/soft-delete-post}" method="post" onsubmit="return confirm('この投稿を隠しますか？');">
 								        <input type="hidden" name="postId" th:value="${post.postId}" />
-								        <button type="submit" class="btn btn-danger">非表示</button>
+								        <button type="submit" class="btn btn-danger">隠す</button>
 								    </form>
 								</td>
                             </tr>
@@ -120,9 +120,9 @@
 								    <a th:href="@{/post/{id}(id=${comment.postId})}" th:text="${comment.title}" target="_blank"></a>
 								</td>
                                 <td data-label="管理">
-								    <form th:action="@{/admin/soft-delete-comment}" method="post" onsubmit="return confirm('このコメントを非表示にしますか？');">
+								    <form th:action="@{/admin/soft-delete-comment}" method="post" onsubmit="return confirm('このコメントを隠しますか？');">
 								        <input type="hidden" name="commentId" th:value="${comment.commentId}" />
-								        <button type="submit" class="btn btn-danger">非表示</button>
+								        <button type="submit" class="btn btn-danger">隠す</button>
 								    </form>
 								</td>
                             </tr>
