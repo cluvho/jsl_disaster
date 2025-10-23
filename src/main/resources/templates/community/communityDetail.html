@@ -200,7 +200,7 @@
 					
 					<span data-ko="작성자">作成者</span><span th:text="${post.nickname}"></span>
 					
-					<span data-ko="조회수">照会数</span><span th:text="${post.viewCount}"></span>
+					<span data-ko="조회수">閲覧数</span><span th:text="${post.viewCount}"></span>
 					
 					<span th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd HH:mm')}"></span>
 					
@@ -208,7 +208,7 @@
 						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId == post.memberId}"
 							th:href="@{/community/delete/{postId}(postId=${post.postId})}"
-							class="write-btn" onclick="return confirm('この文を削除しますか？　削除された文は復元できません。');" data-ko="삭제" data-ko-confirm="이 글을 삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.">削除</a>
+							class="write-btn" onclick="return confirm('この投稿を削除しますか？　削除された投稿は復元できません。');" data-ko="삭제" data-ko-confirm="이 글을 삭제하시겠습니까? 삭제된 글은 복구할 수 없습니다.">削除</a>
 							
 						<a
 							th:if="${#authorization.expression('isAuthenticated()') and #authentication.principal.memberId == post.memberId}"
@@ -231,7 +231,7 @@
 		</div>
 
 		<div th:unless="${post != null}" data-ko="해당 게시글을 찾을 수 없습니다.">
-			<p>文を探すことができません。</p>
+			<p>投稿を探すことができません。</p>
 		</div>
 
 		<!-- ✅ 지도 표시 영역 수정 -->
@@ -256,7 +256,7 @@
 				<input type="hidden" name="parentId" value="">
 				
 				<textarea name="body"
-        placeholder="댓글은 자신의 또다른 인격입니다. 문제되는 댓글을 남길경우 계정삭제 및 법적대응이 가능합니다.&#10;コメントは本人の他の人格です。問題になるコメントはアイディーの削除および法律的な対応が可能です。" required></textarea>
+        placeholder="댓글은 자신의 또다른 인격입니다. 문제되는 댓글을 남길경우 계정삭제 및 법적대응이 가능합니다.&#10;コメントは本人の他の人格です。問題になるコメントはアカウントを削除および法律的な対応が可能です。" required></textarea>
 				<button type="submit" data-ko="등록">登録</button>
 			
 			</form>
@@ -266,7 +266,7 @@
 				<div th:each="cmt : ${comments}" th:if="${cmt.parentId == null}"
 					class="comment">
 					<div th:if="${cmt.status == 'DELETED'}">
-						<p class="comment-body" style="color: #999;" data-ko="(삭제된 댓글입니다.)">（削除になったコメントです。）</p>
+						<p class="comment-body" style="color: #999;" data-ko="(삭제된 댓글입니다.)">（削除されたコメントです。）</p>
 					</div>
 					<div th:unless="${cmt.status == 'DELETED'}">
 						<div class="comment-meta">
@@ -295,7 +295,7 @@
 						method="post" class="comment-form reply-form">
 						<input type="hidden" name="parentId" th:value="${cmt.commentId}">
 						<textarea name="body"
-							placeholder="コメントは本人の他の人格です。問題になるコメントはアイディーの削除および法律的な対応が可能です。"
+							placeholder="コメントは本人の他の人格です。問題になるコメントはアカウントの削除および法律的な対応が可能です。"
 					required data-ko="댓글은 자신의 또다른 인격입니다. 문제되는 댓글을 남길경우 계정삭제 및 법적대응이 가능합니다."></textarea>
 						<button type="submit" data-ko="등록">登録</button>
 					</form>
@@ -304,7 +304,7 @@
 						<div th:each="reply : ${comments}"
 							th:if="${reply.parentId == cmt.commentId}" class="comment reply">
 							<div th:if="${reply.status == 'DELETED'}">
-								<p class="comment-body" style="color: #999;" data-ko="(삭제된 댓글입니다.)">（削除になったコメントです。）</p>
+								<p class="comment-body" style="color: #999;" data-ko="(삭제된 댓글입니다.)">（削除されたコメントです。）</p>
 							</div>
 							<div th:unless="${reply.status == 'DELETED'}">
 								<div class="comment-meta">
