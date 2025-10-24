@@ -200,7 +200,7 @@ public class AdminController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long currentAdminId = userDetails.getMemberId(); // 실제 관리자 ID 사용
 
-        String reason = "관리자에 의한 게시글 숨김 처리";
+        String reason = "管理者により隠されました。";
         communityService.softDeletePost(postId, currentAdminId, reason);
         return "redirect:/admin/adminDetail";
     }
@@ -211,7 +211,7 @@ public class AdminController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long currentAdminId = userDetails.getMemberId(); // 실제 관리자 ID 사용
 
-        String reason = "관리자에 의한 댓글 숨김 처리";
+        String reason = "管理者により隠されました。";
         communityService.softDeleteComment(commentId, currentAdminId, reason);
         return "redirect:/admin/adminDetail";
     }
