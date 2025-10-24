@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/layout}">
 	
 <head>
-    <title data-ko="커뮤니티 - 게시글 수정">コミュニティー - 掲示文修正</title>
+    <title data-ko="커뮤니티 - 게시글 수정">コミュニティー - 投稿修正</title>
 </head>   
 
 <div layout:fragment="content">
@@ -13,13 +13,13 @@
 			<div class="col-lg-10">
 				<div class="card shadow-sm border-0">
 					<div class="card-header bg-light border-0 py-4">
-						<h2 class="text-center mb-0" style="font-weight: 700;" data-ko="게시글 수정">掲示文修正</h2>
+						<h2 class="text-center mb-0" style="font-weight: 700;" data-ko="게시글 수정">修正</h2>
 					</div>
 					<div class="card-body p-4 p-md-5">
 						<form th:action="@{'/community/edit/' + ${writeDto.postId}}"
 							th:object="${writeDto}" method="post">
 							<div class="mb-4">
-								<label for="disaster-type" class="form-label"><strong data-ko="재난 유형">災害タイプ</strong>
+								<label for="disaster-type" class="form-label"><strong data-ko="재난 유형">災害種類</strong>
 								<span style="color: red;">*</span></label>
 								<select
 									id="disaster-type" class="form-control form-control-lg"
@@ -59,7 +59,7 @@
 							<input type="hidden" id="lat" th:field="*{lat}" /> <input
 								type="hidden" id="lon" th:field="*{lon}" />
 
-							<p data-ko="※ 사이트 이용약관을 위반한 글을 작성할 경우 글과 계정이 삭제처리 될 수 있습니다.">※ サイト利用約款に違反した文を作成する場合、文とアカウントが削除処理されることがあります。</p>
+							<p data-ko="※ 사이트 이용약관을 위반한 글을 작성할 경우 글과 계정이 삭제처리 될 수 있습니다.">※ サイト利用約款に違反した投稿を作成そた場合、投稿とアカウントが削除処理されます。</p>
 							<p data-ko="※ 이로 인하여 사이트 내에 문제가 발생 시 법적대응이 가능합니다.">※ これによりサイト内で問題が発生した場合、法的対応が可能です。</p>
 
 							<div class="d-grid gap-2 mt-5">
