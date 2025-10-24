@@ -161,7 +161,7 @@ public class DetailController {
     @ResponseBody
     public ResponseEntity<List<DisasterHistory>> getDisasterHistory() {
         try {
-            List<DisasterHistory> history = disasterService.getDisasterHistory(20);
+            List<DisasterHistory> history = disasterService.getDisasterHistory(3);
             System.out.println("DB에서 과거 재난 이력 " + history.size() + "개 조회");
             return ResponseEntity.ok(history);
         } catch (Exception e) {
