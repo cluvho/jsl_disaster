@@ -1,7 +1,11 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}">
+	
+<head>
+    <title data-ko="커뮤니티 - 게시글 수정">コミュニティー - 投稿修正</title>
+</head>   
 
 <div layout:fragment="content">
 	<div class="container my-5">
@@ -9,43 +13,45 @@
 			<div class="col-lg-10">
 				<div class="card shadow-sm border-0">
 					<div class="card-header bg-light border-0 py-4">
-						<h2 class="text-center mb-0" style="font-weight: 700;">게시글 수정</h2>
+						<h2 class="text-center mb-0" style="font-weight: 700;" data-ko="게시글 수정">修正</h2>
 					</div>
 					<div class="card-body p-4 p-md-5">
 						<form th:action="@{'/community/edit/' + ${writeDto.postId}}"
 							th:object="${writeDto}" method="post">
 							<div class="mb-4">
-								<label for="disaster-type" class="form-label"><strong>재난
-										유형</strong> <span style="color: red;">*</span></label> <select
+								<label for="disaster-type" class="form-label"><strong data-ko="재난 유형">災害種類</strong>
+								<span style="color: red;">*</span></label>
+								<select
 									id="disaster-type" class="form-control form-control-lg"
 									th:field="*{disasterType}" required>
-									<option value="EARTHQUAKE">지진</option>
-									<option value="TSUNAMI">쓰나미</option>
-									<option value="TYPHOON">태풍</option>
-									<option value="FLOOD">호우/홍수</option>
-									<option value="VOLCANO">화산</option>
-									<option value="FIRE">화재</option>
-									<option value="LANDSLIDE">산사태</option>
-									<option value="ETC">기타</option>
+									<option value="" data-ko="선택하세요">選択してください。</option>
+									<option value="EARTHQUAKE" data-ko="지진">地震</option>
+									<option value="TSUNAMI" data-ko="쓰나미">津波</option>
+									<option value="TYPHOON" data-ko="태풍">台風</option>
+									<option value="FLOOD" data-ko="호우/홍수">豪雨・洪水</option>
+									<option value="VOLCANO" data-ko="화산">火山</option>
+									<option value="FIRE" data-ko="화재">火事</option>
+									<option value="LANDSLIDE" data-ko="산사태">山崩れ</option>
+									<option value="OTHER" data-ko="기타">その他</option>
 								</select>
 							</div>
 
 							<div class="mb-4">
-								<label for="post-title" class="form-label"><strong>제목</strong>
+								<label for="post-title" class="form-label"><strong data-ko="제목">タイトル</strong>
 									<span style="color: red;">*</span></label> <input type="text"
 									id="post-title" class="form-control form-control-lg"
-									th:field="*{title}" placeholder="제목을 입력하세요" required>
+									th:field="*{title}" placeholder="タイトルを入力してください。" data-ko-placeholder="제목을 입력하세요" required>
 							</div>
 
 							<div class="mb-4">
-								<label for="post-content" class="form-label"><strong>내용</strong>
+								<label for="post-content" class="form-label"><strong data-ko="내용">内容</strong>
 									<span style="color: red;">*</span></label>
 								<textarea id="post-content" th:field="*{body}" required></textarea>
 							</div>
 
 							<div class="mb-4">
-								<label class="form-label"><strong>위치 정보</strong> <span
-									class="text-muted">(마커를 드래그하여 위치 선택)</span></label>
+								<label class="form-label"><strong data-ko="위치 정보">位置情報</strong> <span
+									class="text-muted" data-ko="(마커를 드래그하여 위치 선택)">(マーカーをドラッグして位置選択)</span></label>
 								<div id="map"
 									style="width: 100%; height: 400px; border-radius: 8px;"></div>
 							</div>
@@ -53,14 +59,14 @@
 							<input type="hidden" id="lat" th:field="*{lat}" /> <input
 								type="hidden" id="lon" th:field="*{lon}" />
 
-							<p>※ 사이트 이용약관을 위반한 글을 작성할 경우 글과 계정이 삭제처리 될 수 있습니다.</p>
-							<p>※ 이로 인하여 사이트 내에 문제가 발생 시 법적대응이 가능합니다.</p>
+							<p data-ko="※ 사이트 이용약관을 위반한 글을 작성할 경우 글과 계정이 삭제처리 될 수 있습니다.">※ サイト利用約款に違反した投稿を作成そた場合、投稿とアカウントが削除処理されます。</p>
+							<p data-ko="※ 이로 인하여 사이트 내에 문제가 발생 시 법적대응이 가능합니다.">※ これによりサイト内で問題が発生した場合、法的対応が可能です。</p>
 
 							<div class="d-grid gap-2 mt-5">
-								<button type="submit" class="btn btn-primary btn-lg">수정하기</button>
+								<button type="submit" class="btn btn-primary btn-lg" data-ko="수정하기">修正</button>
 								<a
-									th:href="@{/community/communityDetail/{postId}(postId=${writeDto.postId})}"
-									class="btn btn-secondary btn-lg">취소하기</a>
+									th:href="@{/community/{postId}(postId=${writeDto.postId})}"
+									class="btn btn-secondary btn-lg" data-ko="취소하기">キャンセル</a>
 							</div>
 
 						</form>
@@ -126,7 +132,7 @@
             $('#post-content').summernote({
                 height: 350,
                 lang: 'ko-KR',
-                placeholder: '이곳에 내용을 입력해주세요.',
+                placeholder: 'ここに内容を入力してください。', // data-ko-placeholder: '이곳에 내용을 입력해주세요.'
                 toolbar: [
                     ['fontname', ['fontname']],
                     ['fontsize', ['fontsize']],
@@ -159,7 +165,8 @@
                         $(editor).summernote('insertImage', response);
                     },
                     error: function() {
-                        alert("이미지 파일 업로드에 실패했습니다.");
+                    	// data-ko-alert: "이미지 파일 업로드에 실패했습니다."
+                        alert("イメージファイルのアップロードに失敗しました。");
                     }
                 });
             }

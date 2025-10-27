@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}">
@@ -7,12 +7,12 @@
 	<div class="page-wrapper">
 		<div class="main-content">
 			<aside class="sidebar">
-				<h2 class="sidebar-title">カテゴリー</h2>
+				<h2 class="sidebar-title" data-ko="카테고리">カテゴリー</h2>
 				<div class="filter-group">
-					<label><input type="checkbox" id="weatherToggle"> 天気情報</label> <label><input
-						type="checkbox" id="disasterToggle"> 災害情報</label> <label><input
-						type="checkbox" id="shelterToggle"> 避難所情報</label> <label><input
-						type="checkbox" id="hospitalToggle"> 病院情報</label>
+					<label><input type="checkbox" id="weatherToggle" data-ko="날씨정보"> 天気情報</label> <label><input
+						type="checkbox" id="disasterToggle" data-ko="재해정보"> 災害情報</label> <label><input
+						type="checkbox" id="shelterToggle" data-ko="피난소정보"> 避難所情報</label> <label><input
+						type="checkbox" id="hospitalToggle" data-ko="병원정보"> 病院情報</label>
 				</div>
 			</aside>
 
@@ -22,7 +22,7 @@
 					<div id="map" class="map-canvas"></div>
 				</section>
 
-				<h2 class="section-title">현재 지역 상세 정보</h2>
+				<h2 class="section-title" data-ko="현재 지역 상세정보">現在地域の詳細情報</h2>
 
 				<div class="row g-3">
 				  <div class="col-12 col-md-6">
@@ -31,9 +31,9 @@
 				        <div class="card-body d-flex align-items-center gap-3">
 				          <div class="fs-2">🗺️</div>
 				          <div class="flex-grow-1">
-				            <h5 class="card-title mb-1">지역상세정보</h5>
-				            <p class="card-text text-muted mb-0">
-				              현재 위치에서 가장 가까운 대피소를 확인하고 경로를 안내합니다.
+				            <h5 class="card-title mb-1" data-ko="지역상세정보">地域の詳細情報</h5>
+				            <p class="card-text text-muted mb-0" data-ko="현재 위치에서 가장 가까운 대피소를 확인하고 경로를 안내합니다.">
+				              現在の位置で一番近くの避難所を確認して道を案内します。
 				            </p>
 				          </div>
 				        </div>
@@ -47,9 +47,9 @@
 				        <div class="card-body d-flex align-items-center gap-3">
 				          <div class="fs-2">🎒</div>
 				          <div class="flex-grow-1">
-				            <h5 class="card-title mb-1">상황별 행동 요령</h5>
-				            <p class="card-text text-muted mb-0">
-				              지진, 태풍, 화재 등 현재 상황에 맞는 행동 요령을 안내합니다.
+				            <h5 class="card-title mb-1" data-ko="상황별 행동 요령">状況別の行動要領</h5>
+				            <p class="card-text text-muted mb-0" data-ko="지진, 태풍, 화재 등 현재 상황에 맞는 행동 요령을 안내합니다.">
+				              地震・台風・火事など、現在の状況に正しい方法を案内します。
 				            </p>
 				          </div>
 				        </div>

@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
-<title>커뮤니티</title>
+
+<head>
+    <title data-ko="커뮤니티 - 리스트">コミュニティー - リスト</title>
+</head>   
 
 <style>
 .pagination {
@@ -33,20 +36,39 @@
 	border-radius: 6px;
 }
 
+/* ✅✅✅ 검색어 입력창의 너비를 늘리는 스타일을 추가했습니다. ✅✅✅ */
+.search-bar input.form-control {
+    flex-grow: 1;      /* 입력창이 남은 공간을 모두 차지하도록 설정 */
+    min-width: 100px;  /* 최소 너비를 지정하여 너무 좁아지지 않게 함 */
+}
+
+/* 검색 버튼이 찌그러지지 않도록 스타일을 추가 */
+.search-bar button {
+    flex-shrink: 0;      /* 버튼 너비가 줄어들지 않도록 설정 */
+    white-space: nowrap; /* 버튼 안의 텍스트가 줄바꿈되지 않도록 설정 */
+}
+
 .write-btn {
 	display: inline-block;
-	padding: 6px 14px; background-color : #007bff; color : white;
-	text-decoration : none; border-radius : 6px;
-	transition: background-color 0.2s;
+	padding: 8px 14px; /* 버튼 크기 통일을 위해 padding 조정 */
 	background-color: #007bff;
 	color: white;
 	text-decoration: none;
 	border-radius: 6px;
+	transition: background-color 0.2s;
+	border: none; /* button 태그의 기본 테두리 제거 */
+    cursor: pointer; /* button 태그에 마우스 포인터 적용 */
+    font-size: 1rem; /* 폰트 크기 일관성 유지 */
+    line-height: 1.5; /* 라인 높이 일관성 유지 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
+
 
 .write-btn:hover {
 	background-color: #0056b3;
 }
+
 
 .post-card {
 	display: block;
@@ -103,7 +125,7 @@
 		<div class="page-community container mt-4">
 
 			<div class="community-header mb-3">
-				<h2 class="community-title">커뮤니티</h2>
+				<h2 class="community-title" data-ko="커뮤니티">コミュニティー</h2>
 
 				<div class="header-actions">
 					<!-- ✅✅✅ 검색창에 select 드롭다운을 추가 ✅✅✅ -->
@@ -111,20 +133,26 @@
 						class="search-bar">
 						<select name="searchType" class="form-control"
 							style="width: 120px;">
-							<option value="all" th:selected="${searchType == 'all'}">전체</option>
-							<option value="title" th:selected="${searchType == 'title'}">제목/내용</option>
+							<option value="all" th:selected="${searchType == 'all'}" data-ko="전체">全体</option>
+							<option value="title" th:selected="${searchType == 'title'}" data-ko="제목/내용">タイトル・内容</option>
 							<option value="nickname"
-								th:selected="${searchType == 'nickname'}">작성자</option>
+								th:selected="${searchType == 'nickname'}" data-ko="작성자">作成者</option>
 							<option value="disasterType"
-								th:selected="${searchType == 'disasterType'}">재난유형</option>
-						</select> <input type="text" name="keyword" class="form-control"
-							placeholder="검색어 입력" th:value="${keyword}">
-						<button type="submit" class="btn btn-primary">검색</button>
+								th:selected="${searchType == 'disasterType'}" data-ko="재해종류">災害種類</option>
+						</select>
+						<input type="text" name="keyword" class="form-control"
+							placeholder="キーワード入力" th:value="${keyword}" data-ko="검색어 입력">
+							
+						<div class="region-search">		
+							<button onclick="searchRegion()">🔍 <span data-translate="search_btn" data-ko="검색">検索</span></button>
+						</div>
+					
 					</form>
 
 					<div>
-						<a th:href="@{/community/communityWrite}" class="write-btn">글쓰기</a>
+						<a th:href="@{/community/communityWrite}" class="write-btn" data-ko="글작성">書き込み</a>
 					</div>
+							
 				</div>
 			</div>
 
@@ -135,12 +163,13 @@
 
 						<div class="post-content ms-3">
 							<div class="post-meta">
-								<span
-									th:text="${post.disasterType != null ? post.disasterType.displayName : '기타'}">재난
-									유형</span> <span>|</span> <span th:text="'작성자 : ' + ${post.nickname}">작성자</span>
-								<span>|</span> <span th:text="'조회수: ' + ${post.viewCount}">조회수</span>
-								<span>|</span> <span
-									th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
+								<span th:text="${post.disasterType != null ? post.disasterType.displayName : '기타'}">재난 유형</span>
+								
+								<span data-ko="작성자">作成者</span><span th:text="${post.nickname}"></span>
+								
+								<span data-ko="조회수">閲覧数</span><span th:text="${post.viewCount}"></span>
+								
+								<span th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd HH:mm')}">작성일</span>
 							</div>
 
 							<h4 class="post-title" th:text="${post.title}">제목</h4>
@@ -176,7 +205,7 @@
 							th:href="@{/community/main(page=${currentPage + 1}, searchType=${searchType}, keyword=${keyword})}"
 							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 						</a>
-						</li>
+						</li>		
 					</ul>
 				</nav>
 			</div>

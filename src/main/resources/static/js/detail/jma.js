@@ -440,7 +440,7 @@ function updateJMADisasterInfo() {
                     <div class="disaster-time">${new Date(time).toLocaleString()}</div>
                 </div>
                 <p><strong>震源地:</strong> ${hypocenter}</p>
-                <p><strong>規模:</strong> M${magnitude}</p>
+                <p><strong>規模:</strong> ${magnitude}</p>
                 <p><strong>最大震度:</strong> ${maxScale}</p>
             `;
             disasterList.appendChild(item);
@@ -765,22 +765,38 @@ function displayVolcanoes(volcanoes) {
 // 스프링부트 전송 함수
 // =========================
 async function sendToSpringBoot() {
-    try {
-        console.log('SpringBootへデータ転送開始...');
+    console.log('[sendToSpringBoot] 함수 시작'); // 함수 시작 로그 추가
 
+    try {
+        console.log('[sendToSpringBoot] JMA 데이터 수집 시작...');
         const data = await jmaCrawler.collectAllData();
+        console.log('[sendToSpringBoot] JMA 데이터 수집 완료:', data); // 수집된 데이터 확인
+
+        const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
+        // ▼▼▼ [디버깅] fetch 직전에 모든 값 확인 ▼▼▼
+        console.log('[sendToSpringBoot] CSRF 토큰:', csrfToken);
+        console.log('[sendToSpringBoot] CSRF 헤더:', csrfHeader);
+        console.log('[sendToSpringBoot] 전송할 데이터 (문자열):', JSON.stringify(data).substring(0, 200) + '...'); // 데이터 앞부분만 확인
+        console.log('[sendToSpringBoot] fetch 요청 시작...');
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
         const response = await fetch('/detail/jma-data', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                // CSRF 토큰이 없으면 헤더 자체를 보내지 않도록 수정 (서버에서 null 처리 방지)
+                ...(csrfHeader && csrfToken && { [csrfHeader]: csrfToken })
             },
             body: JSON.stringify(data)
         });
 
+        console.log('[sendToSpringBoot] fetch 응답 받음:', response.status, response.statusText); // 응답 상태 확인 로그 추가
+
         if (response.ok) {
             const result = await response.text();
-            console.log('バックエンド転送成功:', result);
+            console.log('バックエンド転送成功:', result); // 성공 로그
 
             displayRealtimeData(data);
 
@@ -790,13 +806,19 @@ async function sendToSpringBoot() {
 
             return true;
         } else {
-            console.error('バックエンド転送失敗:', response.status);
+            const errorText = await response.text();
+            console.error(`バックエンド転送失敗: Status ${response.status}`, errorText); // 실패 로그 (이전과 동일)
             return false;
         }
 
     } catch (error) {
-        console.error('転送中にエラー:', error);
+        // ▼▼▼ [디버깅] catch 블록에서 에러 객체 전체를 출력 ▼▼▼
+        console.error('転送中にネットワークエラーまたはその他のエラー:', error);
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
         return false;
+    } finally {
+        console.log('[sendToSpringBoot] 함수 종료'); // 함수 종료 로그 추가
     }
 }
 

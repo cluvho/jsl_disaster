@@ -111,12 +111,12 @@ public class DisasterService {
                 int alertLevel = Integer.parseInt(vol.get("alertLevel").toString());
                 
                 // 현재 재난으로 저장 (경보 레벨 2 이상)
-                if (alertLevel >= 2) {
+                if (alertLevel >= 0) {
                     saveCurrentVolcano(vol, alertLevel);
                 }
                 
                 // 과거 이력 저장 (경보 레벨 3 이상)
-                if (alertLevel >= 3) {
+                if (alertLevel >= 0) {
                     saveVolcanoHistory(vol, alertLevel);
                 }
                 
