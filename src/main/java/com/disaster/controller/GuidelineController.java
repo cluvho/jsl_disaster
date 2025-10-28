@@ -8,6 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/guidelines")
 public class GuidelineController {
     
+    // ✨✨✨ 이 메서드를 추가하여 /guidelines 경로 자체에 대한 요청을 처리합니다. ✨✨✨
+    @GetMapping({"", "/"})
+    public String handleBaseGuidelines() {
+        // /guidelines로 접속하면 자동으로 /guidelines/guide 페이지로 리다이렉트합니다.
+        return "redirect:/guidelines/guide";  
+    }
+    
     @GetMapping("/guide")
     public String guidelines() {
         return "guidelines/guideLine";  
@@ -52,37 +59,4 @@ public class GuidelineController {
     public String volcano() {
         return "guidelines/volcano";  
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

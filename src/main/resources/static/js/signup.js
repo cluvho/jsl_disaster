@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== 기존 기능들 (그대로 유지) ==========
 	const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 	    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-    // 닉네임 중복확인
+    // ニックネーム重複確認
     const btnCheckNickname = document.getElementById('btnCheckNickname');
     if (btnCheckNickname) {
         btnCheckNickname.addEventListener('click', function() {
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const msgElement = document.getElementById('nickMsg');
             
             if (!nickname) {
-                msgElement.textContent = '닉네임을 입력해주세요.';
+                msgElement.textContent = 'ニックネームを入力してください。';
                 msgElement.className = 'hint error';
                 return;
             }
@@ -20,31 +20,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.text())
                 .then(result => {
                     if (result === 'exist') {
-                        msgElement.textContent = '이미 사용중인 닉네임입니다.';
+                        msgElement.textContent = 'すでに使用中のニックネームです。';
                         msgElement.className = 'hint error';
                     } else {
-                        msgElement.textContent = '사용 가능한 닉네임입니다.';
+                        msgElement.textContent = '使用可能なニックネームです。';
                         msgElement.className = 'hint success';
                     }
                 })
                 .catch(error => {
-                    msgElement.textContent = '중복확인 중 오류가 발생했습니다.';
+                    msgElement.textContent = '重複確認中にエラーが発生しました。';
                     msgElement.className = 'hint error';
                 });
         });
     }
     
-	// 인증메일 발송
+	// 認証メール送信
 	    const btnSendCode = document.getElementById('btnSendCode');
 	    if (btnSendCode) {
 	        btnSendCode.addEventListener('click', function() {
 	            const email = document.getElementById('email').value.trim();
 	            if (!email || !isValidEmail(email)) {
-	                alert('올바른 이메일 형식이 아닙니다.');
+	                alert('正しいメール形式ではありません。');
 	                return;
 	            }
 	            this.disabled = true;
-	            this.textContent = '발송 중...';
+	            this.textContent = '送信中...';
 	            
 	            fetch('/member/send-verify-email', {
 	                method: 'POST',
@@ -59,24 +59,24 @@ document.addEventListener('DOMContentLoaded', function() {
 	            .then(response => response.text())
 	            .then(result => {
 	                if (result === 'exist') {
-	                    alert('이미 사용중인 이메일입니다.');
+	                    alert('すでに使用中のメールアドレスです。');
 	                } else if (result === 'success') {
-	                    alert('인증메일이 발송되었습니다. 이메일을 확인해주세요.');
+	                    alert('認証メールが送信されました。メールを確認してください。');
 	                    const verifyField = document.getElementById('verifyField');
 	                    if (verifyField) verifyField.style.display = 'block';
 	                } else {
-	                    alert('메일 발송 중 오류가 발생했습니다.');
+	                    alert('メール送信中にエラーが発生しました。');
 	                }
 	            })
-	            .catch(error => alert('메일 발송 요청 중 오류가 발생했습니다.'))
+	            .catch(error => alert('メール送信リクエスト中にエラーが発生しました。'))
 	            .finally(() => {
 	                this.disabled = false;
-	                this.textContent = '인증메일 발송';
+	                this.textContent = '認証メール送信';
 	            });
 	        });
 	    }
     
-    // 인증코드 확인
+    // 認証コード確認
     const btnVerifyCode = document.getElementById('btnVerifyCode');
     if (btnVerifyCode) {
         btnVerifyCode.addEventListener('click', function() {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const msgElement = document.getElementById('verifyMsg');
             
             if (!verifyCode) {
-                msgElement.textContent = '인증코드를 입력해주세요.';
+                msgElement.textContent = '認証コードを入力してください。';
                 msgElement.className = 'hint error';
                 return;
             }
@@ -101,24 +101,24 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.text())
             .then(result => {
                 if (result === 'success') {
-                    msgElement.textContent = '이메일 인증이 완료되었습니다.';
+                    msgElement.textContent = 'メール認証が完了しました。';
                     msgElement.className = 'hint success';
                     document.getElementById('email').readOnly = true;
                     document.getElementById('btnSendCode').disabled = true;
                     this.disabled = true;
                 } else {
-                    msgElement.textContent = '인증코드가 올바르지 않거나 만료되었습니다.';
+                    msgElement.textContent = '認証コードが正しくないか、有効期限が切れています。';
                     msgElement.className = 'hint error';
                 }
             })
             .catch(error => {
-                msgElement.textContent = '인증 확인 중 오류가 발생했습니다.';
+                msgElement.textContent = '認証確認中にエラーが発生しました。';
                 msgElement.className = 'hint error';
             });
         });
     }
     
-    // 비밀번호 확인
+    // パスワード確認
     const password2 = document.getElementById('password2');
     if (password2) {
         password2.addEventListener('input', function() {
@@ -127,10 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const msgElement = document.getElementById('pwMatchMsg');
             
             if (password2 && password !== password2) {
-                msgElement.textContent = '비밀번호가 일치하지 않습니다.';
+                msgElement.textContent = 'パスワードが一致しません。';
                 msgElement.className = 'hint error';
             } else if (password2 && password === password2) {
-                msgElement.textContent = '비밀번호가 일치합니다.';
+                msgElement.textContent = 'パスワードが一致します。';
                 msgElement.className = 'hint success';
             } else {
                 msgElement.textContent = '';
@@ -152,12 +152,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 유효성 검사 (7자리 숫자)
             if (!/^\d{7}$/.test(postalCode)) {
-                alert('우편번호를 7자리 숫자로 입력해주세요 (예: 1234567)');
+                alert('郵便番号を7桁の数字で入力してください (例: 1234567)');
                 return;
             }
 
             this.disabled = true;
-            this.textContent = '검색 중...';
+            this.textContent = '検索中...';
 
             try {
                 // zipcloud API 호출
@@ -169,14 +169,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     displayBasicAddress(result);
                     showAddressFields();
                 } else {
-                    alert('해당 우편번호를 찾을 수 없습니다');
+                    alert('該当する郵便番号が見つかりません');
                 }
             } catch (error) {
-                console.error('우편번호 검색 오류:', error);
-                alert('검색 중 오류가 발생했습니다');
+                console.error('郵便番号検索エラー:', error);
+                alert('検索中にエラーが発生しました');
             } finally {
                 this.disabled = false;
-                this.textContent = '주소 검색';
+                this.textContent = '住所検索';
             }
         });
     }
@@ -199,10 +199,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // cities.js에서 시구정촌 코드 찾기
     function findMunicipalityCode(pref, city) {
-        console.log('찾는 중:', pref, city);
+        console.log('検索中:', pref, city);
         
         if (!window.cities) {
-            console.warn('cities.js가 로드되지 않았습니다');
+            console.warn('cities.jsが読み込まれていません');
             return '';
         }
         
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
         );
         
         if (found) {
-            console.log('정확 매칭:', found);
+            console.log('正確一致:', found);
             return found.code;
         }
         
@@ -234,11 +234,11 @@ document.addEventListener('DOMContentLoaded', function() {
         );
         
         if (found) {
-            console.log('시 단위 매칭:', found);
+            console.log('市単位一致:', found);
             return found.code;
         }
         
-        console.warn('매칭 실패:', targetPref, city);
+        console.warn('一致失敗:', targetPref, city);
         return '';
     }
 
@@ -258,14 +258,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const detail = document.getElementById('addrLine2').value.trim();
 
             if (!detail) {
-                alert('상세 주소를 입력해주세요');
+                alert('詳細住所を入力してください');
                 return;
             }
 
             const fullAddress = `${prefecture}${city}${town}${detail}`;
 
             this.disabled = true;
-            this.textContent = '위치 확인 중...';
+            this.textContent = '位置確認中...';
 
             try {
                 // Google Geocoding API 호출
@@ -282,16 +282,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // 좌표 정보 표시
                     document.getElementById('coordinateInfo').textContent = 
-                        `위도: ${coords.lat.toFixed(6)}, 경도: ${coords.lng.toFixed(6)}`;
+                        `緯度: ${coords.lat.toFixed(6)}, 経度: ${coords.lng.toFixed(6)}`;
                 } else {
-                    alert('정확한 위치를 찾을 수 없습니다. 주소를 확인해주세요');
+                    alert('正確な位置が見つかりません。住所を確認してください');
                 }
             } catch (error) {
-                console.error('위치 검색 오류:', error);
-                alert('위치 검색 중 오류가 발생했습니다');
+                console.error('位置検索エラー:', error);
+                alert('位置検索中にエラーが発生しました');
             } finally {
                 this.disabled = false;
-                this.textContent = '위치 확인';
+                this.textContent = '位置確認';
             }
         });
     }
@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
             position: { lat: lat, lng: lng },
             map: map,
             draggable: true,
-            title: '클릭하여 위치를 수정할 수 있습니다'
+            title: 'クリックして位置を修正できます'
         });
 
         // 마커 드래그로 위치 수정
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('lat').value = newLat;
             document.getElementById('lon').value = newLng;
             document.getElementById('coordinateInfo').textContent = 
-                `위도: ${newLat.toFixed(6)}, 경도: ${newLng.toFixed(6)}`;
+                `緯度: ${newLat.toFixed(6)}, 経度: ${newLng.toFixed(6)}`;
         });
 
         // 지도 클릭으로 위치 수정
@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('lat').value = newLat;
             document.getElementById('lon').value = newLng;
             document.getElementById('coordinateInfo').textContent = 
-                `위도: ${newLat.toFixed(6)}, 경도: ${newLng.toFixed(6)}`;
+                `緯度: ${newLat.toFixed(6)}, 経度: ${newLng.toFixed(6)}`;
         });
     }
 
@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const verifyMsg = document.getElementById('verifyMsg');
             if (verifyMsg && !verifyMsg.classList.contains('success')) {
                 e.preventDefault();
-                alert('이메일 인증을 완료해주세요.');
+                alert('メール認証を完了してください。');
                 return false;
             }
             
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const password2 = document.getElementById('password2').value;
             if (password !== password2) {
                 e.preventDefault();
-                alert('비밀번호가 일치하지 않습니다.');
+                alert('パスワードが一致しません。');
                 return false;
             }
 
@@ -402,14 +402,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!postalCode || !prefCode || !muniCode || !addrLine2) {
                 e.preventDefault();
-                alert('주소 정보를 모두 입력해주세요.');
+                alert('住所情報をすべて入力してください。');
                 return false;
             }
 
             // 우편번호 형식 검사
             if (!/^\d{7}$/.test(postalCode)) {
                 e.preventDefault();
-                alert('우편번호를 올바른 형식으로 입력해주세요.');
+                alert('郵便番号を正しい形式で入力してください。');
                 return false;
             }
             
@@ -418,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const agreePrivacy = document.getElementById('agreePrivacy');
             if (!agreeTerms.checked || !agreePrivacy.checked) {
                 e.preventDefault();
-                alert('필수 약관에 동의해주세요.');
+                alert('必須約款に同意してください。');
                 return false;
             }
             

@@ -138,7 +138,7 @@
 							<option value="nickname"
 								th:selected="${searchType == 'nickname'}" data-ko="작성자">作成者</option>
 							<option value="disasterType"
-								th:selected="${searchType == 'disasterType'}" data-ko="재해종류">災害タイプ</option>
+								th:selected="${searchType == 'disasterType'}" data-ko="재해종류">災害種類</option>
 						</select>
 						<input type="text" name="keyword" class="form-control"
 							placeholder="검색어/検索語" th:value="${keyword}">
@@ -150,7 +150,7 @@
 					</form>
 
 					<div>
-						<a th:href="@{/community/communityWrite}" class="write-btn" data-ko="글작성">作成</a>
+						<a th:href="@{/community/communityWrite}" class="write-btn" data-ko="글작성">書き込み</a>
 					</div>
 							
 				</div>
@@ -167,7 +167,7 @@
 								
 								<span data-ko="작성자">作成者</span><span th:text="${post.nickname}"></span>
 								
-								<span data-ko="조회수">照会数</span><span th:text="${post.viewCount}"></span>
+								<span data-ko="조회수">閲覧数</span><span th:text="${post.viewCount}"></span>
 								
 								<span th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd HH:mm')}">작성일</span>
 							</div>

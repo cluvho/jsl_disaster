@@ -410,7 +410,7 @@
 	                </h2>
 	                <div class="card-list">
 	                    <div class="card">
-	                        <h3 data-ko="・작성한 글">・作成した掲示文</h3>
+	                        <h3 data-ko="・작성한 글">・作成した投稿</h3>
 	                        <div th:if="${!#lists.isEmpty(myPosts)}">
 	                            <table>
 	                                <thead>
@@ -430,19 +430,19 @@
 	                            </table>
 	                        </div>
 	                        <div th:unless="${!#lists.isEmpty(myPosts)}">
-	                            <p style="text-align: center; color: #888; padding: 20px 0;" data-ko="작성한 글이 없습니다.">作成した掲示文がありません。</p>
+	                            <p style="text-align: center; color: #888; padding: 20px 0;" data-ko="작성한 글이 없습니다.">作成した投稿がありません。</p>
 	                        </div>
 	                    </div>
 	
 	                    <div class="card">
-	                        <h3 data-ko="・댓글 단 글">・コメントした掲示文</h3>
+	                        <h3 data-ko="・댓글 단 글">・コメントした投稿</h3>
 	                        <div th:if="${!#lists.isEmpty(commentedPosts)}">
 	                            <table>
 	                                <thead>
 	                                <tr>
-	                                    <th data-ko="게시글 제목">掲示文タイトル</th>
+	                                    <th data-ko="게시글 제목">投稿タイトル</th>
                                     	<th data-ko="내 댓글">自分のコメント</th>
-                                    	<th data-ko="게시글 작성일">掲示文作成日</th>
+                                    	<th data-ko="게시글 작성일">投稿作成日</th>
 	                                </tr>
 	                                </thead>
 	                                <tbody>
@@ -459,7 +459,7 @@
 	                            </table>
 	                        </div>
 	                        <div th:unless="${!#lists.isEmpty(commentedPosts)}">
-	                            <p style="text-align: center; color: #888; padding: 20px 0;" data-ko="댓글을 작성한 글이 없습니다.">コメントを作成した掲示文がありません。</p>
+	                            <p style="text-align: center; color: #888; padding: 20px 0;" data-ko="댓글을 작성한 글이 없습니다.">コメントを作成した投稿がありません。</p>
 	                        </div>
 	                    </div>
 	                </div>

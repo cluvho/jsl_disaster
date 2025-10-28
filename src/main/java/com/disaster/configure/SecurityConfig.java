@@ -45,6 +45,9 @@ public class SecurityConfig {
                 // 공개 페이지 (모든 경로 통합)
                 .requestMatchers(
                     "/",
+                    // ✨ 가이드라인 경로 전체를 로그인 없이 접근 가능하도록 추가
+                    "/guidelines/**",
+                    
                     "/member/login",
                     "/member/signup",
                     "/member/forgot-password**",
