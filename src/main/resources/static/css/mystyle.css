@@ -752,8 +752,12 @@ html, body {
 }
 
 .search-bar {
-    position: relative;
-    width: 300px;
+	display: flex; /* flexbox 레이아웃 적용 */
+	align-items: center;
+	gap: 8px;
+    /* width: 300px; -- 고정 폭 제거 */
+    flex-grow: 1; /* 검색창이 남은 공간을 차지하도록 설정 */
+    max-width: 400px; /* 너무 길어지지 않도록 최대 너비 설정 */
 }
 
 .search-bar input {

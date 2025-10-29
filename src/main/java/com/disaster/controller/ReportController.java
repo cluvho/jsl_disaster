@@ -33,7 +33,7 @@ public class ReportController {
         WriteDTO post = writeService.getPostById(postId);
 
         // ✅ 2. 재사용할 reportForm.html에 필요한 정보를 모델에 담아 전달합니다.
-        model.addAttribute("reportTargetJa", "掲示文"); // 일본어
+        model.addAttribute("reportTargetJa", "投稿文"); // 일본어
         model.addAttribute("reportTargetKo", "게시글");  // 한국어
         
         model.addAttribute("targetContent", post.getTitle());
